@@ -25,11 +25,11 @@ Errors like -80045, "bad credentials" or a sign-in stuck at anisette come from A
 
 ### Where do I download the IPA, including the latest version?
 
-The newest ready-made IPA is posted in the Releases topic of the Telegram group. You can also build your own at fivestarport.vercel.app (free, about 25 minutes). It's not on the App Store, and IPAs from other places can be old or modified.
+The newest ready-made IPA is posted in the Releases topic of the Telegram group. You can also build your own at fivestarport.site/build/ (free, about 25 minutes). It's not on the App Store, and IPAs from other places can be old or modified.
 
 ### How do I install the game, and where do I start?
 
-Start with the setup guide in the Start here topic of the Telegram group, or the GitHub README's "Install in 4 steps". In short: 1) install a sideloader (SideStore or AltStore, set up once with a computer); 2) get the IPA from the Releases topic or build it at fivestarport.vercel.app; 3) install it; 4) unlock extra memory with GetMoreRam; 5) add your own game files in the app; 6) pick Story mode or Sandbox and tap Play. A 3-minute video tutorial is in the GitHub README.
+Start with the setup guide in the Start here topic of the Telegram group, or the GitHub README's "Install in 4 steps". In short: 1) install a sideloader (SideStore or AltStore, set up once with a computer); 2) get the IPA from the Releases topic or build it at fivestarport.site/build/; 3) install it; 4) unlock extra memory with GetMoreRam; 5) add your own game files in the app; 6) pick Story mode or Sandbox and tap Play. A 3-minute video tutorial is in the GitHub README.
 
 ### Is there a video tutorial or setup guide?
 
@@ -69,7 +69,7 @@ Yes: on an Apple Silicon Mac with Xcode you can build with build_ipa.sh (see the
 
 ### Do I need a PC (or a Mac) to build, install or play the port?
 
-Building needs no computer (fivestarport.vercel.app works on the iPhone), and playing needs none. Only setting up SideStore or AltStore needs a computer once (an Apple rule).
+Building needs no computer (fivestarport.site/build/ works on the iPhone), and playing needs none. Only setting up SideStore or AltStore needs a computer once (an Apple rule).
 
 ### Can I install the app with Sideloadly?
 
@@ -81,7 +81,7 @@ TrollStore works where your iPhone supports it, and gives the extra memory witho
 
 ### Can I use the IPA from Releases instead of building it on the website, and what's the difference?
 
-Both work. The Releases topic has a ready-made IPA. The builder (fivestarport.vercel.app) builds the same app from your own game files in your GitHub account.
+Both work. The Releases topic has a ready-made IPA. The builder (fivestarport.site/build/) builds the same app from your own game files in your GitHub account.
 
 ### Do I have to sideload again every 7 days, and can I refresh wirelessly?
 
@@ -107,7 +107,7 @@ The supported installers are SideStore, AltStore and Sideloadly.
 
 ### How do I update to a new version without losing my files or progress?
 
-Install the new IPA over the old app: your game files, Story saves, Mods and settings stay (iOS keeps the app's own folder when the same app is installed again). Use the same sideloader and the same Apple ID as before (SideStore/AltStore: My Apps › + › pick the new IPA). Don't delete the app first: deleting it deletes its folder, with the game files inside it and your saves. If you install with a different sideloader or Apple ID, iOS can treat it as a different app: a second GTA V Port appears with no game files, and the old app still has them. Keep using the old one, or copy the game folder across in the Files app. Inside LiveContainer the data lives in LiveContainer's own folder: back up its data folder before reinstalling LiveContainer. Built it yourself? Open fivestarport.vercel.app and tap Build again. Updates never need new game files.
+Install the new IPA over the old app: your game files, Story saves, Mods and settings stay (iOS keeps the app's own folder when the same app is installed again). Use the same sideloader and the same Apple ID as before (SideStore/AltStore: My Apps › + › pick the new IPA). Don't delete the app first: deleting it deletes its folder, with the game files inside it and your saves. If you install with a different sideloader or Apple ID, iOS can treat it as a different app: a second GTA V Port appears with no game files, and the old app still has them. Keep using the old one, or copy the game folder across in the Files app. Inside LiveContainer the data lives in LiveContainer's own folder: back up its data folder before reinstalling LiveContainer. Built it yourself? Open fivestarport.site/build/ and tap Build again. Updates never need new game files.
 
 ### What's new, and when is the next update?
 
@@ -141,7 +141,7 @@ On many sideloaded installs iOS doesn't hand a picked folder to the app (Open st
 
 ### Which game files do I need to download and add, and does the archive contain everything?
 
-The app needs the whole unpacked web build (version 8b0b5899ed): the folder that has data and b inside, about 21 GB. The app checks every file and tells you exactly what's missing or damaged. For building with fivestarport.vercel.app you pick only three files from it (b/8b0b5899ed/game.wasm, shaders.zip made from the shaders folder, data/manifest.json); the big folder stays on your phone.
+The app needs the whole unpacked web build (version 8b0b5899ed): the folder that has data and b inside, about 21 GB. The app checks every file and tells you exactly what's missing or damaged. For building with fivestarport.site/build/ you pick only three files from it (b/8b0b5899ed/game.wasm, shaders.zip made from the shaders folder, data/manifest.json); the big folder stays on your phone.
 
 ### Which version of the game files is the best or most stable (mirror, gta5webport.zip, 19 GB, 21 GB)?
 
@@ -565,7 +565,7 @@ Not in the game's radio yet: Self Radio (your own music on an in-game station) i
 
 ### Can the app be in my language, and can I translate it?
 
-The app's own text comes in English, the 12 other languages GTA V itself has, and community translations: Vietnamese and Arabic so far, partly translated (pick it in Settings › Language). Anyone can add another language or finish one on the Translate page of the builder site (fivestarport.vercel.app/translate): translate line by line and tap Send. New languages show up in the language picker from the next release. Lines not translated yet stay in English, and in a language Rockstar didn't make, the game's own text stays English.
+The app's own text comes in English, the 12 other languages GTA V itself has, and community translations: Vietnamese and Arabic so far, partly translated (pick it in Settings › Language). Anyone can add another language or finish one on the Translate page of the builder site (fivestarport.site/translate/): translate line by line and tap Send. New languages show up in the language picker from the next release. Lines not translated yet stay in English, and in a language Rockstar didn't make, the game's own text stays English.
 
 ### Can the in-game phone be replaced with an LB Phone-style phone like in FiveM?
 
@@ -687,7 +687,7 @@ Update to the newest version: since v1.4 Sandbox runs smoothly again on 4 GB iPh
 
 ### Why doesn't the dev share a ready-made IPA?
 
-A ready-made IPA is shared now: the newest one is in the Releases topic. You still need your own game files. Or build your own at fivestarport.vercel.app.
+A ready-made IPA is shared now: the newest one is in the Releases topic. You still need your own game files. Or build your own at fivestarport.site/build/.
 
 ### Is downloading the game files legal, and is it safe for my phone?
 

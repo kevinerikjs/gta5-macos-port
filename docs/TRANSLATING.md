@@ -6,7 +6,7 @@ The game's own text (missions, subtitles, the phone, the menus inside the game) 
 
 ## How to translate
 
-1. Open **[fivestarport.vercel.app/translate](https://fivestarport.vercel.app/translate)** on your phone or computer.
+1. Open **[fivestarport.site/translate](https://fivestarport.site/translate/)** on your phone or computer.
 2. Pick your language. If it isn't listed, add it by name.
 3. Translate line by line. Each line says where it appears in the app. Your work is saved in your browser, so you can stop and come back later.
 4. Tap **Send** when you're done. It goes straight to the developer. Add your name if you'd like to be thanked in the release notes.

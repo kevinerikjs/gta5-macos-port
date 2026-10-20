@@ -6,6 +6,8 @@
 
 > Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Rights holders: contact kevin@aether.ee and the repository will be taken down promptly.
 
+**Website:** [fivestarport.site](https://fivestarport.site): the guide, the builder and the translate page in one place.
+
 On iPhone? See **[gta5-ios-port](https://github.com/kevinerikjs/gta5-ios-port)**. Both apps come from the same code and are released together with the same version numbers.
 
 The same app as on iPhone, built for Apple Silicon Macs. It runs the game natively: the engine compiled for your Mac's chip, Apple's Metal for the graphics, and no emulator or Windows layer in between. Play it with keyboard and mouse, the game's own PC controls.
