@@ -18,7 +18,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORK = os.path.join(ROOT, 'Build', 'MetalShaders')
 OUT = os.path.join(ROOT, 'GeneratedResources')
 # The oldest iOS the app runs on (project.yml deploymentTarget); a metallib built for a newer one won't load.
-TARGETS = {'iphoneos': 'air64-apple-ios16.0', 'iphonesimulator': 'air64-apple-ios16.0-simulator'}
+TARGETS = {'iphoneos': 'air64-apple-ios16.0', 'iphonesimulator': 'air64-apple-ios16.0-simulator',
+           'maccatalyst': 'air64-apple-ios16.0-macabi'}
+TOOL_SDK = {'maccatalyst': 'macosx'}  # Mac Catalyst uses the macOS Metal toolchain
 
 
 def run(cmd, cwd=None):
@@ -77,7 +79,7 @@ def main():
     for sdk in sdks:
         air = os.path.join(WORK, 'air-' + sdk + '-' + TARGETS[sdk].split('-')[2])  # a new target compiles afresh
         os.makedirs(air, exist_ok=True)
-        compiler = subprocess.run(['xcrun', '-sdk', sdk, '-f', 'metal'], capture_output=True, text=True).stdout.strip()
+        compiler = subprocess.run(['xcrun', '-sdk', TOOL_SDK.get(sdk, sdk), '-f', 'metal'], capture_output=True, text=True).stdout.strip()
         stale = []
         for h in hashes:
             src, dst = os.path.join(msl, h + '.metal'), os.path.join(air, h + '.air')
@@ -99,7 +101,7 @@ def main():
             for h in hashes:
                 f.write(os.path.join(air, h + '.air') + '\n')
         lib = os.path.join(OUT, 'shaders-%s.metallib' % sdk)
-        run(['xcrun', '-sdk', sdk, 'metallib', '@' + files, '-o', lib])
+        run(['xcrun', '-sdk', TOOL_SDK.get(sdk, sdk), 'metallib', '@' + files, '-o', lib])
         print('%s: %d shaders, %.1f MB' % (sdk, len(hashes), os.path.getsize(lib) / 1048576))
 
 

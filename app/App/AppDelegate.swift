@@ -25,4 +25,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         return true
     }
+
+    #if targetEnvironment(macCatalyst)
+    /// The Mac menu bar: Settings… (⌘,) in the app menu, as every Mac app has it.
+    override func buildMenu(with builder: UIMenuBuilder) {
+        super.buildMenu(with: builder)
+        guard builder.system == .main else { return }
+        let settings = UIKeyCommand(title: AppLanguage.choose("Settings"), action: #selector(NativePortViewController.openSettingsFromMenu),
+                                    input: ",", modifierFlags: .command)
+        builder.insertSibling(UIMenu(options: .displayInline, children: [settings]), afterMenu: .about)
+    }
+    #endif
 }

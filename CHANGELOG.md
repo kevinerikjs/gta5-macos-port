@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.4.4 for Mac (first Mac release)
+
+The iPhone app's v1.4.4, built for Apple Silicon Macs (M1 or newer, macOS 13 or later). Setup: [docs/MAC.md](docs/MAC.md).
+
+- **Native on the Mac**: the same engine and Metal renderer as on iPhone, built for the Mac's chip; no emulator or Windows layer. The app gives the game 60% of the Mac's memory, so the higher presets have room (on an M4 with 16 GB: Quality at about 80 FPS, Ultra at about 76).
+- **Keyboard and mouse**: the game's own PC controls and PC key prompts. The cursor stays hidden while you play; the scroll wheel switches weapons; the weapon and radio wheels follow the mouse.
+- **Fullscreen**: Play switches the window to fullscreen before the game starts; leaving fullscreen or resizing the window during play reshapes the picture instead of stretching it.
+- **Settings and Mods**: ⌘, opens Settings at any time, and the game's pause menu shows Settings and Mods buttons (clicked with the game's cursor).
+- **Mac defaults**: Quality with the frame rate unlocked on Macs with enough memory; a lighter preset by itself on 8 GB Macs.
+- **Mac wording** in all 15 languages (game folder, memory and log texts).
+- **Sandboxed**: the app keeps its saves, mods and logs in its own container and remembers the game folder you choose.
+
 ## v1.4.4
 
 ### Missions

@@ -17,6 +17,8 @@ final class KeyboardMouse {
     private var dx: Double = 0, dy: Double = 0, wheel: Double = 0
     private var remainderX = 0.0, remainderY = 0.0
     private var buttons: Int32 = 0
+    /// The left mouse button is down (the Mac's paused-game buttons are clicked with the game's cursor).
+    var leftDown: Bool { buttons & 1 != 0 }
     private var held = Set<UInt8>()
 
     func start() {
@@ -62,10 +64,12 @@ final class KeyboardMouse {
         input.leftButton.pressedChangedHandler = { [weak self] _, _, pressed in self?.setButton(1, pressed) }
         input.rightButton?.pressedChangedHandler = { [weak self] _, _, pressed in self?.setButton(2, pressed) }
         input.middleButton?.pressedChangedHandler = { [weak self] _, _, pressed in self?.setButton(4, pressed) }
+        #if !targetEnvironment(macCatalyst)
         input.scroll.valueChangedHandler = { [weak self] _, _, y in
             guard let self, self.enabled else { return }
             self.wheel += Double(y)
         }
+        #endif
     }
 
     private func set(_ key: UInt8, _ down: Bool) {
@@ -96,6 +100,20 @@ final class KeyboardMouse {
         buttons = 0
         PGReleaseAllKeys()
     }
+
+    #if targetEnvironment(macCatalyst)
+    /// The Mac's scroll wheel, from the window's scroll events (NativePortViewController): GameController's mouse
+    /// scroll on macOS reports about 0.1 per notch and sometimes only the first scroll in a direction, so each scroll
+    /// counts as one notch, at most one every 60 ms (a trackpad sends many small ones).
+    private var lastScrollAt: CFTimeInterval = 0
+    func scroll(up: Bool) {
+        guard enabled else { return }
+        let now = CACurrentMediaTime()
+        guard now - lastScrollAt > 0.06 else { return }
+        lastScrollAt = now
+        wheel += up ? 1 : -1
+    }
+    #endif
 
     /// Automation: types a key or moves the mouse as if a real device did (simulator checks).
     func inject(key: UInt8, down: Bool) { set(key, down) }

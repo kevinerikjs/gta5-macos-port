@@ -52,7 +52,12 @@ enum LogUploader {
         var request = URLRequest(url: url, timeoutInterval: 60)
         request.httpMethod = "POST"
         request.setValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.setValue("\(GameSettings.shared.tier.model) · iOS \(UIDevice.current.systemVersion) · \(GameSettings.shared.tier.memoryLimitMB) MB limit", forHTTPHeaderField: "X-Device")
+        #if targetEnvironment(macCatalyst)
+        let system = "macOS"
+        #else
+        let system = "iOS"
+        #endif
+        request.setValue("\(GameSettings.shared.tier.model) · \(system) \(UIDevice.current.systemVersion) · \(GameSettings.shared.tier.memoryLimitMB) MB limit", forHTTPHeaderField: "X-Device")
         request.setValue(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?", forHTTPHeaderField: "X-App-Version")
         request.setValue(String(note.prefix(400)).addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? "", forHTTPHeaderField: "X-Note")
         URLSession.shared.uploadTask(with: request, from: body) { data, response, error in

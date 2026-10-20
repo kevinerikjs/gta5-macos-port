@@ -167,7 +167,14 @@ final class GameSettings {
     var graphicsPreset: GraphicsPreset {
         // integer(forKey:) also reads "-graphicsPreset 4" given as a launch argument (a string).
         get {
-            guard defaults.object(forKey: "graphicsPreset") != nil, let preset = GraphicsPreset(rawValue: defaults.integer(forKey: "graphicsPreset")) else { return tier.recommended }
+            guard defaults.object(forKey: "graphicsPreset") != nil, let preset = GraphicsPreset(rawValue: defaults.integer(forKey: "graphicsPreset")) else {
+                #if targetEnvironment(macCatalyst)
+                // Mac: Quality at most by default (about 80 FPS on an M4 with the frame rate unlocked); Ultra and Max stay a choice.
+                return GraphicsPreset(rawValue: min(tier.recommended.rawValue, GraphicsPreset.quality.rawValue)) ?? .quality
+                #else
+                return tier.recommended
+                #endif
+            }
             return preset == .lite && !GraphicsPreset.liteAvailable ? .battery : preset
         }
         set { defaults.set(newValue.rawValue, forKey: "graphicsPreset") }
@@ -314,6 +321,9 @@ final class GameSettings {
     var frameRateCap: Int {
         get {
             if let cap = defaults.object(forKey: "frameRateCap") as? Int, [0, 30, 60].contains(cap) { return cap }
+            #if targetEnvironment(macCatalyst)
+            if defaults.object(forKey: "sixtyFPS") == nil { return 0 } // Mac: unlocked by default, no battery or heat limit like a phone's
+            #endif
             return defaults.bool(forKey: "sixtyFPS") ? 60 : 30 // older versions stored a 60 FPS switch
         }
         set { defaults.set(newValue, forKey: "frameRateCap") }

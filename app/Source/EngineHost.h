@@ -148,6 +148,8 @@ void PGSetRadioWheelDirection(float x, float y, bool active);
 void PGReleaseAllKeys(void);
 // Mouse movement in pixels since the last call, buttons (bit 0 left, 1 right, 2 middle).
 void PGMouseInput(int32_t dx, int32_t dy, int32_t buttons);
+// The game's own mouse cursor as a fraction of the screen (0...1); false before the game reads input.
+bool PGMousePosition(float *x, float *y);
 void PGMouseWheel(int32_t notches);
 // The window has focus / the pointer is captured for looking around.
 void PGSetMouseFocus(bool focused, bool locked);
@@ -167,6 +169,8 @@ void PGQueueCameraSwipe(float x, float y);
 void PGClearCameraSwipe(void);
 // The engine's last input device for the player: -4 keyboard/mouse,
 // 0...3 pads, -3 unknown. Assisted aim needs a pad.
+// Memory the app may still use before the system stops it (on the Mac: a limit the app sets itself).
+uint64_t PGProcessAvailableMemory(void);
 int32_t PGLastInputDevice(void);
 // Targeting preference: 0 traditional lock, 1 assisted, 2 assisted free, 3 free.
 int32_t PGTargetingMode(void);

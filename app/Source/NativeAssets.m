@@ -715,12 +715,15 @@ static void envTestMetaOverlay(uint32_t id,uint64_t offset,uint8_t *destination,
 // maps (on any device), so its prompts read "???" and Continue can't be pressed (GTA-48). The control
 // files get those mappings as the game reads them: the XML is compacted (whitespace between tags) to
 // make room and padded back to its size, so file sizes stay as the manifest says.
+// The radio wheel's direction (INPUT_RADIO_WHEEL_LR/_UD) has no mouse mapping in this game's fixed.meta, so with a
+// mouse it didn't follow while the weapon wheel did (GTA-9, Kevin on the Mac): it gets the weapon wheel's mouse source.
 static NSDictionary<NSString *,NSArray<NSArray<NSString *> *> *> *controlAdditions(void){
   static NSDictionary *table;static dispatch_once_t once;
   dispatch_once(&once,^{table=@{
     @"common/data/control/standard_accept_cancel.meta":@[@[@"INPUT_FRONTEND_ENDSCREEN_ACCEPT",@"IOMS_PAD_DIGITALBUTTON",@"RDOWN"],@[@"INPUT_FRONTEND_ENDSCREEN_EXPAND",@"IOMS_PAD_DIGITALBUTTON",@"RLEFT"]],
     @"common/data/control/alternate_accept_cancel.meta":@[@[@"INPUT_FRONTEND_ENDSCREEN_ACCEPT",@"IOMS_PAD_DIGITALBUTTON",@"RRIGHT"],@[@"INPUT_FRONTEND_ENDSCREEN_EXPAND",@"IOMS_PAD_DIGITALBUTTON",@"RLEFT"]],
-    @"x64/data/control/fixed.meta":@[@[@"INPUT_FRONTEND_ENDSCREEN_ACCEPT",@"IOMS_KEYBOARD",@"KEY_RETURN"],@[@"INPUT_FRONTEND_ENDSCREEN_EXPAND",@"IOMS_KEYBOARD",@"KEY_SPACE"]]};});
+    @"x64/data/control/fixed.meta":@[@[@"INPUT_FRONTEND_ENDSCREEN_ACCEPT",@"IOMS_KEYBOARD",@"KEY_RETURN"],@[@"INPUT_FRONTEND_ENDSCREEN_EXPAND",@"IOMS_KEYBOARD",@"KEY_SPACE"],
+      @[@"INPUT_RADIO_WHEEL_LR",@"IOMS_MOUSE_NORMALIZED",@"IOM_AXIS_X"],@[@"INPUT_RADIO_WHEEL_UD",@"IOMS_MOUSE_NORMALIZED",@"IOM_AXIS_Y"]]};});
   return table;
 }
 NSData *PGControlMetaRewrite(NSData *original,NSArray<NSArray<NSString *> *> *additions){
@@ -752,7 +755,7 @@ static void controlMetaOverlay(uint32_t id,uint64_t offset,uint8_t *destination,
       NSMutableData *original=[NSMutableData dataWithLength:(NSUInteger)size];
       rewritten=readAssetImpl(id,0,original.mutableBytes,(uint32_t)size)==(int64_t)size?PGControlMetaRewrite(original,additions):nil;
       controlMetas[@(id)]=rewritten?:[NSData data];
-      char line[200];snprintf(line,sizeof line,"Controls: %s %s.",[assetFiles[id][0] UTF8String],rewritten?"gets the mission passed screen's buttons":"has no room or is not the expected file; unchanged");pg_log(line);
+      char line[200];snprintf(line,sizeof line,"Controls: %s %s.",[assetFiles[id][0] UTF8String],rewritten?"gets its missing mappings (mission passed screen, radio wheel mouse)":"has no room or is not the expected file; unchanged");pg_log(line);
       rewritten=controlMetas[@(id)];
     }
   }

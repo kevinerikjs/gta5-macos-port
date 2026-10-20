@@ -93,7 +93,15 @@ struct DeviceTier {
 
     static func probe() -> DeviceTier {
         var info = utsname(); uname(&info)
-        let model = withUnsafeBytes(of: &info.machine) { String(decoding: $0.prefix { $0 != 0 }, as: UTF8.self) }
+        var model = withUnsafeBytes(of: &info.machine) { String(decoding: $0.prefix { $0 != 0 }, as: UTF8.self) }
+        #if targetEnvironment(macCatalyst)
+        // On a Mac uname says only "arm64"; the model name (Mac16,10) tells logs and play stats which Mac it is.
+        var size = 0
+        if sysctlbyname("hw.model", nil, &size, nil, 0) == 0, size > 1 {
+            var name = [CChar](repeating: 0, count: size)
+            if sysctlbyname("hw.model", &name, &size, nil, 0) == 0 { model = String(cString: name) }
+        }
+        #endif
         let device = MTLCreateSystemDefaultDevice()
         return DeviceTier(memoryLimitMB: Self.processMemoryLimitMB(),
                           physicalMemoryMB: Int(ProcessInfo.processInfo.physicalMemory / 1_048_576),
@@ -113,7 +121,7 @@ struct DeviceTier {
             $0.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count) }
         }
         let footprint = result == KERN_SUCCESS ? Int(vm.phys_footprint) : 0
-        return (Int(os_proc_available_memory()) + footprint) / 1_048_576
+        return (Int(PGProcessAvailableMemory()) + footprint) / 1_048_576
         #endif
     }
 

@@ -2572,6 +2572,8 @@ extern "C" void PGMetalRendererAttachLayer(void *layer) { pendingLayer = (__brid
 extern "C" bool PGMetalRendererAvailable(void) {
 #if TARGET_OS_SIMULATOR
 	NSString *name = @"shaders-iphonesimulator";
+#elif TARGET_OS_MACCATALYST
+	NSString *name = @"shaders-maccatalyst";
 #else
 	NSString *name = @"shaders-iphoneos";
 #endif

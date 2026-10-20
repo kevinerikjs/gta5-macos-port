@@ -63,7 +63,12 @@ struct AppLanguage: Equatable {
     }
 
     /// Localize by a single stable English key, falling back to English.
-    static func choose(_ key: String) -> String {
+    static func choose(_ text: String) -> String {
+        #if targetEnvironment(macCatalyst)
+        let key = MacText.replacements[text] ?? text
+        #else
+        let key = text
+        #endif
         guard current != .english else { return key }
         let localized = bundle(for: current.catalogIdentifier)?
             .localizedString(forKey: key, value: nil, table: "Localizable")

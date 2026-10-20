@@ -6,6 +6,20 @@ import UIKit
 final class HomeView: UIView {
     enum FilesState { case ready, attention, problem, busy }
 
+    #if targetEnvironment(macCatalyst)
+    /// How much the start screen is scaled up in a Mac window of this height: the layout suits a screen about
+    /// 1000 points tall (an iPad's), and a fullscreen window on a big desktop screen is nearly twice that.
+    static func macScale(forHeight height: CGFloat) -> CGFloat { min(max(height / 1000, 1), 2) }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // Scaled up by a transform, text and symbols would be stretched bitmaps; drawing them at the larger
+        // scale keeps them sharp.
+        let scale = (window?.screen.scale ?? 2) * transform.a
+        func sharpen(_ view: UIView) { if view.contentScaleFactor != scale { view.contentScaleFactor = scale }; view.subviews.forEach(sharpen) }
+        sharpen(self)
+    }
+    #endif
+
     let playButton = Theme.primaryButton(AppLanguage.choose("Play"), symbol: "play.fill")
     let settingsButton = Theme.glassButton(AppLanguage.choose("Settings"), symbol: "gearshape.fill")
     let layoutButton = Theme.glassButton(AppLanguage.choose("Controls layout"), symbol: "hand.tap.fill")
@@ -84,7 +98,11 @@ final class HomeView: UIView {
         settingsButton.accessibilityLabel = AppLanguage.choose("Settings")
         layoutButton.accessibilityLabel = AppLanguage.choose("Controls layout")
         for button in [telegramButton, layoutButton, settingsButton] { button.configuration?.title = nil }
+        #if targetEnvironment(macCatalyst)
+        secondary.addArrangedSubviews([telegramButton, settingsButton])   // no touch controls to lay out on a Mac
+        #else
         secondary.addArrangedSubviews([telegramButton, layoutButton, settingsButton])
+        #endif
         secondary.spacing = 10
         secondary.translatesAutoresizingMaskIntoConstraints = false
         for label in [preloadLabel, controllerLabel] {

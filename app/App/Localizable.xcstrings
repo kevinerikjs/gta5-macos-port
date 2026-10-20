@@ -54023,6 +54023,3996 @@
           }
         }
       }
+    },
+    "The game files are already on this Mac (folder \"{arg0}\"), so nothing needs downloading.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ملفات اللعبة موجودة بالفعل على جهاز Mac هذا (المجلد \"{arg0}\")، لذا لا حاجة لتنزيل أي شيء."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Spieldateien sind schon auf diesem Mac (Ordner „{arg0}“), es muss nichts heruntergeladen werden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The game files are already on this Mac (folder \"{arg0}\"), so nothing needs downloading."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los archivos del juego ya están en este Mac (carpeta \"{arg0}\"), así que no hace falta descargar nada."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los archivos del juego ya están en esta Mac (carpeta \"{arg0}\"), así que no hace falta descargar nada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les fichiers du jeu sont déjà sur ce Mac (dossier « {arg0} »), rien à télécharger."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I file di gioco sono già su questo Mac (cartella “{arg0}”), quindi non serve scaricare nulla."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲームファイルはすでにこのMacにあります（フォルダ「{arg0}」）。ダウンロードは不要です。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "게임 파일이 이미 이 Mac에 있으므로(폴더 ‘{arg0}’) 다운로드할 필요가 없습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pliki gry są już na tym Macu (folder „{arg0}”), więc nie trzeba niczego pobierać."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os arquivos do jogo já estão neste Mac (pasta \"{arg0}\"), então não é preciso baixar nada."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Файлы игры уже есть на этом Mac (папка «{arg0}»), загружать ничего не нужно."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Các file game đã có sẵn trên máy Mac này (thư mục \"{arg0}\"), nên không cần tải gì cả."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "游戏文件已在此 Mac 上（文件夹“{arg0}”），无需再次下载。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "遊戲檔案已存於此 Mac（資料夾「{arg0}」），無須再次下載。"
+          }
+        }
+      }
+    },
+    "Paused because this Mac is almost out of storage.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم الإيقاف المؤقت لأن مساحة التخزين على جهاز Mac هذا توشك على النفاد."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausiert, weil der Speicher dieses Mac fast voll ist."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paused because this Mac is almost out of storage."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En pausa porque este Mac casi no tiene almacenamiento libre."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En pausa porque esta Mac casi no tiene almacenamiento libre."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En pause : ce Mac n’a presque plus de stockage."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In pausa perché questo Mac ha quasi esaurito lo spazio."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このMacのストレージがほぼいっぱいのため、一時停止しました。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 Mac의 저장 공간이 거의 가득 차서 일시 정지되었습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wstrzymano, bo na tym Macu prawie zabrakło miejsca."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausado porque o armazenamento deste Mac está quase cheio."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пауза: на этом Mac почти не осталось места."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã tạm dừng vì máy Mac này sắp hết dung lượng lưu trữ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 存储空间即将用完，已暂停下载。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 儲存空間即將耗盡，已暫停下載。"
+          }
+        }
+      }
+    },
+    "The app was not allowed to open that folder. Choose it again, or choose a folder above it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يُسمح للتطبيق بفتح هذا المجلد. اختره مرة أخرى، أو اختر مجلدًا أعلى منه."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App durfte diesen Ordner nicht öffnen. Wähle ihn erneut oder wähle einen übergeordneten Ordner."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app was not allowed to open that folder. Choose it again, or choose a folder above it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La app no tiene permiso para abrir esa carpeta. Vuelve a elegirla o elige una carpeta que la contenga."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La app no tiene permiso para abrir esa carpeta. Vuelve a elegirla o elige una carpeta que la contenga."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’app n’a pas été autorisée à ouvrir ce dossier. Choisissez-le à nouveau, ou choisissez un dossier qui le contient."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’app non ha il permesso di aprire quella cartella. Sceglila di nuovo, oppure scegli una cartella superiore."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリにそのフォルダを開く許可がありませんでした。もう一度選択するか、その上位のフォルダを選択してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "앱에 해당 폴더를 열 수 있는 권한이 없습니다. 폴더를 다시 선택하거나 그 상위 폴더를 선택하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikacja nie otrzymała dostępu do tego folderu. Wybierz go ponownie lub wybierz folder nadrzędny."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O app não teve permissão para abrir essa pasta. Escolha-a de novo ou escolha uma pasta acima dela."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приложению не разрешили открыть эту папку. Выберите её снова или выберите папку выше неё."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng không được phép mở thư mục đó. Hãy chọn lại, hoặc chọn một thư mục cấp trên của nó."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App 没有权限访问此文件夹。请重新选择它，或选择它上层的文件夹。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App 沒有權限讀取此資料夾。請重新選擇它，或選擇它上層的資料夾。"
+          }
+        }
+      }
+    },
+    "There is no game in \"{arg0}\". Choose the folder that has your game in it. Any folder above it works too: the app searches everything inside.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد لعبة في \"{arg0}\". اختر المجلد الذي يحتوي على لعبتك. أي مجلد أعلى منه يعمل أيضًا: يبحث التطبيق في كل ما بداخله."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In „{arg0}“ ist kein Spiel. Wähle den Ordner, in dem dein Spiel liegt. Jeder übergeordnete Ordner geht auch: Die App durchsucht alles darin."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There is no game in \"{arg0}\". Choose the folder that has your game in it. Any folder above it works too: the app searches everything inside."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay ningún juego en \"{arg0}\". Elige la carpeta que contiene tu juego. También sirve cualquier carpeta superior: la app busca en todo su contenido."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay ningún juego en \"{arg0}\". Elige la carpeta que contiene tu juego. También sirve cualquier carpeta superior: la app busca en todo su contenido."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il n’y a aucun jeu dans « {arg0} ». Choisissez le dossier qui contient votre jeu. N’importe quel dossier au-dessus convient aussi : l’app cherche dans tout son contenu."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non c’è nessun gioco in “{arg0}”. Scegli la cartella che contiene il gioco. Va bene anche qualsiasi cartella superiore: l’app cerca in tutto il contenuto."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「{arg0}」にゲームがありません。ゲームが入っているフォルダを選んでください。その上位のフォルダでもかまいません。アプリが中をすべて検索します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‘{arg0}’에 게임이 없습니다. 게임이 들어 있는 폴더를 선택하세요. 그 상위 폴더도 괜찮습니다. 앱이 그 안을 모두 검색합니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "W „{arg0}” nie ma gry. Wybierz folder, w którym jest gra. Zadziała też każdy folder nadrzędny: aplikacja przeszuka całą jego zawartość."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não há jogo em \"{arg0}\". Escolha a pasta que contém o seu jogo. Qualquer pasta acima dela também serve: o app procura em tudo lá dentro."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В «{arg0}» нет игры. Выберите папку с игрой. Подойдёт и любая папка выше неё: приложение проверит всё внутри."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có game nào trong \"{arg0}\". Hãy chọn thư mục chứa game của bạn. Thư mục cấp trên nào cũng được: ứng dụng sẽ tìm trong mọi thứ bên trong."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“{arg0}”中没有游戏。请选择包含游戏的文件夹。它上层的任一文件夹也可以：App 会搜索其中的所有内容。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「{arg0}」中沒有遊戲。請選擇含有遊戲的資料夾。它上層的任一資料夾也可以：App 會搜尋其中所有內容。"
+          }
+        }
+      }
+    },
+    "For Macs with little memory: lower detail and draw distance, so the world keeps loading": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لأجهزة Mac ذات الذاكرة القليلة: تفاصيل ومسافة رسم أقل، حتى يستمر تحميل العالم"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Macs mit wenig Speicher: weniger Details und Sichtweite, damit die Welt weiter lädt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For Macs with little memory: lower detail and draw distance, so the world keeps loading"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para Mac con poca memoria: menos detalle y distancia de dibujado, para que el mundo siga cargando"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para Mac con poca memoria: menos detalle y distancia de dibujado, para que el mundo siga cargando"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour les Mac avec peu de mémoire : moins de détails et de distance d’affichage, pour que le monde continue de se charger"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per Mac con poca memoria: meno dettagli e distanza visiva, così il mondo continua a caricarsi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メモリが少ないMac向け：詳細と描画距離を下げ、ワールドの読み込みを続けます"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "메모리가 적은 Mac용: 디테일과 시야 거리를 낮춰 월드가 계속 로드됩니다"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dla Maców z małą ilością pamięci: mniej szczegółów i krótszy zasięg widzenia, by świat dalej się wczytywał"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para Macs com pouca memória: menos detalhes e distância de visão, para o mundo continuar carregando"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для Mac с малым объёмом памяти: меньше деталей и дальности прорисовки, чтобы мир продолжал загружаться"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cho máy Mac ít RAM: giảm chi tiết và tầm nhìn xa, để thế giới tiếp tục tải được"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "适用于内存较小的 Mac：降低细节和绘制距离，让世界持续加载"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "適用於記憶體較小的 Mac：降低細節與繪製距離，讓世界持續載入"
+          }
+        }
+      }
+    },
+    "A light setup for Macs with 8 GB": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعداد خفيف لأجهزة Mac بذاكرة 8 جيجابايت"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein leichtes Setup für Macs mit 8 GB"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A light setup for Macs with 8 GB"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una configuración ligera para Mac de 8 GB"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una configuración ligera para Mac de 8 GB"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un réglage léger pour les Mac 8 Go"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una configurazione leggera per Mac da 8 GB"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "8GBのMac向けの軽い設定"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "8GB Mac용 가벼운 설정"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lekka konfiguracja dla Maców z 8 GB"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma configuração leve para Macs com 8 GB"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лёгкая настройка для Mac с 8 ГБ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thiết lập nhẹ cho máy Mac 8 GB"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "适合 8GB 内存 Mac 的轻量配置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "適合 8GB 記憶體 Mac 的輕量配置"
+          }
+        }
+      }
+    },
+    "Sends this run's game log and the previous one: your Mac model, macOS version, app settings and what the game printed. No personal data, photos or contacts.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يرسل سجل اللعبة لهذه الجلسة والجلسة السابقة: طراز جهاز Mac وإصدار macOS وإعدادات التطبيق وما طبعته اللعبة. لا بيانات شخصية ولا صور ولا جهات اتصال."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sendet das Spielprotokoll dieser und der vorherigen Sitzung: dein Mac-Modell, die macOS-Version, App-Einstellungen und die Ausgaben des Spiels. Keine persönlichen Daten, Fotos oder Kontakte."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sends this run's game log and the previous one: your Mac model, macOS version, app settings and what the game printed. No personal data, photos or contacts."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envía el registro del juego de esta sesión y de la anterior: el modelo de tu Mac, la versión de macOS, los ajustes de la app y lo que mostró el juego. Sin datos personales, fotos ni contactos."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envía el registro del juego de esta sesión y de la anterior: el modelo de tu Mac, la versión de macOS, la configuración de la app y lo que mostró el juego. Sin datos personales, fotos ni contactos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envoie le journal de cette session et celui de la précédente : modèle de Mac, version de macOS, réglages de l’app et ce que le jeu a affiché. Aucune donnée personnelle, photo ni contact."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invia il registro di gioco di questa sessione e di quella precedente: modello di Mac, versione di macOS, impostazioni dell’app e ciò che il gioco ha stampato. Nessun dato personale, foto o contatto."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今回と前回のゲームログを送信します。内容はMacのモデル、macOSバージョン、アプリの設定、ゲームの出力です。個人データ、写真、連絡先は含まれません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이번 실행과 이전 실행의 게임 로그를 보냅니다. Mac 모델, macOS 버전, 앱 설정, 게임 출력 내용이 포함되며 개인 데이터, 사진, 연락처는 포함되지 않습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wysyła dziennik gry z tej i poprzedniej sesji: model Maca, wersję macOS, ustawienia aplikacji i komunikaty gry. Bez danych osobowych, zdjęć i kontaktów."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envia o registro do jogo desta sessão e o da anterior: modelo do Mac, versão do macOS, configurações do app e o que o jogo exibiu. Nenhum dado pessoal, foto ou contato."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отправляет журнал игры за этот и предыдущий запуск: модель Mac, версию macOS, настройки приложения и вывод игры. Никаких личных данных, фото или контактов."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi log game của lần chạy này và lần trước: đời máy Mac, phiên bản macOS, cài đặt ứng dụng và những gì game đã ghi ra. Không có dữ liệu cá nhân, ảnh hay danh bạ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将发送本次和上次的游戏日志，包括 Mac 型号、macOS 版本、App 设置和游戏输出。不含个人数据、照片或联系人。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "將傳送本次與前次遊戲紀錄，包含 Mac 型號、macOS 版本、App 設定和遊戲輸出，不包含相片或聯絡人。"
+          }
+        }
+      }
+    },
+    "not needed on Mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "غير مطلوب على Mac"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "auf dem Mac nicht nötig"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "not needed on Mac"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no hace falta en Mac"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no hace falta en Mac"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "inutile sur Mac"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "non serve su Mac"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac では不要"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac에서는 필요 없음"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "niepotrzebne na Macu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "não é necessário no Mac"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "на Mac не нужно"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "không cần trên Mac"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 上不需要"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 上不需要"
+          }
+        }
+      }
+    },
+    "Already on this Mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "موجود بالفعل على جهاز Mac هذا"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schon auf diesem Mac"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Already on this Mac"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya en este Mac"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya en esta Mac"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déjà sur ce Mac"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Già su questo Mac"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すでにこのMacにある"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이미 이 Mac에 있음"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Już na tym Macu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Já está neste Mac"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Уже на этом Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã có trên máy Mac này"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已在此 Mac 上"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已在此 Mac 上"
+          }
+        }
+      }
+    },
+    "Choose your unpacked game folder below. Any folder above it works too: the app searches everything inside, however deep the game is.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر مجلد اللعبة بعد فك ضغطه أدناه. أي مجلد أعلى منه يعمل أيضًا: يبحث التطبيق في كل ما بداخله، مهما كان عمق مكان اللعبة."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle unten deinen entpackten Spielordner. Jeder übergeordnete Ordner geht auch: Die App durchsucht alles darin, egal wie tief das Spiel liegt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose your unpacked game folder below. Any folder above it works too: the app searches everything inside, however deep the game is."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige abajo la carpeta del juego descomprimida. También sirve cualquier carpeta superior: la app busca en todo su contenido, aunque el juego esté dentro de otras carpetas."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige abajo la carpeta del juego descomprimida. También sirve cualquier carpeta superior: la app busca en todo su contenido, aunque el juego esté dentro de otras carpetas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez ci-dessous le dossier du jeu décompressé. N’importe quel dossier au-dessus convient aussi : l’app cherche dans tout son contenu, quelle que soit la profondeur du jeu."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli qui sotto la cartella del gioco estratta. Va bene anche qualsiasi cartella superiore: l’app cerca in tutto il contenuto, a qualsiasi profondità si trovi il gioco."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下で展開済みのゲームフォルダを選んでください。その上位のフォルダでもかまいません。ゲームがどれだけ深い階層にあっても、アプリが中をすべて検索します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아래에서 압축을 푼 게임 폴더를 선택하세요. 그 상위 폴더도 괜찮습니다. 게임이 아무리 깊은 곳에 있어도 앱이 그 안을 모두 검색합니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybierz poniżej rozpakowany folder gry. Zadziała też każdy folder nadrzędny: aplikacja przeszuka całą jego zawartość, nawet głęboko w podfolderach."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolha abaixo a pasta descompactada do jogo. Qualquer pasta acima dela também serve: o app procura em tudo lá dentro, não importa a profundidade."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выберите ниже распакованную папку игры. Подойдёт и любая папка выше неё: приложение проверит всё внутри, на любой глубине."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn thư mục game đã giải nén ở bên dưới. Thư mục cấp trên nào cũng được: ứng dụng sẽ tìm trong mọi thứ bên trong, dù game nằm sâu đến đâu."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在下方选择解压后的游戏文件夹。它上层的任一文件夹也可以：无论游戏放在多深的位置，App 都会搜索其中的所有内容。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請在下方選擇解壓縮後的遊戲資料夾。它上層的任一資料夾也可以：無論遊戲放在多深的位置，App 都會搜尋其中所有內容。"
+          }
+        }
+      }
+    },
+    "The app remembers the folder, so you only choose it once.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتذكر التطبيق المجلد، لذا تختاره مرة واحدة فقط."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App merkt sich den Ordner, du wählst ihn also nur einmal."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app remembers the folder, so you only choose it once."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La app recuerda la carpeta, así que solo la eliges una vez."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La app recuerda la carpeta, así que solo la eliges una vez."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’app se souvient du dossier : vous ne le choisissez qu’une fois."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’app ricorda la cartella, quindi la scegli una sola volta."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリがフォルダを記憶するので、選ぶのは一度だけです。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "앱이 폴더를 기억하므로 한 번만 선택하면 됩니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikacja zapamiętuje folder, więc wybierasz go tylko raz."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O app lembra da pasta, então você só a escolhe uma vez."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приложение запоминает папку, так что выбрать её нужно только один раз."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng sẽ nhớ thư mục, nên bạn chỉ cần chọn một lần."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App 会记住这个文件夹，只需选择一次。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App 會記住這個資料夾，只需選擇一次。"
+          }
+        }
+      }
+    },
+    "Can't pick it? A cloud icon next to the folder means it's still in iCloud Drive: in Finder, Control-click it and choose Download Now first.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يمكنك اختياره؟ أيقونة السحابة بجانب المجلد تعني أنه لا يزال في iCloud Drive: في Finder، انقر عليه مع الضغط على مفتاح Control واختر \"تنزيل الآن\" أولًا."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lässt er sich nicht auswählen? Ein Wolkensymbol neben dem Ordner heißt, dass er noch in iCloud Drive liegt: Klicke ihn im Finder bei gedrückter Ctrl-Taste an und wähle zuerst „Jetzt laden“."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Can't pick it? A cloud icon next to the folder means it's still in iCloud Drive: in Finder, Control-click it and choose Download Now first."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿No se puede elegir? Un icono de nube junto a la carpeta significa que sigue en iCloud Drive: en Finder, haz clic en ella con la tecla Control pulsada y elige primero Descargar ahora."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿No se puede elegir? Un ícono de nube junto a la carpeta significa que sigue en iCloud Drive: en Finder, haz clic en ella con la tecla Control presionada y elige primero Descargar ahora."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de le choisir ? Une icône de nuage à côté du dossier veut dire qu’il est encore dans iCloud Drive : dans le Finder, clique dessus en maintenant la touche Contrôle enfoncée et choisis d’abord Télécharger maintenant."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non riesci a sceglierla? Un’icona a nuvola accanto alla cartella vuol dire che è ancora in iCloud Drive: nel Finder, fai clic sulla cartella tenendo premuto il tasto Control e scegli prima Scarica ora."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選べない場合:フォルダの横に雲のアイコンがあれば、まだiCloud Driveにあります。先にFinderでフォルダをControlキーを押しながらクリックし、「今すぐダウンロード」を選んでください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "선택이 안 되나요? 폴더 옆에 구름 아이콘이 있으면 아직 iCloud Drive에 있는 것입니다. 먼저 Finder에서 폴더를 Control-클릭한 다음 지금 다운로드를 선택하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie da się wybrać? Ikona chmurki obok folderu oznacza, że jest jeszcze w iCloud Drive: najpierw w Finderze kliknij go z wciśniętym klawiszem Control i wybierz Pobierz teraz."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não dá para escolher? Um ícone de nuvem ao lado da pasta indica que ela ainda está no iCloud Drive: primeiro, no Finder, clique nela com a tecla Control pressionada e escolha Baixar Agora."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не получается выбрать? Значок облака рядом с папкой значит, что она ещё в iCloud Drive: сначала в Finder нажмите её, удерживая клавишу Control, и выберите «Загрузить сейчас»."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không chọn được? Biểu tượng đám mây cạnh thư mục nghĩa là nó vẫn còn trên iCloud Drive: trước tiên, trong Finder, giữ phím Control và nhấp vào thư mục, rồi chọn Tải về bây giờ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选不了?文件夹旁有云朵图标说明它还在 iCloud 云盘里:先在访达（Finder）中按住 Control 键点按它,然后选择“立即下载”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選不了?資料夾旁有雲朵圖示代表它還在 iCloud 雲碟裡:先在 Finder 中按住 Control 鍵並按一下它,再選擇「立即下載」。"
+          }
+        }
+      }
+    },
+    "\"{arg0}\" on this Mac: all {arg1} game files checked ({arg2}).": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" على جهاز Mac هذا: تم فحص جميع ملفات اللعبة وعددها {arg1} ({arg2})."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„{arg0}“ auf diesem Mac: alle {arg1} Spieldateien geprüft ({arg2})."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" on this Mac: all {arg1} game files checked ({arg2})."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" en este Mac: los {arg1} archivos del juego comprobados ({arg2})."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" en esta Mac: los {arg1} archivos del juego verificados ({arg2})."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« {arg0} » sur ce Mac : les {arg1} fichiers du jeu ont été vérifiés ({arg2})."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“{arg0}” su questo Mac: tutti i {arg1} file di gioco controllati ({arg2})."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このMac上の「{arg0}」: {arg1}個のゲームファイルをすべて確認済み（{arg2}）。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 Mac의 ‘{arg0}’: 게임 파일 {arg1}개 모두 확인됨({arg2})."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„{arg0}” na tym Macu: sprawdzono wszystkie pliki gry ({arg1}, {arg2})."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" neste Mac: todos os {arg1} arquivos do jogo verificados ({arg2})."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«{arg0}» на этом Mac: все файлы игры проверены (файлов: {arg1}, {arg2})."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" trên máy Mac này: đã kiểm tra toàn bộ {arg1} file game ({arg2})."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 Mac 上的“{arg0}”：已检查全部 {arg1} 个游戏文件（{arg2}）。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 Mac 上的「{arg0}」：已檢查全部 {arg1} 個遊戲檔案（{arg2}）。"
+          }
+        }
+      }
+    },
+    "\"{arg0}\" on this Mac.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" على جهاز Mac هذا."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„{arg0}“ auf diesem Mac."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" on this Mac."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" en este Mac."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" en esta Mac."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« {arg0} » sur ce Mac."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“{arg0}” su questo Mac."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このMac上の「{arg0}」。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 Mac의 ‘{arg0}’."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„{arg0}” na tym Macu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" neste Mac."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«{arg0}» на этом Mac."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"{arg0}\" trên máy Mac này."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 Mac 上的“{arg0}”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 Mac 上的「{arg0}」。"
+          }
+        }
+      }
+    },
+    "No game folder chosen yet. Click Choose a folder… below and pick the folder your game is in. macOS only lets the app into a folder once you choose it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يتم اختيار مجلد اللعبة بعد. انقر على \"Choose a folder…\" أدناه واختر المجلد الذي توجد فيه لعبتك. لا يسمح macOS للتطبيق بالوصول إلى مجلد إلا بعد أن تختاره."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch kein Spielordner gewählt. Klicke unten auf Ordner wählen… und wähle den Ordner, in dem dein Spiel liegt. macOS gibt der App erst Zugriff auf einen Ordner, wenn du ihn auswählst."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No game folder chosen yet. Click Choose a folder… below and pick the folder your game is in. macOS only lets the app into a folder once you choose it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no has elegido la carpeta del juego. Haz clic en Elegir una carpeta… abajo y selecciona la carpeta donde está tu juego. macOS solo deja que la app acceda a una carpeta cuando la eliges."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no elegiste la carpeta del juego. Haz clic en Elegir una carpeta… abajo y selecciona la carpeta donde está tu juego. macOS solo deja que la app acceda a una carpeta cuando la eliges."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun dossier de jeu choisi pour l’instant. Cliquez sur Choisir un dossier… ci-dessous et sélectionnez le dossier où se trouve votre jeu. macOS ne laisse l’app accéder à un dossier qu’une fois que vous l’avez choisi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna cartella del gioco scelta. Fai clic su Scegli una cartella… qui sotto e seleziona la cartella in cui si trova il gioco. macOS permette all’app di accedere a una cartella solo dopo che l’hai scelta."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲームフォルダがまだ選択されていません。下の「フォルダを選択…」をクリックして、ゲームが入っているフォルダを選んでください。macOSでは、アプリがフォルダにアクセスできるのは、そのフォルダを選択した後だけです。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아직 게임 폴더를 선택하지 않았습니다. 아래의 ‘폴더 선택…’을 클릭하고 게임이 들어 있는 폴더를 고르세요. macOS에서는 폴더를 직접 선택해야만 앱이 그 폴더에 접근할 수 있습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie wybrano jeszcze folderu gry. Kliknij poniżej Wybierz folder… i wskaż folder, w którym jest gra. macOS daje aplikacji dostęp do folderu dopiero po jego wybraniu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhuma pasta do jogo escolhida ainda. Clique em Escolher pasta… abaixo e escolha a pasta onde está o seu jogo. O macOS só deixa o app acessar uma pasta depois que você a escolhe."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Папка игры ещё не выбрана. Нажмите «Выбрать папку…» ниже и выберите папку, в которой лежит игра. macOS даёт приложению доступ к папке, только когда вы её выбираете."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa chọn thư mục game. Nhấp Choose a folder… bên dưới và chọn thư mục chứa game của bạn. macOS chỉ cho ứng dụng truy cập một thư mục sau khi bạn chọn nó."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未选择游戏文件夹。请点按下方的“选择文件夹…”，然后选取游戏所在的文件夹。macOS 只允许 App 访问你选取过的文件夹。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未選擇遊戲資料夾。請按一下下方的「選擇資料夾…」，然後選取遊戲所在的資料夾。macOS 只允許 App 存取你選取過的資料夾。"
+          }
+        }
+      }
+    },
+    "Click Continue the download and choose the same archive: files already unpacked aren't unpacked again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر على \"Continue the download\" واختر الأرشيف نفسه: الملفات التي فُك ضغطها بالفعل لن يُفك ضغطها مرة أخرى."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klicke auf „Download fortsetzen“ und wähle dasselbe Archiv: Bereits entpackte Dateien werden nicht noch einmal entpackt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click Continue the download and choose the same archive: files already unpacked aren't unpacked again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic en Continuar la descarga y elige el mismo archivo: lo que ya se descomprimió no se vuelve a descomprimir."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic en Continuar la descarga y elige el mismo archivo: lo que ya se descomprimió no se vuelve a descomprimir."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique sur Reprendre le téléchargement et choisis la même archive : les fichiers déjà décompressés ne le sont pas une seconde fois."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fai clic su Riprendi il download e scegli lo stesso archivio: i file già estratti non vengono estratti di nuovo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「ダウンロードを続ける」をクリックして同じアーカイブを選んでください。展開済みのファイルは再展開しません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다운로드 계속하기를 클릭하고 같은 압축 파일을 고르세요. 이미 푼 파일은 다시 풀지 않습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kliknij Wznów pobieranie i wybierz to samo archiwum: rozpakowane już pliki nie są rozpakowywane ponownie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique em Continuar o download e escolha o mesmo arquivo: o que já foi extraído não é extraído de novo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите «Продолжить загрузку» и выберите тот же архив: уже распакованные файлы не распаковываются снова."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhấp Continue the download và chọn đúng file nén đó: các file đã giải nén rồi sẽ không bị giải nén lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按“继续下载”并选择同一个压缩包:已解压的文件不会再次解压。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按一下「繼續下載」並選擇同一個壓縮檔:已解壓的檔案不會再次解壓。"
+          }
+        }
+      }
+    },
+    "Click Continue the download: it picks up where it stopped instead of starting again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر على \"Continue the download\": سيُستأنف التنزيل من حيث توقف بدلًا من البدء من جديد."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klicke auf „Download fortsetzen“: Er macht dort weiter, wo er aufgehört hat, statt von vorn zu beginnen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click Continue the download: it picks up where it stopped instead of starting again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic en Continuar la descarga: sigue donde se detuvo en lugar de empezar de nuevo."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic en Continuar la descarga: sigue donde se detuvo en lugar de empezar de nuevo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique sur Reprendre le téléchargement : il reprend là où il s’est arrêté au lieu de recommencer."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fai clic su Riprendi il download: riparte da dove si era fermato invece di ricominciare."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「ダウンロードを続ける」をクリックすると、最初からではなく止まったところから再開します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다운로드 계속하기를 클릭하면 처음부터가 아니라 멈춘 곳부터 이어서 받습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kliknij Wznów pobieranie: zacznie tam, gdzie się zatrzymało, zamiast od nowa."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique em Continuar o download: ele continua de onde parou em vez de começar de novo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите «Продолжить загрузку»: она продолжится с места остановки, а не начнётся заново."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhấp Continue the download: việc tải sẽ tiếp tục từ chỗ đã dừng thay vì bắt đầu lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按“继续下载”:从停止的地方继续,而不是重新开始。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按一下「繼續下載」:從停止的地方繼續,而不是重新開始。"
+          }
+        }
+      }
+    },
+    "{arg0} isn't unpacked yet. Click Unpack below and the app does it for you.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يتم فك ضغط {arg0} بعد. انقر على \"Unpack\" أدناه وسيقوم التطبيق بذلك نيابةً عنك."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} ist noch nicht entpackt. Klicke unten auf Entpacken und die App erledigt das für dich."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} isn't unpacked yet. Click Unpack below and the app does it for you."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} aún no está descomprimido. Haz clic en Descomprimir abajo y la app lo hará por ti."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} aún no está descomprimido. Haz clic en Descomprimir abajo y la app lo hará por ti."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} n’est pas encore décompressé. Cliquez sur Décompresser ci-dessous et l’app s’en charge."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} non è ancora estratto. Fai clic su Estrai qui sotto e l’app lo fa per te."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0}はまだ展開されていません。下の「展開」をクリックすると、アプリが展開します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0}의 압축이 아직 해제되지 않았습니다. 아래의 ‘압축 해제’를 클릭하면 앱이 대신 해제합니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} nie jest jeszcze rozpakowane. Kliknij poniżej Rozpakuj, a aplikacja zrobi to za Ciebie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} ainda não foi descompactado. Clique em Descompactar abaixo e o app faz isso por você."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} ещё не распакован. Нажмите «Распаковать» ниже, и приложение сделает это за вас."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} chưa được giải nén. Nhấp Unpack bên dưới và ứng dụng sẽ làm giúp bạn."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} 尚未解压缩。点按下方的“解压缩”，App 会为你完成。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} 尚未解壓縮。按一下下方的「解壓縮」，App 會為你完成。"
+          }
+        }
+      }
+    },
+    "To save space on this Mac, the archive is used up while it unpacks: once it's done, only the unpacked game is left. If unpacking stops half way, you'll need the archive again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لتوفير المساحة على جهاز Mac هذا، يُستهلك الأرشيف أثناء فك ضغطه: عند الانتهاء، لا تبقى سوى اللعبة بعد فك ضغطها. إذا توقف فك الضغط في منتصف الطريق، فستحتاج إلى الأرشيف مرة أخرى."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um auf diesem Mac Platz zu sparen, wird das Archiv beim Entpacken aufgebraucht: Danach ist nur noch das entpackte Spiel übrig. Bricht das Entpacken mittendrin ab, brauchst du das Archiv erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To save space on this Mac, the archive is used up while it unpacks: once it's done, only the unpacked game is left. If unpacking stops half way, you'll need the archive again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para ahorrar espacio en este Mac, el archivo comprimido se va consumiendo mientras se descomprime: al terminar, solo queda el juego descomprimido. Si la descompresión se detiene a medias, necesitarás el archivo comprimido de nuevo."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para ahorrar espacio en esta Mac, el archivo comprimido se va consumiendo mientras se descomprime: al terminar, solo queda el juego descomprimido. Si la descompresión se detiene a medias, necesitarás el archivo comprimido de nuevo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour économiser de l’espace sur ce Mac, l’archive est consommée pendant la décompression : à la fin, il ne reste que le jeu décompressé. Si la décompression s’arrête en cours de route, il vous faudra de nouveau l’archive."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per risparmiare spazio su questo Mac, l’archivio viene consumato durante l’estrazione: alla fine resta solo il gioco estratto. Se l’estrazione si interrompe a metà, ti servirà di nuovo l’archivio."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このMacの容量を節約するため、展開しながらアーカイブを消費します。完了すると、展開済みのゲームだけが残ります。展開が途中で止まった場合は、アーカイブがもう一度必要になります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 Mac의 공간을 절약하기 위해 압축을 해제하는 동안 압축 파일이 소모됩니다. 완료되면 압축 해제된 게임만 남습니다. 압축 해제가 중간에 멈추면 압축 파일이 다시 필요합니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aby oszczędzić miejsce na tym Macu, archiwum jest zużywane podczas rozpakowywania: na końcu zostaje tylko rozpakowana gra. Jeśli rozpakowywanie przerwie się w połowie, archiwum będzie potrzebne ponownie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para economizar espaço neste Mac, o arquivo compactado é consumido durante a descompactação: no fim, só sobra o jogo descompactado. Se a descompactação parar no meio, você vai precisar do arquivo compactado de novo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чтобы сэкономить место на этом Mac, архив расходуется по мере распаковки: в итоге останется только распакованная игра. Если распаковка прервётся на полпути, архив понадобится снова."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để tiết kiệm dung lượng trên máy Mac này, file nén sẽ bị dùng hết trong lúc giải nén: khi xong, chỉ còn lại game đã giải nén. Nếu việc giải nén dừng giữa chừng, bạn sẽ cần lại file nén."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "为了节省此 Mac 的空间，压缩包会在解压缩过程中逐步删除：完成后只会留下解压后的游戏。如果解压缩中途停止，你需要重新获取压缩包。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為了節省此 Mac 的空間，壓縮檔會在解壓縮過程中逐步刪除：完成後只會留下解壓縮後的遊戲。如果解壓縮中途停止，你需要重新取得壓縮檔。"
+          }
+        }
+      }
+    },
+    "1 file is only in iCloud, not on this Mac (for example {arg0}). The game can't read it from there: in Finder, Control-click the game folder and choose Download Now.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يوجد ملف واحد في iCloud فقط وليس على جهاز Mac هذا (مثلًا {arg0}). لا تستطيع اللعبة قراءته من هناك: في Finder، انقر على مجلد اللعبة مع الضغط على مفتاح Control واختر \"تنزيل الآن\"."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Datei ist nur in iCloud, nicht auf diesem Mac (zum Beispiel {arg0}). Das Spiel kann sie dort nicht lesen: Klicke im Finder bei gedrückter Ctrl-Taste auf den Spielordner und wähle „Jetzt laden“."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 file is only in iCloud, not on this Mac (for example {arg0}). The game can't read it from there: in Finder, Control-click the game folder and choose Download Now."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 archivo solo está en iCloud, no en este Mac (por ejemplo, {arg0}). El juego no puede leerlo desde ahí: en Finder, haz clic en la carpeta del juego con la tecla Control pulsada y elige Descargar ahora."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 archivo solo está en iCloud, no en esta Mac (por ejemplo, {arg0}). El juego no puede leerlo desde ahí: en Finder, haz clic en la carpeta del juego con la tecla Control presionada y elige Descargar ahora."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 fichier est uniquement dans iCloud, pas sur ce Mac (par exemple {arg0}). Le jeu ne peut pas le lire depuis iCloud : dans le Finder, cliquez sur le dossier du jeu en maintenant la touche Contrôle enfoncée, puis choisissez Télécharger maintenant."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 file è solo in iCloud, non su questo Mac (ad esempio {arg0}). Il gioco non può leggerlo da lì: nel Finder, fai clic sulla cartella del gioco tenendo premuto il tasto Control e scegli Scarica ora."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1個のファイルがiCloudにのみあり、このMacにはありません（例: {arg0}）。ゲームはiCloudからは読み込めません。FinderでゲームフォルダをControlキーを押しながらクリックし、「今すぐダウンロード」を選んでください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "파일 1개가 이 Mac이 아닌 iCloud에만 있습니다(예: {arg0}). 게임은 iCloud에서 파일을 읽을 수 없습니다. Finder에서 게임 폴더를 Control-클릭한 다음 지금 다운로드를 선택하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 plik jest tylko w iCloud, a nie na tym Macu (np. {arg0}). Gra nie może go stamtąd odczytać: w Finderze kliknij folder gry z wciśniętym klawiszem Control i wybierz Pobierz teraz."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 arquivo está só no iCloud, não neste Mac (por exemplo, {arg0}). O jogo não consegue lê-lo de lá: no Finder, clique na pasta do jogo com a tecla Control pressionada e escolha Baixar Agora."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 файл есть только в iCloud, а не на этом Mac (например, {arg0}). Игра не может читать его оттуда: в Finder нажмите папку игры, удерживая клавишу Control, и выберите «Загрузить сейчас»."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 file chỉ có trên iCloud, không có trên máy Mac này (ví dụ {arg0}). Game không đọc được file đó từ iCloud: trong Finder, giữ phím Control và nhấp vào thư mục game, rồi chọn Tải về bây giờ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有 1 个文件只在 iCloud 中，不在此 Mac 上（例如 {arg0}）。游戏无法从 iCloud 读取：请在访达（Finder）中按住 Control 键点按游戏文件夹，然后选择“立即下载”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有 1 個檔案只在 iCloud，不在此 Mac 上（例如 {arg0}）。遊戲無法從 iCloud 讀取：請在 Finder 中按住 Control 鍵並按一下遊戲資料夾，再選擇「立即下載」。"
+          }
+        }
+      }
+    },
+    "{arg0} files are only in iCloud, not on this Mac (for example {arg1}). The game can't read them from there: in Finder, Control-click the game folder and choose Download Now.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هناك ملفات في iCloud فقط وليست على جهاز Mac هذا، وعددها {arg0} (مثلًا {arg1}). لا تستطيع اللعبة قراءتها من هناك: في Finder، انقر على مجلد اللعبة مع الضغط على مفتاح Control واختر \"تنزيل الآن\"."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} Dateien sind nur in iCloud, nicht auf diesem Mac (zum Beispiel {arg1}). Das Spiel kann sie dort nicht lesen: Klicke im Finder bei gedrückter Ctrl-Taste auf den Spielordner und wähle „Jetzt laden“."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} files are only in iCloud, not on this Mac (for example {arg1}). The game can't read them from there: in Finder, Control-click the game folder and choose Download Now."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} archivos solo están en iCloud, no en este Mac (por ejemplo, {arg1}). El juego no puede leerlos desde ahí: en Finder, haz clic en la carpeta del juego con la tecla Control pulsada y elige Descargar ahora."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} archivos solo están en iCloud, no en esta Mac (por ejemplo, {arg1}). El juego no puede leerlos desde ahí: en Finder, haz clic en la carpeta del juego con la tecla Control presionada y elige Descargar ahora."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} fichiers sont uniquement dans iCloud, pas sur ce Mac (par exemple {arg1}). Le jeu ne peut pas les lire depuis iCloud : dans le Finder, cliquez sur le dossier du jeu en maintenant la touche Contrôle enfoncée, puis choisissez Télécharger maintenant."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} file sono solo in iCloud, non su questo Mac (ad esempio {arg1}). Il gioco non può leggerli da lì: nel Finder, fai clic sulla cartella del gioco tenendo premuto il tasto Control e scegli Scarica ora."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0}個のファイルがiCloudにのみあり、このMacにはありません（例: {arg1}）。ゲームはiCloudからは読み込めません。FinderでゲームフォルダをControlキーを押しながらクリックし、「今すぐダウンロード」を選んでください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "파일 {arg0}개가 이 Mac이 아닌 iCloud에만 있습니다(예: {arg1}). 게임은 iCloud에서 파일을 읽을 수 없습니다. Finder에서 게임 폴더를 Control-클릭한 다음 지금 다운로드를 선택하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pliki tylko w iCloud, a nie na tym Macu: {arg0} (np. {arg1}). Gra nie może ich stamtąd odczytać: w Finderze kliknij folder gry z wciśniętym klawiszem Control i wybierz Pobierz teraz."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} arquivos estão só no iCloud, não neste Mac (por exemplo, {arg1}). O jogo não consegue lê-los de lá: no Finder, clique na pasta do jogo com a tecla Control pressionada e escolha Baixar Agora."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Файлов только в iCloud, а не на этом Mac: {arg0} (например, {arg1}). Игра не может читать их оттуда: в Finder нажмите папку игры, удерживая клавишу Control, и выберите «Загрузить сейчас»."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{arg0} file chỉ có trên iCloud, không có trên máy Mac này (ví dụ {arg1}). Game không đọc được các file đó từ iCloud: trong Finder, giữ phím Control và nhấp vào thư mục game, rồi chọn Tải về bây giờ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有 {arg0} 个文件只在 iCloud 中，不在此 Mac 上（例如 {arg1}）。游戏无法从 iCloud 读取：请在访达（Finder）中按住 Control 键点按游戏文件夹，然后选择“立即下载”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有 {arg0} 個檔案只在 iCloud，不在此 Mac 上（例如 {arg1}）。遊戲無法從 iCloud 讀取：請在 Finder 中按住 Control 鍵並按一下遊戲資料夾，再選擇「立即下載」。"
+          }
+        }
+      }
+    },
+    " Unpacking or copying probably stopped before the end, most often because the Mac ran out of storage. Free up space, delete this folder and unpack the game again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " ربما توقف فك الضغط أو النسخ قبل الاكتمال، وغالبًا ما يكون السبب نفاد مساحة التخزين على جهاز Mac. أفرغ بعض المساحة، واحذف هذا المجلد، ثم فك ضغط اللعبة مرة أخرى."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Das Entpacken oder Kopieren wurde wahrscheinlich vorzeitig abgebrochen, meistens weil der Speicher des Mac voll war. Gib Speicher frei, lösche diesen Ordner und entpacke das Spiel erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Unpacking or copying probably stopped before the end, most often because the Mac ran out of storage. Free up space, delete this folder and unpack the game again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " La descompresión o la copia probablemente se detuvo antes de terminar, casi siempre porque el Mac se quedó sin almacenamiento. Libera espacio, elimina esta carpeta y vuelve a descomprimir el juego."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " La descompresión o la copia probablemente se detuvo antes de terminar, casi siempre porque la Mac se quedó sin almacenamiento. Libera espacio, elimina esta carpeta y vuelve a descomprimir el juego."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " La décompression ou la copie s’est probablement arrêtée avant la fin, le plus souvent parce que le Mac manquait de stockage. Libérez de l’espace, supprimez ce dossier et décompressez à nouveau le jeu."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Probabilmente l’estrazione o la copia si è fermata prima della fine, di solito perché il Mac ha esaurito lo spazio. Libera spazio, elimina questa cartella ed estrai di nuovo il gioco."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " 展開またはコピーが途中で止まった可能性があります。多くの場合、Macのストレージ不足が原因です。空き容量を増やし、このフォルダを削除してから、もう一度ゲームを展開してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " 압축 해제나 복사가 끝나기 전에 중단되었을 수 있습니다. 대부분 Mac의 저장 공간이 부족해서입니다. 공간을 확보하고 이 폴더를 삭제한 다음 게임의 압축을 다시 해제하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Rozpakowywanie lub kopiowanie prawdopodobnie zatrzymało się przed końcem, najczęściej z braku miejsca na Macu. Zwolnij miejsce, usuń ten folder i rozpakuj grę ponownie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " A descompactação ou cópia provavelmente parou antes do fim, quase sempre porque o armazenamento do Mac acabou. Libere espaço, apague esta pasta e descompacte o jogo de novo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Распаковка или копирование, вероятно, прервались раньше времени, чаще всего из-за нехватки места на Mac. Освободите место, удалите эту папку и распакуйте игру заново."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Việc giải nén hoặc sao chép có lẽ đã dừng trước khi xong, thường là do máy Mac hết dung lượng lưu trữ. Hãy giải phóng dung lượng, xoá thư mục này và giải nén lại game."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " 解压缩或复制可能在完成前就中断了，最常见的原因是 Mac 存储空间不足。请释放空间、删除此文件夹，然后重新解压缩游戏。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " 解壓縮或複製可能在完成前就中斷了，最常見的原因是 Mac 儲存空間不足。請釋出空間、刪除此資料夾，再重新解壓縮遊戲。"
+          }
+        }
+      }
+    },
+    "Not enough memory on this Mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد ذاكرة كافية على جهاز Mac هذا"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht genug Speicher auf diesem Mac"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not enough memory on this Mac"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay suficiente memoria en este Mac"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay suficiente memoria en esta Mac"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas assez de mémoire sur ce Mac"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memoria insufficiente su questo Mac"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このMacではメモリが足りません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 Mac의 메모리가 부족합니다"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Za mało pamięci na tym Macu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memória insuficiente neste Mac"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Недостаточно памяти на этом Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không đủ bộ nhớ (RAM) trên máy Mac này"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 Mac 内存不足"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 Mac 記憶體不足"
+          }
+        }
+      }
+    },
+    "This Mac can't give the game the memory it needs right now. Quit other apps and try again, or choose a lower preset in Settings. Send the log if it keeps happening.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يستطيع جهاز Mac هذا منح اللعبة الذاكرة التي تحتاجها الآن. أغلق التطبيقات الأخرى وحاول مرة أخرى، أو اختر إعدادًا مسبقًا أقل في الإعدادات. أرسل السجل إذا تكرر ذلك."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Mac kann dem Spiel gerade nicht genug Speicher geben. Beende andere Apps und versuche es erneut, oder wähle in den Einstellungen eine niedrigere Voreinstellung. Sende das Protokoll, wenn es weiter passiert."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Mac can't give the game the memory it needs right now. Quit other apps and try again, or choose a lower preset in Settings. Send the log if it keeps happening."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este Mac no puede dar al juego la memoria que necesita ahora mismo. Cierra otras apps y vuelve a intentarlo, o elige un preajuste más bajo en Ajustes. Envía el registro si sigue pasando."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta Mac no puede darle al juego la memoria que necesita en este momento. Cierra otras apps y vuelve a intentarlo, o elige un preajuste más bajo en Configuración. Envía el registro si sigue pasando."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce Mac ne peut pas donner au jeu la mémoire dont il a besoin pour l’instant. Quitte les autres apps et réessaie, ou choisis un préréglage plus bas dans Paramètres. Envoie le journal si ça continue."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo Mac non riesce a dare al gioco la memoria di cui ha bisogno in questo momento. Chiudi le altre app e riprova, oppure scegli un preset più basso in Impostazioni. Invia il log se continua a succedere."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このMacでは今、ゲームに必要なメモリを確保できません。ほかのアプリを終了してもう一度試すか、「設定」で低いプリセットを選んでください。何度も起こる場合はログを送ってください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 Mac이 지금 게임에 필요한 메모리를 줄 수 없습니다. 다른 앱을 종료하고 다시 시도하거나, 설정에서 더 낮은 프리셋을 선택하세요. 계속 발생하면 로그를 보내 주세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ten Mac nie może teraz dać grze potrzebnej pamięci. Zamknij inne aplikacje i spróbuj ponownie albo wybierz niższe ustawienie w Ustawieniach. Wyślij log, jeśli to się powtarza."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este Mac não consegue dar ao jogo a memória de que ele precisa agora. Feche outros apps e tente de novo, ou escolha uma predefinição mais baixa em Configurações. Envie o log se continuar acontecendo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Этот Mac сейчас не может выделить игре нужную память. Закройте другие приложения и попробуйте снова или выберите пресет пониже в разделе «Настройки». Отправьте лог, если это повторяется."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Máy Mac này hiện không thể cấp đủ bộ nhớ mà game cần. Hãy thoát các ứng dụng khác rồi thử lại, hoặc chọn mức thiết lập thấp hơn trong Cài đặt. Gửi log nếu lỗi vẫn tiếp diễn."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 Mac 目前无法为游戏提供所需的内存。请退出其他 App 后重试，或在“设置”中选择更低的预设。如果问题持续出现，请发送日志。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 Mac 目前無法為遊戲提供所需的記憶體。請結束其他 App 後再試一次，或在「設定」中選擇較低的預設。如果問題持續發生，請傳送記錄。"
+          }
+        }
+      }
+    },
+    "The game folder was moved or deleted. Put it back, or choose it again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم نقل مجلد اللعبة أو حذفه. أعده إلى مكانه، أو اختره مرة أخرى."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Spielordner wurde verschoben oder gelöscht. Leg ihn zurück oder wähle ihn erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The game folder was moved or deleted. Put it back, or choose it again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La carpeta del juego se ha movido o eliminado. Vuelve a ponerla en su sitio o elígela de nuevo."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La carpeta del juego se movió o se eliminó. Vuelve a ponerla en su lugar o elígela de nuevo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le dossier du jeu a été déplacé ou supprimé. Remettez-le à sa place, ou choisissez-le à nouveau."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cartella del gioco è stata spostata o eliminata. Rimettila al suo posto, oppure sceglila di nuovo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲームフォルダが移動または削除されました。元の場所に戻すか、もう一度選択してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "게임 폴더가 이동되었거나 삭제되었습니다. 원래 위치로 되돌리거나 폴더를 다시 선택하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder gry został przeniesiony lub usunięty. Umieść go z powrotem lub wybierz go ponownie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A pasta do jogo foi movida ou apagada. Coloque-a de volta ou escolha-a de novo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Папка игры перемещена или удалена. Верните её на место или выберите заново."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thư mục game đã bị di chuyển hoặc xoá. Đặt nó lại chỗ cũ, hoặc chọn lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "游戏文件夹可能已被移动或删除。请将它移回原处，或重新选择文件夹。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "遊戲資料夾可能已移動或刪除。請將它移回原處，或重新選取資料夾。"
+          }
+        }
+      }
+    },
+    "Click to see the progress.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر لعرض التقدم."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klicken, um den Fortschritt zu sehen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click to see the progress."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic para ver el progreso."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic para ver el progreso."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliquez pour voir la progression."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fai clic per vedere l’avanzamento."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリックして進行状況を表示します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클릭하여 진행 상황을 확인하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kliknij, aby zobaczyć postęp."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique para ver o progresso."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите, чтобы увидеть прогресс."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhấp để xem tiến trình."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按查看进度。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按一下查看進度。"
+          }
+        }
+      }
+    },
+    "On this Mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "على جهاز Mac هذا"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem Mac"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On this Mac"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En este Mac"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En esta Mac"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur ce Mac"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Su questo Mac"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このMac上"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 Mac에 있음"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Na tym Macu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neste Mac"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На этом Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trên máy Mac này"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在此 Mac 上"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在此 Mac 上"
+          }
+        }
+      }
+    },
+    "Found your game folder, but it can't be used yet. Click to see why and how to fix it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم العثور على مجلد لعبتك، لكن لا يمكن استخدامه بعد. انقر لمعرفة السبب وكيفية إصلاحه."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spielordner gefunden, aber er ist noch nicht nutzbar. Klicken, um Ursache und Lösung zu sehen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Found your game folder, but it can't be used yet. Click to see why and how to fix it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se ha encontrado la carpeta del juego, pero todavía no se puede usar. Haz clic para ver por qué y cómo solucionarlo."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se encontró la carpeta del juego, pero todavía no se puede usar. Haz clic para ver por qué y cómo solucionarlo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dossier du jeu trouvé, mais pas encore utilisable. Cliquez pour savoir pourquoi et comment corriger."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trovata la cartella del gioco, ma non è ancora utilizzabile. Fai clic per vedere perché e come risolvere."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲームフォルダが見つかりましたが、まだ使用できません。クリックすると原因と修正方法を表示します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "게임 폴더를 찾았지만 아직 사용할 수 없습니다. 클릭하여 원인과 해결 방법을 확인하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Znaleziono folder gry, ale nie można go jeszcze użyć. Kliknij, aby zobaczyć przyczynę i sposób naprawy."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encontramos a pasta do jogo, mas ela ainda não pode ser usada. Clique para ver o motivo e como corrigir."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Папка игры найдена, но её пока нельзя использовать. Нажмите, чтобы узнать причину и как это исправить."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã tìm thấy thư mục game, nhưng hiện chưa thể sử dụng. Nhấp để xem lý do và cách xử lý."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已找到游戏文件夹，但目前无法使用。点按查看原因及修复方法。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已找到遊戲資料夾，但目前無法使用。按一下查看原因及修復方式。"
+          }
+        }
+      }
+    },
+    "Click to change it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر لتغييره."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klicken zum Ändern."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click to change it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic para cambiarla."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic para cambiarla."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliquez pour la modifier."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fai clic per modificarlo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリックして変更します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클릭하여 변경하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kliknij, aby zmienić."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique para alterar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите, чтобы изменить."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhấp để thay đổi."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按以修改。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按一下以修改。"
+          }
+        }
+      }
+    },
+    "Click to choose your game folder, or get the files from a link or an archive.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر لاختيار مجلد لعبتك، أو احصل على الملفات من رابط أو أرشيف."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klicken, um deinen Spielordner zu wählen oder die Dateien über einen Link oder ein Archiv zu holen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click to choose your game folder, or get the files from a link or an archive."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic para elegir la carpeta del juego u obtener los archivos desde un enlace o un archivo comprimido."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic para elegir la carpeta del juego u obtener los archivos desde un enlace o un archivo comprimido."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliquez pour choisir le dossier du jeu, ou obtenir les fichiers depuis un lien ou une archive."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fai clic per scegliere la cartella del gioco, oppure ottieni i file da un link o da un archivio."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリックしてゲームフォルダを選ぶか、リンクやアーカイブからファイルを取得します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클릭하여 게임 폴더를 선택하거나 링크 또는 압축 파일에서 파일을 가져오세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kliknij, aby wybrać folder gry lub pobrać pliki z linku albo archiwum."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique para escolher a pasta do jogo ou obter os arquivos de um link ou arquivo compactado."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите, чтобы выбрать папку игры или получить файлы по ссылке либо из архива."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhấp để chọn thư mục game, hoặc lấy file từ link hoặc từ file nén (zip, rar)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按选择游戏文件夹，或通过链接、压缩包获取文件。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按一下選擇遊戲資料夾，或透過連結、壓縮檔匯入檔案。"
+          }
+        }
+      }
+    },
+    "Found a game archive. Click to unpack it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم العثور على أرشيف للعبة. انقر لفك ضغطه."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spielarchiv gefunden. Klicken zum Entpacken."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Found a game archive. Click to unpack it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se ha encontrado un archivo comprimido del juego. Haz clic para descomprimirlo."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se encontró un archivo comprimido del juego. Haz clic para descomprimirlo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archive du jeu trouvée. Cliquez pour la décompresser."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trovato un archivio del gioco. Fai clic per estrarlo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲームのアーカイブが見つかりました。クリックして展開します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "게임 압축 파일을 찾았습니다. 클릭하여 압축을 해제하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Znaleziono archiwum gry. Kliknij, aby je rozpakować."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arquivo compactado do jogo encontrado. Clique para descompactar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Найден архив игры. Нажмите, чтобы распаковать."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã tìm thấy file nén của game. Nhấp để giải nén."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找到游戏压缩包，点按解压缩。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找到遊戲壓縮檔，按一下解壓縮。"
+          }
+        }
+      }
+    },
+    ". That usually means this setting needs more memory than the game gets on this Mac (about {arg0} MB).": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". هذا يعني عادةً أن هذا الإعداد يحتاج إلى ذاكرة (RAM) أكثر مما تحصل عليه اللعبة على جهاز Mac هذا (حوالي {arg0} ميجابايت)."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Das bedeutet meist, dass diese Einstellung mehr Speicher braucht, als das Spiel auf diesem Mac bekommt (etwa {arg0} MB)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". That usually means this setting needs more memory than the game gets on this Mac (about {arg0} MB)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Eso suele significar que este ajuste necesita más memoria de la que el juego tiene en este Mac (unos {arg0} MB)."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Eso suele significar que esta configuración necesita más memoria de la que el juego tiene en esta Mac (unos {arg0} MB)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Cela signifie généralement que ce réglage demande plus de mémoire que ce dont le jeu dispose sur ce Mac (environ {arg0} Mo)."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Di solito significa che questa impostazione richiede più memoria di quella che il gioco ha a disposizione su questo Mac (circa {arg0} MB)."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "。通常、この設定にはこのMacでゲームが使えるメモリ（約{arg0} MB）より多くのメモリが必要であることを意味します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". 이는 보통 이 설정에 이 Mac에서 게임이 쓸 수 있는 메모리(약 {arg0} MB)보다 많은 메모리가 필요하다는 뜻입니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Zwykle oznacza to, że to ustawienie wymaga więcej pamięci, niż gra dostaje na tym Macu (ok. {arg0} MB)."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Isso geralmente significa que essa configuração precisa de mais memória do que o jogo recebe neste Mac (cerca de {arg0} MB)."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Обычно это значит, что этой настройке нужно больше памяти, чем игра получает на этом Mac (около {arg0} МБ)."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Có nghĩa là mức cài đặt này cần nhiều RAM hơn mức game nhận được trên máy Mac này (khoảng {arg0} MB)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "。这通常表示此设置所需内存超过了游戏在此 Mac 上可用的内存（约 {arg0} MB）。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "。這通常代表目前設定所需的記憶體超過遊戲在此 Mac 上可用的記憶體（約 {arg0} MB）。"
+          }
+        }
+      }
+    },
+    "Click the page's download button. The app takes the download over by itself and unpacks it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر على زر التنزيل في الصفحة. سيتولى التطبيق التنزيل تلقائيًا ويفك ضغطه."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klicke auf den Download-Button der Seite. Die App übernimmt den Download selbst und entpackt ihn."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click the page's download button. The app takes the download over by itself and unpacks it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic en el botón de descarga de la página. La app se encarga de la descarga y la descomprime sola."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic en el botón de descarga de la página. La app se encarga de la descarga y la descomprime sola."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliquez sur le bouton de téléchargement de la page. L’app récupère le téléchargement d’elle-même et le décompresse."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fai clic sul pulsante di download della pagina. L’app prende in carico il download da sola e lo estrae."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ページのダウンロードボタンをクリックしてください。アプリが自動でダウンロードを引き継ぎ、展開します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "페이지의 다운로드 버튼을 클릭하세요. 앱이 자동으로 다운로드를 이어받아 압축을 해제합니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kliknij przycisk pobierania na stronie. Aplikacja sama przejmie pobieranie i rozpakuje plik."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique no botão de download da página. O app assume o download sozinho e o descompacta."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите кнопку загрузки на странице. Приложение само перехватит загрузку и распакует её."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhấp vào nút tải về trên trang. Ứng dụng sẽ tự tiếp quản việc tải về và giải nén."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请点按网页上的下载按钮，App 会自动接管下载并解压缩。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請按一下網頁上的下載按鈕，App 會自動接手下載並解壓縮。"
+          }
+        }
+      }
+    },
+    "Ad blocking is off for this site. Click the page's download button again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حظر الإعلانات متوقف لهذا الموقع. انقر على زر التنزيل في الصفحة مرة أخرى."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Werbeblocker ist für diese Seite aus. Klicke noch einmal auf den Download-Button der Seite."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad blocking is off for this site. Click the page's download button again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El bloqueo de anuncios está desactivado en este sitio. Vuelve a hacer clic en el botón de descarga de la página."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El bloqueo de anuncios está desactivado en este sitio. Vuelve a hacer clic en el botón de descarga de la página."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le blocage des pubs est désactivé pour ce site. Cliquez à nouveau sur le bouton de téléchargement de la page."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il blocco pubblicità è disattivato per questo sito. Fai di nuovo clic sul pulsante di download della pagina."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このサイトでは広告ブロックがオフになっています。もう一度ページのダウンロードボタンをクリックしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 사이트에서는 광고 차단이 꺼져 있습니다. 페이지의 다운로드 버튼을 다시 클릭하세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blokowanie reklam jest wyłączone dla tej strony. Kliknij ponownie przycisk pobierania na stronie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O bloqueio de anúncios está desligado para este site. Clique de novo no botão de download da página."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Блокировка рекламы для этого сайта выключена. Нажмите кнопку загрузки на странице ещё раз."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chặn quảng cáo đang tắt cho trang này. Nhấp lại vào nút tải về trên trang."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已对此网站关闭广告拦截。请再次点按网页上的下载按钮。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已對此網站關閉廣告封鎖。請再按一下網頁上的下載按鈕。"
+          }
+        }
+      }
+    },
+    "Fewer stutters and steadier play: lowers the frame rate while the Mac is hot, and raises it again once it cools down": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تقطيع أقل ولعب أكثر ثباتًا: يخفض معدل الإطارات أثناء سخونة جهاز Mac، ويرفعه مجددًا عندما يبرد"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weniger Ruckler und ruhigeres Spiel: senkt die Bildrate, solange der Mac heiß ist, und hebt sie wieder an, sobald er abgekühlt ist"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fewer stutters and steadier play: lowers the frame rate while the Mac is hot, and raises it again once it cools down"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menos tirones y un juego más estable: baja la tasa de fotogramas mientras el Mac está caliente y la vuelve a subir cuando se enfría"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menos tirones y un juego más estable: baja la tasa de cuadros mientras la Mac está caliente y la vuelve a subir cuando se enfría"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moins de saccades et un jeu plus stable : réduit la fréquence d'images tant que le Mac est chaud, puis la relève quand il refroidit"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meno scatti e gioco più stabile: abbassa il frame rate mentre il Mac è caldo e lo rialza quando si raffredda"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カクつきを減らして安定したプレイに：Macが熱い間はフレームレートを下げ、冷えたら元に戻します"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "끊김이 줄고 더 안정적인 플레이: Mac이 뜨거운 동안 프레임 속도를 낮추고, 식으면 다시 올립니다"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mniej przycięć i stabilniejsza gra: obniża liczbę klatek, gdy Mac jest gorący, i podnosi ją, gdy ostygnie"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menos travamentos e jogo mais estável: reduz a taxa de quadros enquanto o Mac está quente e a aumenta de novo quando ele esfria"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Меньше подтормаживаний и стабильнее игра: снижает частоту кадров, пока Mac горячий, и повышает её, когда он остынет"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ít giật hơn và chơi ổn định hơn: giảm tốc độ khung hình khi máy Mac nóng, và tăng lại khi máy đã nguội"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "减少卡顿，游戏更稳定：Mac 发热时降低帧率，冷却后恢复"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "減少卡頓，遊戲更穩定：Mac 發熱時降低影格率，冷卻後恢復"
+          }
+        }
+      }
+    },
+    "Higher uses more power and heat; 30 FPS is steadiest. Unlocked runs as fast as your Mac and display allow.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأعلى يستهلك طاقة أكثر ويولّد حرارة أكثر؛ 30 FPS هو الأكثر ثباتًا. \"Unlocked\" يعمل بأقصى سرعة يسمح بها جهاز Mac والشاشة."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Höher braucht mehr Strom und erzeugt mehr Wärme; 30 FPS ist am gleichmäßigsten. Unbegrenzt läuft so schnell, wie dein Mac und dein Display es zulassen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Higher uses more power and heat; 30 FPS is steadiest. Unlocked runs as fast as your Mac and display allow."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Más alto gasta más energía y calienta más; 30 FPS es lo más estable. Sin límite va tan rápido como lo permitan tu Mac y tu pantalla."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Más alto consume más energía y calienta más; 30 FPS es lo más estable. Sin límite va tan rápido como lo permitan tu Mac y tu pantalla."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus élevé consomme plus d’énergie et chauffe davantage ; 30 FPS est le plus stable. Illimité va aussi vite que votre Mac et votre écran le permettent."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Più alta consuma più energia e scalda di più; 30 FPS è la più stabile. Senza limite va veloce quanto lo permettono il Mac e lo schermo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "高くするほど消費電力と発熱が増えます。30 FPSが最も安定します。「無制限」ではMacとディスプレイが対応する最大の速さで動作します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "높을수록 전력 소모와 발열이 늘어납니다. 30 FPS가 가장 안정적입니다. ‘제한 없음’은 Mac과 디스플레이가 허용하는 만큼 빠르게 실행됩니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wyższa wartość zużywa więcej energii i grzeje; 30 FPS jest najstabilniejsze. Bez limitu działa tak szybko, jak pozwalają Mac i ekran."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mais alto usa mais energia e esquenta mais; 30 FPS é o mais estável. Ilimitado roda tão rápido quanto seu Mac e sua tela permitirem."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чем выше, тем больше расход энергии и нагрев; 30 FPS стабильнее всего. «Без ограничений» работает так быстро, как позволяют ваш Mac и дисплей."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Càng cao càng tốn điện và nóng hơn; 30 FPS là ổn định nhất. Unlocked chạy nhanh nhất mà máy Mac và màn hình của bạn cho phép."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "帧率越高越耗电、越容易发热；30 FPS 最稳定。“无限制”会以 Mac 和显示器允许的最快速度运行。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "幀率愈高愈耗電、愈容易發熱；30 FPS 最穩定。「不限制」會以 Mac 和顯示器允許的最快速度執行。"
+          }
+        }
+      }
+    },
+    "Experimental. Keeps the game on the fast processor cores for steadier FPS. Turn off if your Mac gets too hot.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تجريبي. يُبقي اللعبة على أنوية المعالج السريعة لمعدل إطارات أكثر ثباتًا. أوقفه إذا أصبح جهاز Mac ساخنًا جدًا."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimentell. Hält das Spiel auf den schnellen Prozessorkernen für eine gleichmäßigere Bildrate. Ausschalten, wenn dein Mac zu heiß wird."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Keeps the game on the fast processor cores for steadier FPS. Turn off if your Mac gets too hot."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Mantiene el juego en los núcleos rápidos del procesador para unos FPS más estables. Desactívalo si tu Mac se calienta demasiado."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Mantiene el juego en los núcleos rápidos del procesador para unos FPS más estables. Desactívalo si tu Mac se calienta demasiado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expérimental. Garde le jeu sur les cœurs rapides du processeur pour des FPS plus stables. Désactivez si votre Mac chauffe trop."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sperimentale. Mantiene il gioco sui core veloci del processore per FPS più stabili. Disattivalo se il tuo Mac si scalda troppo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "試験的機能。ゲームを高速なプロセッサコアで動かし、FPS を安定させます。Mac が熱くなりすぎる場合はオフにしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실험적 기능. 게임을 빠른 프로세서 코어에서 실행해 FPS를 더 안정적으로 유지합니다. Mac이 너무 뜨거워지면 끄세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eksperymentalne. Utrzymuje grę na szybkich rdzeniach procesora dla stabilniejszej liczby klatek. Wyłącz, jeśli Mac za bardzo się nagrzewa."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Mantém o jogo nos núcleos rápidos do processador para um FPS mais estável. Desligue se o seu Mac esquentar demais."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Экспериментально. Держит игру на быстрых ядрах процессора для более стабильного FPS. Выключите, если Mac слишком нагревается."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thử nghiệm. Giữ game chạy trên các nhân xử lý nhanh để FPS ổn định hơn. Tắt đi nếu máy Mac quá nóng."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "实验性功能。让游戏在高速处理器核心上运行，帧率更稳定。如果 Mac 过热，请关闭。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "實驗性功能。讓遊戲在高速處理器核心上執行，幀率更穩定。如果 Mac 過熱，請關閉。"
+          }
+        }
+      }
+    },
+    "Experimental, off by default. Gives the game about 270 MB more room inside its 4 GB, for fewer stops after long play. Turn off if the game stops more often.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تجريبي، متوقف افتراضيًا. يمنح اللعبة نحو 270 ميجابايت إضافية داخل مساحتها البالغة 4 جيجابايت، لتوقفات أقل بعد اللعب الطويل. أوقفه إذا أصبحت اللعبة تتوقف أكثر."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimentell, standardmäßig aus. Gibt dem Spiel etwa 270 MB mehr Platz in seinen 4 GB, für weniger Abbrüche nach langem Spielen. Ausschalten, wenn das Spiel öfter stoppt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental, off by default. Gives the game about 270 MB more room inside its 4 GB, for fewer stops after long play. Turn off if the game stops more often."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental, desactivado por defecto. Da al juego unos 270 MB más de espacio dentro de sus 4 GB, para menos cierres tras jugar mucho. Desactívalo si el juego se detiene más a menudo."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental, desactivado por defecto. Da al juego unos 270 MB más de espacio dentro de sus 4 GB, para menos cierres tras jugar mucho. Desactívalo si el juego se detiene más seguido."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expérimental, désactivé par défaut. Donne au jeu environ 270 Mo de plus dans ses 4 Go, pour moins d'arrêts après une longue partie. Désactivez si le jeu s'arrête plus souvent."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sperimentale, disattivato di default. Dà al gioco circa 270 MB in più nei suoi 4 GB, per meno arresti dopo lunghe sessioni. Disattiva se il gioco si ferma più spesso."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実験的機能（初期設定はオフ）。ゲームの4 GBの中に約270 MBの余裕を作り、長時間プレイ後に止まりにくくします。ゲームが止まりやすくなった場合はオフにしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실험 기능, 기본값은 끔. 게임의 4 GB 안에 약 270 MB의 여유를 더 만들어 오래 플레이한 뒤 멈추는 일을 줄입니다. 게임이 더 자주 멈추면 끄세요."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eksperymentalne, domyślnie wyłączone. Daje grze około 270 MB więcej miejsca w jej 4 GB, czyli mniej zatrzymań po długiej grze. Wyłącz, jeśli gra zatrzymuje się częściej."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental, desativado por padrão. Dá ao jogo cerca de 270 MB a mais dentro dos seus 4 GB, para menos paradas após jogar muito. Desative se o jogo parar com mais frequência."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Экспериментально, по умолчанию выключено. Даёт игре примерно на 270 МБ больше места в её 4 ГБ, чтобы реже останавливалась после долгой игры. Выключите, если игра стала останавливаться чаще."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thử nghiệm, mặc định tắt. Cho game thêm khoảng 270 MB trong 4 GB của nó, để ít bị dừng hơn sau khi chơi lâu. Tắt đi nếu game dừng thường xuyên hơn."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "实验功能，默认关闭。在游戏的 4 GB 内多腾出约 270 MB，让长时间游玩后更少停止。如果游戏更常停止，请关闭。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "實驗功能，預設關閉。在遊戲的 4 GB 內多騰出約 270 MB，讓長時間遊玩後更少停止。如果遊戲更常停止，請關閉。"
+          }
+        }
+      }
+    },
+    "Pick a mod as you downloaded it (zip, rar, oiv, asi or loose files). The app finds where each file goes. Car, skin and add-on mods need the game files on this Mac.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر التعديل (mod) كما نزّلته (zip أو rar أو oiv أو asi أو ملفات منفصلة). يحدد التطبيق مكان كل ملف. تعديلات السيارات والأزياء والإضافات تحتاج إلى ملفات اللعبة على جهاز Mac هذا."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle einen Mod so, wie du ihn heruntergeladen hast (zip, rar, oiv, asi oder einzelne Dateien). Die App findet heraus, wohin jede Datei gehört. Auto-, Skin- und Add-on-Mods brauchen die Spieldateien auf diesem Mac."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a mod as you downloaded it (zip, rar, oiv, asi or loose files). The app finds where each file goes. Car, skin and add-on mods need the game files on this Mac."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige un mod tal como lo descargaste (zip, rar, oiv, asi o archivos sueltos). La app averigua dónde va cada archivo. Los mods de coches, skins y add-ons necesitan los archivos del juego en este Mac."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige un mod tal como lo descargaste (zip, rar, oiv, asi o archivos sueltos). La app averigua dónde va cada archivo. Los mods de autos, skins y add-ons necesitan los archivos del juego en esta Mac."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisis un mod tel que tu l'as téléchargé (zip, rar, oiv, asi ou fichiers séparés). L'app trouve où va chaque fichier. Les mods de voitures, de skins et les add-ons ont besoin des fichiers du jeu sur ce Mac."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli una mod così come l'hai scaricata (zip, rar, oiv, asi o file sciolti). L'app trova dove va ogni file. Le mod di auto, skin e add-on richiedono i file del gioco su questo Mac."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロードしたままの Mod を選んでください（zip、rar、oiv、asi、単体ファイル）。アプリが各ファイルの置き場所を判断します。車・スキン・アドオンの Mod には、この Mac 上のゲームファイルが必要です。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다운로드한 그대로의 모드를 고르세요(zip, rar, oiv, asi 또는 개별 파일). 앱이 각 파일의 위치를 찾아 줍니다. 차량·스킨·애드온 모드는 이 Mac에 게임 파일이 있어야 합니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybierz moda tak, jak go pobrałeś (zip, rar, oiv, asi lub pojedyncze pliki). Aplikacja sama ustali, gdzie trafia każdy plik. Mody aut, skinów i add-ony wymagają plików gry na tym Macu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolha um mod do jeito que você baixou (zip, rar, oiv, asi ou arquivos soltos). O app descobre onde cada arquivo vai. Mods de carros, skins e add-ons precisam dos arquivos do jogo neste Mac."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выберите мод в том виде, в каком скачали (zip, rar, oiv, asi или отдельные файлы). Приложение само определит, куда идёт каждый файл. Модам машин, скинов и аддонам нужны файлы игры на этом Mac."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn mod đúng như khi bạn tải về (zip, rar, oiv, asi hoặc các file rời). Ứng dụng sẽ tự tìm chỗ cho từng file. Mod xe, skin và add-on cần có file game trên máy Mac này."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择下载好的模组（zip、rar、oiv、asi 或单个文件）。应用会找到每个文件该放的位置。车辆、皮肤和附加包模组需要游戏文件在这台 Mac 上。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇下載好的模組（zip、rar、oiv、asi 或單一檔案）。App 會找出每個檔案該放的位置。車輛、外觀和附加包模組需要遊戲檔案在這台 Mac 上。"
+          }
+        }
+      }
+    },
+    "This mod can't run on Mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يمكن تشغيل هذا التعديل على Mac"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Mod läuft nicht auf dem Mac"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This mod can't run on Mac"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este mod no funciona en Mac"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este mod no funciona en Mac"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce mod ne peut pas fonctionner sur Mac"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa mod non può funzionare su Mac"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この MOD は Mac では動きません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 모드는 Mac에서 실행할 수 없습니다"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ten mod nie działa na Macu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este mod não roda no Mac"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Этот мод не работает на Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mod này không chạy được trên Mac"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此模组无法在 Mac 上运行"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此模組無法在 Mac 上執行"
+          }
+        }
+      }
+    },
+    "Experimental. For iPhones before the 15 Pro; a Mac reads these textures directly, so this changes nothing here.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تجريبي. مخصص لأجهزة iPhone الأقدم من 15 Pro؛ يقرأ جهاز Mac هذه الخامات مباشرةً، لذا لا يغيّر هذا الخيار شيئًا هنا."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimentell. Für iPhones vor dem 15 Pro; ein Mac liest diese Texturen direkt, daher ändert das hier nichts."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. For iPhones before the 15 Pro; a Mac reads these textures directly, so this changes nothing here."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Para iPhone anteriores al 15 Pro; un Mac lee estas texturas directamente, así que aquí no cambia nada."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Para iPhone anteriores al 15 Pro; una Mac lee estas texturas directamente, así que aquí no cambia nada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expérimental. Pour les iPhone antérieurs au 15 Pro ; un Mac lit ces textures directement, donc cela ne change rien ici."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sperimentale. Per gli iPhone precedenti al 15 Pro; un Mac legge queste texture direttamente, quindi qui non cambia nulla."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "試験的機能。iPhone 15 Pro より前の機種向けです。Mac はこれらのテクスチャを直接読み込むため、ここでは何も変わりません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실험적 기능. iPhone 15 Pro 이전 기종용입니다. Mac은 이 텍스처를 직접 읽으므로 여기서는 아무것도 바뀌지 않습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eksperymentalne. Dla iPhone’ów starszych niż 15 Pro; Mac odczytuje te tekstury bezpośrednio, więc tutaj nic to nie zmienia."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Para iPhones anteriores ao 15 Pro; um Mac lê essas texturas diretamente, então aqui isso não muda nada."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Экспериментально. Для iPhone до 15 Pro; Mac читает эти текстуры напрямую, поэтому здесь это ничего не меняет."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thử nghiệm. Dành cho iPhone đời trước 15 Pro; máy Mac đọc trực tiếp các texture này, nên ở đây tùy chọn này không thay đổi gì."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "实验性功能。适用于 iPhone 15 Pro 之前的机型；Mac 会直接读取这些贴图，因此在这里不会有任何变化。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "實驗性功能。適用於 iPhone 15 Pro 之前的機型；Mac 會直接讀取這些貼圖，因此在這裡不會有任何變化。"
+          }
+        }
+      }
+    },
+    "Experimental. For iPhones before the 15 Pro; a Mac reads leaves, fences and smoke directly, so this changes nothing here.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تجريبي. مخصص لأجهزة iPhone الأقدم من 15 Pro؛ يقرأ جهاز Mac أوراق الشجر والأسوار والدخان مباشرةً، لذا لا يغيّر هذا الخيار شيئًا هنا."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimentell. Für iPhones vor dem 15 Pro; ein Mac liest Blätter, Zäune und Rauch direkt, daher ändert das hier nichts."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. For iPhones before the 15 Pro; a Mac reads leaves, fences and smoke directly, so this changes nothing here."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Para iPhone anteriores al 15 Pro; un Mac lee hojas, vallas y humo directamente, así que aquí no cambia nada."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Para iPhone anteriores al 15 Pro; una Mac lee hojas, cercas y humo directamente, así que aquí no cambia nada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expérimental. Pour les iPhone antérieurs au 15 Pro ; un Mac lit directement les feuilles, les clôtures et la fumée, donc cela ne change rien ici."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sperimentale. Per gli iPhone precedenti al 15 Pro; un Mac legge direttamente foglie, recinzioni e fumo, quindi qui non cambia nulla."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実験的機能。iPhone 15 Pro より前の機種向けです。Mac は葉・フェンス・煙を直接読み込むため、ここでは何も変わりません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실험 기능. iPhone 15 Pro 이전 기기용입니다. Mac은 나뭇잎, 울타리, 연기를 직접 읽으므로 여기서는 아무것도 바뀌지 않습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eksperymentalne. Dla iPhone'ów starszych niż 15 Pro; Mac odczytuje liście, płoty i dym bezpośrednio, więc tutaj nic to nie zmienia."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. Para iPhones anteriores ao 15 Pro; um Mac lê folhas, cercas e fumaça diretamente, então aqui isso não muda nada."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Экспериментально. Для iPhone до 15 Pro; Mac читает листву, заборы и дым напрямую, поэтому здесь это ничего не меняет."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thử nghiệm. Dành cho iPhone đời trước 15 Pro; máy Mac đọc trực tiếp lá cây, hàng rào và khói, nên ở đây tùy chọn này không thay đổi gì."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "实验功能。适用于 iPhone 15 Pro 之前的机型；Mac 会直接读取树叶、栅栏和烟雾，因此在这里不会有任何变化。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "實驗功能。適用於 iPhone 15 Pro 之前的機型；Mac 會直接讀取樹葉、柵欄和煙霧，因此在這裡不會有任何變化。"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

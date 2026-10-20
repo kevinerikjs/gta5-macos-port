@@ -23,6 +23,31 @@ static void pg_mod_test_recheck(void);
 #include <os/proc.h>
 #include <mach/mach.h>
 #include "NativeMemoryBudget.h"
+#if TARGET_OS_MACCATALYST
+#include <sys/sysctl.h>
+#endif
+
+// The memory the app may still use before the system stops it (iOS's Jetsam limit). macOS has no such
+// limit, so the Mac app gives itself one, by default 60% of the Mac's memory (PG_STREAM_MEMORY_LIMIT_MB
+// overrides), and every budget built on the iPhone limit works the same there (GTA-9).
+uint64_t PGProcessAvailableMemory(void) {
+#if TARGET_OS_MACCATALYST
+  static uint64_t limit;
+  if (!limit) {
+    const char *configured = getenv("PG_STREAM_MEMORY_LIMIT_MB");
+    long mb = configured ? atol(configured) : 0;
+    uint64_t ram = 0; size_t size = sizeof ram;
+    sysctlbyname("hw.memsize", &ram, &size, NULL, 0);
+    limit = mb >= 2048 ? (uint64_t)mb << 20 : ram / 10 * 6;
+    if (limit < (4096ull << 20)) limit = 4096ull << 20;
+  }
+  task_vm_info_data_t info = {}; mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
+  if (task_info(mach_task_self(), TASK_VM_INFO, (task_info_t)&info, &count) != KERN_SUCCESS) return 0;
+  return limit > info.phys_footprint ? limit - info.phys_footprint : 0;
+#else
+  return os_proc_available_memory();
+#endif
+}
 
 static struct w2c_env env;
 static struct w2c_wasi__snapshot__preview1 wasi = { .env = &env };
@@ -288,7 +313,7 @@ static bool nativeProcessHeadroom(uint64_t *headroom){
  uint64_t footprint=info.phys_footprint+PGGPUTextureBytes();
  available=simulatedProcessLimit>footprint?simulatedProcessLimit-footprint:0;
 #else
- available=os_proc_available_memory();
+ available=PGProcessAvailableMemory();
  available=available>capReserveBytes?available-capReserveBytes:0;
 #endif
  uint64_t engine=engineAddressHeadroom();
@@ -413,7 +438,7 @@ static uint64_t pg_engine_memory_mb(void){
 #if !TARGET_OS_SIMULATOR
  task_vm_info_data_t info={};mach_msg_type_number_t count=TASK_VM_INFO_COUNT;
  if(task_info(mach_task_self(),TASK_VM_INFO,(task_info_t)&info,&count)==KERN_SUCCESS){
-  uint64_t limitMB=(os_proc_available_memory()+info.phys_footprint)>>20;
+  uint64_t limitMB=(PGProcessAvailableMemory()+info.phys_footprint)>>20;
   if(memoryCapMB&&memoryCapMB<limitMB){
    capReserveBytes=(limitMB-memoryCapMB)<<20; // headroom the guard leaves unused
    char line[96];snprintf(line,sizeof line,"Memory cap: %llu MB of the %llu MB limit.",(unsigned long long)memoryCapMB,(unsigned long long)limitMB);pg_log(line);
@@ -859,6 +884,16 @@ void PGMouseInput(int32_t dx, int32_t dy, int32_t buttons) {
   if (dx) atomic_fetch_add(words + 2, dx);
   if (dy) atomic_fetch_add(words + 3, dy);
   atomic_store(words + 5, buttons);
+}
+// The game's own mouse cursor (pause menus, the map) as a fraction of the screen, 0...1.
+bool PGMousePosition(float *x, float *y) {
+  _Atomic uint8_t *keys = pg_input_keys();
+  if (!keys) return false;
+  _Atomic int32_t *words = (_Atomic int32_t *)((uint8_t *)(void *)keys + 256);
+  int32_t width = atomic_load(words + 44), height = atomic_load(words + 45);
+  if (width < 320 || height < 180) { width = 960; height = 540; }
+  *x = (float)atomic_load(words) / (float)width; *y = (float)atomic_load(words + 1) / (float)height;
+  return true;
 }
 void PGMouseWheel(int32_t notches) {
   _Atomic uint8_t *keys = pg_input_keys();

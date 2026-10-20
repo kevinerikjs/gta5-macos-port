@@ -93,6 +93,7 @@ final class ModKeysView: UIView, UIKeyInput {
     }
 
     /// The 🧩 control was tapped.
+    var trayOpen: Bool { !tray.isHidden }
     func toggleTray() {
         if tray.isHidden { openTray() } else { closeTray() }
     }

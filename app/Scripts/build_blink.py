@@ -22,7 +22,10 @@ from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
 source = root / 'Vendor/blink'
-TARGETS = {'iphoneos': 'arm64-apple-ios16.0', 'iphonesimulator': 'arm64-apple-ios16.0-simulator'}
+TARGETS = {'iphoneos': 'arm64-apple-ios16.0', 'iphonesimulator': 'arm64-apple-ios16.0-simulator',
+           'maccatalyst': 'arm64-apple-ios16.0-macabi'}
+# Mac Catalyst builds with the macOS SDK, and Xcode names its platform macosx (the library folder).
+SDK = {'maccatalyst': 'macosx'}
 FLAGS = ['-O3', '-DNDEBUG', '-w', '-D_GNU_SOURCE', f'-I{source}']
 
 parser = argparse.ArgumentParser()
@@ -34,7 +37,7 @@ digest = hashlib.sha256()
 for path in sorted(source.rglob('*')):
     if path.is_file(): digest.update(path.name.encode()); digest.update(path.read_bytes())
 for sdk in sdks:
-    library = root / f'Tools/blink-lib/{sdk}/libblink.a'
+    library = root / f'Tools/blink-lib/{SDK.get(sdk, sdk)}/libblink.a'
     stamp = library.with_suffix('.sha256')
     key = digest.hexdigest() + ' ' + ' '.join(FLAGS) + ' ' + TARGETS[sdk]
     if library.exists() and stamp.exists() and stamp.read_text() == key:
@@ -44,12 +47,12 @@ for sdk in sdks:
     objects.mkdir(parents=True, exist_ok=True)
     def compile(path):
         out = objects / (path.stem + '.o')
-        subprocess.run(['xcrun', '-sdk', sdk, 'clang', '-c', '-arch', 'arm64', '-target', TARGETS[sdk], *FLAGS, '-o', str(out), str(path)], check=True)
+        subprocess.run(['xcrun', '-sdk', SDK.get(sdk, sdk), 'clang', '-c', '-arch', 'arm64', '-target', TARGETS[sdk], *FLAGS, '-o', str(out), str(path)], check=True)
         return out
     with ThreadPoolExecutor(4) as pool:
         built = list(pool.map(compile, files))
     library.parent.mkdir(parents=True, exist_ok=True)
     library.unlink(missing_ok=True)
-    subprocess.run(['xcrun', '-sdk', sdk, 'ar', 'rcs', str(library), *map(str, built)], check=True)
+    subprocess.run(['xcrun', '-sdk', SDK.get(sdk, sdk), 'ar', 'rcs', str(library), *map(str, built)], check=True)
     stamp.write_text(key)
     print(f'Blink for {sdk}: {library.relative_to(root)} ({len(built)} files)')

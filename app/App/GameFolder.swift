@@ -87,6 +87,15 @@ enum GameFolder {
 
     /// Looks through a folder picked in Files (any folder above the game, even On My iPhone itself),
     /// checks the best game folder in it and remembers it when it's complete.
+    #if targetEnvironment(macCatalyst)
+    // The sandboxed Mac app keeps access to a picked folder across launches only through a security-scoped bookmark.
+    private static let bookmarkCreation: URL.BookmarkCreationOptions = .withSecurityScope
+    private static let bookmarkResolution: URL.BookmarkResolutionOptions = .withSecurityScope
+    #else
+    private static let bookmarkCreation: URL.BookmarkCreationOptions = []
+    private static let bookmarkResolution: URL.BookmarkResolutionOptions = []
+    #endif
+
     static func choose(_ picked: URL) -> Choice {
         // Folders picked in Files need security-scoped access; plain paths (tests) don't.
         let scoped = picked.startAccessingSecurityScopedResource()
@@ -109,7 +118,7 @@ enum GameFolder {
             return .incomplete(best)
         }
         do {
-            let bookmark = try picked.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
+            let bookmark = try picked.bookmarkData(options: bookmarkCreation, includingResourceValuesForKeys: nil, relativeTo: nil)
             UserDefaults.standard.set(bookmark, forKey: bookmarkKey)
             UserDefaults.standard.set(false, forKey: inAppKey)
             testMapKnown = nil
@@ -160,10 +169,10 @@ enum GameFolder {
         }
         guard let bookmark = UserDefaults.standard.data(forKey: bookmarkKey) else { return nil }
         var stale = false
-        guard let root = try? URL(resolvingBookmarkData: bookmark, options: [], relativeTo: nil, bookmarkDataIsStale: &stale) else { return nil }
+        guard let root = try? URL(resolvingBookmarkData: bookmark, options: bookmarkResolution, relativeTo: nil, bookmarkDataIsStale: &stale) else { return nil }
         if root.startAccessingSecurityScopedResource() { accessing = root }
         guard FileManager.default.isReadableFile(atPath: root.path) else { return nil }
-        if stale, let fresh = try? root.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil) {
+        if stale, let fresh = try? root.bookmarkData(options: bookmarkCreation, includingResourceValuesForKeys: nil, relativeTo: nil) {
             UserDefaults.standard.set(fresh, forKey: bookmarkKey)
         }
         // Folders remembered by older versions have no subpath: look again.

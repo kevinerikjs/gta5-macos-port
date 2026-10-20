@@ -11,6 +11,7 @@ The same answers the helper bot gives in [Five Star Port on Telegram](https://t.
 - [Missions and Story mode](#missions-and-story-mode)
 - [Mods](#mods)
 - [Features](#features)
+- [Mac](#mac)
 - [Crashes and logs](#crashes-and-logs)
 - [About the port](#about-the-port)
 - [Other](#other)
@@ -546,6 +547,10 @@ In Story mode, Los Santos Customs works (since v1.3.1). Sandbox has no tuning me
 
 Many engines sound faint or all the same because the common web game files have only a tiny car-engine audio archive (STREAMED_VEHICLES_GRANULAR.rpf, about 6 MB; on PC it's hundreds of MB). If you have your own PC copy of the game, put its audio archives in the Mods folder at the PC path, e.g. Mods/x64/audio/sfx/STREAMED_VEHICLES_GRANULAR.rpf. Don't copy them over the game folder's files: the game files check refuses the different size, and Play anyway only allows up to 20 problem files. Mods aren't size-checked, and whole PC audio archives already work (a 412 MB radio archive in place of the 22 MB one, no errors). Use the archives as they come with your PC copy: one re-saved without encryption stops the game ("Unencrypted archives no longer supported"); re-save it with OpenIV or use the original. A newer PC version's audio_rel.rpf is untested: your own risk. Ask in the Mods topic.
 
+### Does it run on macOS, and how does it perform there?
+
+Yes, on Apple Silicon Macs (M1 or newer, macOS 13 or later). It's the same app built for the Mac and runs natively, no emulator: an M4 with 16 GB plays Quality at about 80 FPS. Download GTA5Port-mac zip from the Releases topic (t.me/fivestarport/786), or build it yourself on your Mac. Setup: https://github.com/kevinerikjs/gta5-macos-port/blob/main/docs/MAC.md
+
 ### Can AirPlay or external display support be added?
 
 Yes, since v1.4: connect AirPlay or an HDMI adapter and the game shows on the TV while the controls stay on the phone. v1.4.3 fixes a crash when connecting a TV.
@@ -605,6 +610,28 @@ While a script mod (.asi) runs, a 'Mod keys' button shows at the top of the scre
 ### My game crashes or looks wrong with mods. Can you fix it?
 
 Mods can cause crashes and glitches, and the port can't fix other people's mods. First try with the Mods folder empty: if the problem is gone, it's the mod (ask in the Mods topic (t.me/fivestarport/10779), with the mod's name and link). Send a log in Crashes & logs only if it also happens without mods. Logs show which mods were active.
+
+## Mac
+
+### Does the Mac app run on an Intel Mac?
+
+No, only Apple Silicon Macs (M1 or newer). The engine is built for Apple's chips.
+
+### Mac: how do I update the app?
+
+Download the new zip from the Releases topic (t.me/fivestarport/786), unzip it and drag GTA V Port into Applications, replacing the old one. Your game folder, saves, settings and mods stay. macOS asks once more (Open Anyway) for the new version.
+
+### Mac: how do the controls work, and how do I open Settings?
+
+Keyboard and mouse use the game's own PC controls, with PC key prompts. The cursor stays hidden while you play. ⌘, opens Settings at any time, and the pause menu (Esc) shows Settings and Mods buttons at the top right. ⌃⌘F leaves or enters fullscreen.
+
+### Mac: it says Apple can't check the app for malicious software (or that it's damaged) and won't open
+
+The Mac app isn't notarized by Apple, so macOS asks once. Click Done, then open System Settings › Privacy & Security, scroll down and click Open Anyway next to GTA V Port, and confirm with your password. If it says the app is damaged, the Mac guide has a one-line Terminal fix: https://github.com/kevinerikjs/gta5-macos-port/blob/main/docs/MAC.md. It asks again after each new download.
+
+### Mac: where do I put the game files?
+
+Anywhere on your Mac. In the app click the Game files card, then Choose a folder…, and pick the folder your game is in (any folder above it works). The app remembers it. If the folder is in iCloud Drive, Control-click it in Finder and choose Download Now first.
 
 ## Crashes and logs
 

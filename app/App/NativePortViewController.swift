@@ -3,6 +3,9 @@ import MetalKit
 import GameController
 import AVFAudio
 import AVFoundation
+#if targetEnvironment(macCatalyst)
+import CoreAudio   // UnsafeMutableAudioBufferListPointer; iOS has it through AVFAudio
+#endif
 import UniformTypeIdentifiers
 import os
 
@@ -193,6 +196,112 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
     }
     #endif
 
+    #if targetEnvironment(macCatalyst)
+    /// Playing with keyboard and mouse in front: the cursor is captured and keys belong to the game.
+    /// Menus, Settings, a stopped game or another app in front give them back.
+    private var macPlaying: Bool {
+        engineStarted && GameSettings.shared.keyboardMouse && KeyboardMouse.shared.hasMouse && stoppedPanel == nil
+            && presentedViewController == nil && !modKeys.trayOpen && UIApplication.shared.applicationState == .active
+    }
+    /// The window changed size while playing (left fullscreen, or dragged): the game takes the new size once
+    /// the change settles, instead of stretching the picture it started with.
+    private var macGameSize = CGSize.zero
+    private var macResize: DispatchWorkItem?
+    private lazy var macHomeWidth = home.widthAnchor.constraint(equalToConstant: 1024)
+    private lazy var macHomeHeight = home.heightAnchor.constraint(equalToConstant: 768)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let size = view.bounds.size, scale = HomeView.macScale(forHeight: size.height)
+        if home.transform.a != scale { home.transform = CGAffineTransform(scaleX: scale, y: scale) }
+        if macHomeWidth.constant != size.width / scale { macHomeWidth.constant = size.width / scale }
+        if macHomeHeight.constant != size.height / scale { macHomeHeight.constant = size.height / scale }
+        guard engineStarted, macGameSize != .zero, size != macGameSize else { return }
+        macResize?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, self.view.bounds.size != self.macGameSize else { return }
+            self.macGameSize = self.view.bounds.size
+            self.applyLiveResolution()
+        }
+        macResize = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: work)
+    }
+    /// Paused on the Mac: Settings and Mods, as the touch controls offer them on iPhone. They're clicked with the
+    /// game's own cursor (the Mac's stays captured), so the buttons themselves take no clicks.
+    private let macPauseBar = UIStackView()
+    private var macPauseButtons: [(button: UIButton, action: () -> Void)] = []
+    private var macLeftWasDown = false
+    /// The scroll wheel (and trackpad scrolling) as the window's scroll events: one notch per scroll step
+    /// (KeyboardMouse.scroll; GameController's mouse scroll is unreliable on macOS). Up is the next weapon.
+    private var macScrollY: CGFloat = 0
+    @objc private func macScrolled(_ pan: UIPanGestureRecognizer) {
+        let y = pan.translation(in: view).y
+        if pan.state == .began { macScrollY = 0 }
+        let delta = y - macScrollY
+        macScrollY = y
+        if engineStarted && delta != 0 { KeyboardMouse.shared.scroll(up: delta > 0) }
+    }
+    private func makeMacPauseBar() {
+        let scroll = UIPanGestureRecognizer(target: self, action: #selector(macScrolled))
+        scroll.allowedScrollTypesMask = .all
+        scroll.allowedTouchTypes = []   // scrolls only, never clicks or drags
+        view.addGestureRecognizer(scroll)
+        func button(_ title: String, _ symbol: String, _ action: @escaping () -> Void) -> UIButton {
+            var config = UIButton.Configuration.filled()
+            config.title = title
+            config.image = UIImage(systemName: symbol)
+            config.imagePadding = 6
+            config.cornerStyle = .capsule
+            config.baseBackgroundColor = UIColor.black.withAlphaComponent(0.6)
+            config.baseForegroundColor = .white
+            let button = UIButton(configuration: config)
+            button.isUserInteractionEnabled = false
+            macPauseButtons.append((button, action))
+            return button
+        }
+        macPauseBar.addArrangedSubview(button(AppLanguage.choose("Settings"), "gearshape.fill") { [weak self] in self?.showSettings() })
+        macPauseBar.addArrangedSubview(button(AppLanguage.choose("Mods"), "puzzlepiece.extension.fill") { [weak self] in self?.modKeys.toggleTray() })
+        macPauseBar.axis = .horizontal
+        macPauseBar.spacing = 10
+        macPauseBar.isHidden = true
+        macPauseBar.isUserInteractionEnabled = false
+        macPauseBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(macPauseBar)
+        NSLayoutConstraint.activate([
+            macPauseBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 14),
+            macPauseBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+        ])
+    }
+    /// Every frame: shows the bar while the game's pause menu is open, lights the button under the game's cursor
+    /// and runs it on a click.
+    private func updateMacPauseBar() {
+        let show = engineStarted && PGPauseMenuActive() && stoppedPanel == nil && presentedViewController == nil
+            && UIApplication.shared.applicationState == .active && KeyboardMouse.shared.hasMouse
+        macPauseBar.isHidden = !show
+        macPauseButtons[1].button.isHidden = !modKeys.active   // Mods only while a script mod runs, as on iPhone
+        // The click counts once, before anything runs: opening Settings polls the input again (touch controls
+        // reset), and a click still seen as new there opened Settings over and over until the stack ran out.
+        let down = KeyboardMouse.shared.leftDown
+        let clicked = down && !macLeftWasDown
+        macLeftWasDown = down
+        var x: Float = 0, y: Float = 0
+        guard show, PGMousePosition(&x, &y) else { return }
+        let point = CGPoint(x: CGFloat(x) * view.bounds.width, y: CGFloat(y) * view.bounds.height)
+        for (button, action) in macPauseButtons where !button.isHidden {
+            let over = button.convert(button.bounds, to: view).insetBy(dx: -4, dy: -4).contains(point)
+            button.configuration?.baseBackgroundColor = UIColor.black.withAlphaComponent(over ? 0.85 : 0.6)
+            button.alpha = over ? 1 : 0.85
+            if over && clicked { DispatchQueue.main.async(execute: action) }   // after this poll, not inside it
+        }
+    }
+    // The game reads the keyboard itself (KeyboardMouse); passing its keys on makes macOS beep at each one.
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if !macPlaying { super.pressesBegan(presses, with: event) }
+    }
+    override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if !macPlaying { super.pressesEnded(presses, with: event) }
+    }
+    #endif
+
     override var prefersStatusBarHidden: Bool { true }
     /// While playing with a mouse (iPad), the pointer is captured so moving it looks around.
     override var prefersPointerLocked: Bool { engineStarted && GameSettings.shared.keyboardMouse && KeyboardMouse.shared.hasMouse }
@@ -300,6 +409,9 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         // Script mods' keys (shows itself only while a script mod runs), above the touch controls.
         modKeys.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(modKeys)
+        #if targetEnvironment(macCatalyst)
+        makeMacPauseBar()
+        #endif
         // The 🧩 Mods control lives in the touch controls (it is placed and moved like the others); the
         // tray it opens, the D-pad and the keyboard are ModKeysView.
         modKeys.activeChanged = { [weak self] active in self?.touchControls.modsActive = active }
@@ -345,12 +457,22 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
             metalView.topAnchor.constraint(equalTo: view.topAnchor),
             metalView.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
         NSLayoutConstraint.activate(phoneGameConstraints)
+        #if targetEnvironment(macCatalyst)
+        // Mac: the start screen is laid out for an iPad, so in a big window it's drawn smaller and scaled up to
+        // fill it (viewDidLayoutSubviews; HomeView keeps its text sharp at that scale).
+        NSLayoutConstraint.activate([
+            home.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            home.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            macHomeWidth, macHomeHeight
+        ])
+        #else
         NSLayoutConstraint.activate([
             home.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             home.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             home.topAnchor.constraint(equalTo: view.topAnchor),
             home.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        #endif
         let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         logFile = directory.appendingPathComponent("native-port.log")
         // Keep the previous run's log: after a crash it is the one worth sharing (Settings, Share log).
@@ -364,7 +486,11 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         }
         try? Data().write(to: logFile!)
         LogWriter.shared.open(logFile!)
+        #if targetEnvironment(macCatalyst)
+        appendLog("GTA V Port \(Theme.appVersion) on macOS \(UIDevice.current.systemVersion) (Mac app)")
+        #else
         appendLog("GTA V Port \(Theme.appVersion) on iOS \(UIDevice.current.systemVersion)")
+        #endif
         appendLog("Native UIKit + Metal host. Engine compiled into the app; no WebView or JIT.")
         appendLog("Metal device: \(device?.name ?? "unavailable")")
         GameFolder.log = { [weak self] line in self?.appendLog(line) }
@@ -387,6 +513,10 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(controllerChanged), name: .GCControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(releaseTouchControls), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(leftApp), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        #if targetEnvironment(macCatalyst)
+        // A Mac app is quit rather than sent to the background; quitting is not a failed launch.
+        NotificationCenter.default.addObserver(self, selector: #selector(leftApp), name: UIApplication.willTerminateNotification, object: nil)
+        #endif
         // The log says when the app was in the background, so measurements and stalls can be told apart.
         for (name, label) in [(UIApplication.willResignActiveNotification, "inactive"), (UIApplication.didEnterBackgroundNotification, "in the background"),
                               (UIApplication.willEnterForegroundNotification, "back in the foreground"), (UIApplication.didBecomeActiveNotification, "active")] {
@@ -507,7 +637,9 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         }
         if line == "WORLD_READY" || line.contains("\"label\":\"First frame\"") {
             diagnosticsOverlay?.isHidden = true
-            touchControlsAvailable = true
+            #if !targetEnvironment(macCatalyst)
+            touchControlsAvailable = true   // a Mac has no touch screen: keyboard, mouse or a controller
+            #endif
             fpsLabel.isHidden = !GameSettings.shared.showFPS
         }
         if line.hasPrefix("Native boot stopped:") || line == "iOS could not reserve the engine memory." {
@@ -592,6 +724,25 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
             appendLog("Asset manifest is missing from the app bundle.")
             return
         }
+        #if targetEnvironment(macCatalyst)
+        // Fullscreen first: the game keeps the size it starts at, so starting in a window and then going
+        // fullscreen stretches the picture. Waits for the switch (about a second), then starts.
+        if !engineStarted, MacWindow.enterFullScreen() {
+            launchButton.isEnabled = false
+            appendLog("Mac: switching to fullscreen before the game starts.")
+            var waited = 0.0
+            func startWhenFullScreen() {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                    guard let self, !self.engineStarted else { return }
+                    waited += 0.2
+                    // A short settle after the switch so the view has its final size.
+                    if MacWindow.isFullScreen && waited >= 1.0 || waited >= 4 { self.startEngine() } else { startWhenFullScreen() }
+                }
+            }
+            startWhenFullScreen()
+            return
+        }
+        #endif
         metalView.isPaused = true
         metalView.delegate = nil
         // Dawn owns the drawable size from here; MTKView must not reset it on layout.
@@ -602,6 +753,10 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         home.settingsButton.isHidden = true
         home.layoutButton.isHidden = true
         engineStarted = true
+        setNeedsUpdateOfPrefersPointerLocked()   // the pointer lock depends on engineStarted
+        #if targetEnvironment(macCatalyst)
+        macGameSize = view.bounds.size
+        #endif
         ModInstaller.gameRunning = true
         playStats.gameStarting(GameSettings.shared.gameMode, sandboxMap: GameSettings.shared.sandboxMap)
         refreshModeChoice()
@@ -1165,7 +1320,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         #if targetEnvironment(simulator)
         if used >= 0 { used += Int(PGGPUTextureBytes() / 1_048_576) }   // counted as an iPhone counts it (see EngineHost.c)
         #endif
-        let available = Int(os_proc_available_memory() / 1_048_576)
+        let available = Int(PGProcessAvailableMemory() / 1_048_576)
         let free = available > 0 ? available : max(0, GameSettings.shared.tier.memoryLimitMB - used)
         healthLines += 1
         // An interruption that never ends (another app's audio, logs 700 and 613) leaves the game silent while it plays on (GTA-132).
@@ -1298,6 +1453,9 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         present(navigation, animated: true)
         appendLog("Send log opened after the engine stopped.")
     }
+
+    /// The Mac menu bar's Settings… (⌘,), AppDelegate.buildMenu.
+    @objc func openSettingsFromMenu() { showSettings() }
 
     private func showSettings() {
         guard presentedViewController == nil else { return }
@@ -1468,6 +1626,10 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         }
     }
     @objc private func pollController() {
+        #if targetEnvironment(macCatalyst)
+        MacCursor.capture(macPlaying)
+        updateMacPauseBar()
+        #endif
         guard UIApplication.shared.applicationState == .active else {
             touchControls.reset(publish: false)
             lastControllerPoll = nil
@@ -1573,7 +1735,11 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
             if !pad.rightTrigger.isAnalog { if triggersDown.1 { digitalTriggerAt.1 = now } else if now - digitalTriggerAt.1 < 0.12 { state.rightTrigger = 1 } }
             if diagnosticsOverlay?.isHidden != true { controllerLabel.text = AppLanguage.interpolate(AppLanguage.choose("Controller: {arg0}"), [controller.vendorName ?? AppLanguage.choose("Gamepad")]) }
         } else if diagnosticsOverlay?.isHidden != true {
+            #if targetEnvironment(macCatalyst)
+            controllerLabel.text = AppLanguage.choose("Keyboard and mouse")
+            #else
             controllerLabel.text = AppLanguage.choose("Touch controls ready")
+            #endif
         }
         // With a controller connected the touch controls step aside (Settings › Touch controls).
         // Keyboard and mouse: every frame while the game runs (keys go straight to the game as they change).

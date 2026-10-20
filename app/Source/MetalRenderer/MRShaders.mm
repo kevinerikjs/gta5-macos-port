@@ -59,6 +59,8 @@ static TexDim texDim(NSString *d) {
 bool loadShaderLibrary(id<MTLDevice> device) {
 #if TARGET_OS_SIMULATOR
 	NSString *name = @"shaders-iphonesimulator";
+#elif TARGET_OS_MACCATALYST
+	NSString *name = @"shaders-maccatalyst";
 #else
 	NSString *name = @"shaders-iphoneos";
 #endif

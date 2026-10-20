@@ -6,7 +6,7 @@ import UIKit
 /// ID, names, file paths or log text are sent. Events wait in a small file and go out in batches to the
 /// builder site's /api/stats, which checks them against its own list and forwards them to the developer's
 /// stats service (the service's key lives on the server, not in the app). Simulator builds send nothing
-/// unless PG_STATS_ENDPOINT points them somewhere for a test.
+/// unless PG_STATS_ENDPOINT points them somewhere for a test, and builds made with PG_NO_STATS send nothing.
 final class Analytics {
     static let shared = Analytics()
 
@@ -25,6 +25,8 @@ final class Analytics {
         }
         #if targetEnvironment(simulator)
         endpoint = ProcessInfo.processInfo.environment["PG_STATS_ENDPOINT"].flatMap(URL.init(string:))
+        #elseif PG_NO_STATS
+        endpoint = nil   // the developer's own test builds (SWIFT_ACTIVE_COMPILATION_CONDITIONS PG_NO_STATS) don't count
         #else
         endpoint = URL(string: "https://fivestarport.vercel.app/api/stats")
         #endif

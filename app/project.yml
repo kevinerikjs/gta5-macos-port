@@ -47,6 +47,12 @@ settings:
       - -lblink
       - -weak_framework
       - MetalFX
+    # Mac app (GTA-9, Mac Catalyst): macOS's own libarchive instead of the bundled iPhone one; macOS has MetalFX too.
+    "OTHER_LDFLAGS[sdk=macosx*]":
+      - $(inherited)
+      - -larchive
+      - -weak_framework
+      - MetalFX
     OTHER_CFLAGS:
       - $(inherited)
       - -include
@@ -93,6 +99,9 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: io.github.playgta5ios.app
         PRODUCT_NAME: PlayGTA5Native
         TARGETED_DEVICE_FAMILY: "1,2"
+        # The same app runs on Apple Silicon Macs through Mac Catalyst (GTA-9, Scripts/build_mac.sh).
+        SUPPORTS_MACCATALYST: YES
+        DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER: NO
         # Paid Apple developer accounts can use App/Full.entitlements (more
         # memory); free Apple IDs cannot, so the default asks for nothing.
         CODE_SIGN_ENTITLEMENTS: App/Free.entitlements
