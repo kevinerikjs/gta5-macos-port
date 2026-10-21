@@ -273,6 +273,10 @@ Not tested. Inside LiveContainer the game gets LiveContainer's own memory limit,
 
 Not right now. The free way to get extra memory today is AltStore 2.3 or newer, which needs AltServer on a Mac or PC (also for the refresh every 7 days). SideStore currently drops extra memory on free Apple IDs, and GetMoreRam's sign-in fails for most players. Without extra memory the game still runs: use the preset marked (recommended) or Ultra Performance.
 
+### Do I have to use GetMoreRam again every time I update the app?
+
+No. GetMoreRam turns on Increased Memory Limit for GTA V Port's App ID in your Apple account, not in the installed app, so it stays when you install each update over the old app with the same sideloader and the same Apple ID. In 47 player logs sent right after an update, all 30 that had extra memory before still had it after. Check Settings › This device after updating: it should say "Extra memory: on". If it ever says off (for example after installing with another sideloader or Apple ID, which makes a new App ID), add it again in GetMoreRam and refresh GTA V Port in SideStore.
+
 ## Performance and graphics
 
 ### Textures, ground or buildings disappear or don't load. How do I fix it?
