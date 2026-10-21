@@ -281,7 +281,7 @@ No. GetMoreRam turns on Increased Memory Limit for GTA V Port's App ID in your A
 
 ### Textures, ground or buildings disappear or don't load. How do I fix it?
 
-Missing or grey ground, blurry buildings or a map that stops loading usually means the game is short on memory. Update to the newest version and keep the Experimental settings (Settings › This device) on: v1.4.5 keeps the city loaded on 4 GB iPhones (Steady city on low memory, Lighter 3D models in memory). Unlock extra memory if you can (install with AltStore 2.3 or newer, or a paid account), use the preset marked (recommended) or lower and close other apps. A red ⚠️ next to the FPS counter means your iPhone gives the game little memory, so some missing textures are expected there. If it happens on the newest version, send a log right after it happens (Settings › This device › Send log to the developer, with a short note in "What happened?").
+Missing or grey ground, blurry buildings or a map that stops loading means the game ran out of room for the city. Update to the newest version: v1.4.6 gives the game much more memory on iPhones and iPads with 8 GB or more (with extra memory) and on Macs (up to 7 GB instead of 4 GB), and v1.4.5 keeps the city loaded on 4 GB iPhones (Settings › This device › Experimental, on by default). Unlock extra memory if you can (AltStore 2.3 or newer, or a paid account), use the preset marked (recommended) or lower, close other apps and keep the device cool: heat slows loading down. A red ⚠️ next to the FPS counter means your iPhone gives the game little memory, so some missing textures are expected there. If it still happens on the newest version, send a log right after it happens (Settings › This device › Send log to the developer, with a short note in "What happened?").
 
 ### What FPS can I expect on my device?
 
@@ -330,6 +330,10 @@ Settings › Graphics › Frame rate › Unlocked goes up to 120 on ProMotion iP
 ### I changed the graphics preset or frame rate but nothing changes in the game
 
 The graphics preset applies when the game starts. If you change it while playing, Settings shows "Restart needed": close the app completely (swipe it away in the app switcher), open it again and press Play. The resolution changes right away, and since v1.4.5 the frame rate does too.
+
+### I have an 8 GB iPhone or iPad (or extra memory) and still get grey ground or missing textures while driving. Why?
+
+Up to v1.4.5 the game engine kept its data in a 4 GB block, and on 8 GB devices that block filled up while the device still had 2 to 4 GB free; the game then stopped loading the city, most of all while driving fast. v1.4.6 makes the block the app's memory limit less 1 GB, up to 7 GB, so update. Heat also slows loading (Thermal Serious in the Metal HUD): keep the device cool. If it still happens on v1.4.6, send a log right after it happens.
 
 ### The phone gets very hot. Is that normal?
 
@@ -548,6 +552,10 @@ Since v1.4.5, when a mission's help asks for the D-pad, the matching on-screen b
 ### After installing add-on cars the game stops with "CHandlingObject Pool Full". How do I fix it?
 
 Fixed in v1.4.2: the app gives the game room for 1500 vehicle handling entries instead of 560, so several add-on cars fit without editing gameconfig.xml. Update the app (install over the old one). If it still says Pool Full with a different pool name, send a log right after (Settings › This device › Send log to the developer) and say which mods you installed.
+
+### Debug text appeared on my screen (#Scripts, Active Trackers, Box Modifier, OVER BUDGET, or small blue labels like runVendingMachine). How do I get rid of it?
+
+That's the game's own developer debug text, not a mod's menu. This game build had a developer shortcut: the B key turned it on while a script mod had switched the keyboard out of game mode. Since v1.4.6 B no longer does that, so update. On older versions, close the game completely and start it again: it's always off at start.
 
 ### After updating the app some of my mods are switched off. Why?
 
