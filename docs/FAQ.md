@@ -29,7 +29,7 @@ The newest ready-made IPA is posted in the Releases topic of the Telegram group.
 
 ### How do I install the game, and where do I start?
 
-Start with the setup guide in the Start here topic of the Telegram group, or the GitHub README's "Install in 4 steps". In short: 1) install a sideloader (SideStore or AltStore, set up once with a computer); 2) get the IPA from the Releases topic or build it at fivestarport.site/build/; 3) install it; 4) unlock extra memory with GetMoreRam; 5) add your own game files in the app; 6) pick Story mode or Sandbox and tap Play. A 3-minute video tutorial is in the GitHub README.
+Start with the setup guide in the Start here topic of the Telegram group, or the GitHub README's "Install in 4 steps". In short: 1) install a sideloader (SideStore or AltStore, set up once with a computer); 2) get the IPA from the Releases topic or build it at fivestarport.site/build/; 3) install it; 4) for extra memory, install with AltStore 2.3 or newer (it adds it by itself); 5) add your own game files in the app; 6) pick Story mode or Sandbox and tap Play. A 3-minute video tutorial is in the GitHub README.
 
 ### Is there a video tutorial or setup guide?
 
@@ -37,11 +37,11 @@ Yes. The GitHub README has a 3-minute video for the builder route and walks thro
 
 ### Which sideloading app should I use (SideStore, AltStore, Sideloadly)?
 
-Any of SideStore, AltStore or Sideloadly works: one IPA works with all of them since v1.3.3. SideStore is the easiest for extra memory (with GetMoreRam) and refreshes on the phone. A paid developer account or TrollStore also work.
+Any of SideStore, AltStore or Sideloadly works: one IPA works with all of them since v1.3.3. For extra memory on a free Apple ID use AltStore 2.3 or newer: it adds the extra memory by itself. SideStore refreshes on the phone, but it currently drops extra memory on free Apple IDs. A paid developer account or TrollStore also work.
 
 ### Can it run inside LiveContainer, and where do I get LiveContainer?
 
-It isn't officially tested in LiveContainer. It may run, but inside LiveContainer the app gets LiveContainer's memory limit, and the folder picker may not work. Installing with SideStore, AltStore or Sideloadly is the supported way.
+It isn't officially tested in LiveContainer, but players run it there. Inside LiveContainer the app gets LiveContainer's memory limit, and the folder picker can't open your game folder until two of LiveContainer's fixes are on: in LiveContainer, open GTA V Port's settings and under Fixes turn on Fix File Picker and Use LiveContainer's Bundle ID. Then Game files › Choose a folder… works, also for a game folder kept from an earlier version (since v1.4.5 the app shows this tip when it runs inside LiveContainer). Installing with SideStore, AltStore or Sideloadly is the supported way.
 
 ### How do I set up SideStore, and do I need a PC for it?
 
@@ -137,7 +137,7 @@ Open the app once so its folder appears in Files. Then in the Files app long-pre
 
 ### Pressing Open in the folder picker does nothing, so the app won't take my game files. How do I fix it?
 
-On many sideloaded installs iOS doesn't hand a picked folder to the app (Open stays grey or seems to do nothing; sometimes it slowly copies the whole folder). Since v1.4.4 the Game files screen has Open GTA V Port in Files: it opens the app's own folder in Files; move your game folder there (touch and hold › Move) and come back, the app finds it by itself. Or download the game files in the app (From a link) or pick a zip/rar with Choose an archive….
+On many sideloaded installs iOS doesn't hand a picked folder to the app (Open stays grey or seems to do nothing; sometimes it slowly copies the whole folder). In LiveContainer: open GTA V Port's settings in LiveContainer and under Fixes turn on Fix File Picker and Use LiveContainer's Bundle ID, then pick the folder again. Otherwise the Game files screen has Open GTA V Port in Files: it opens the app's own folder in Files; move your game folder there (touch and hold › Move) and come back, the app finds it by itself. Or download the game files in the app (From a link) or pick a zip/rar with Choose an archive….
 
 ### Which game files do I need to download and add, and does the archive contain everything?
 
@@ -235,23 +235,27 @@ That's fine if the Game files check says every file is there. Some copies leave 
 
 The app checks every file's size against the game's list. If a file is the wrong size, the Game files screen says so.
 
+### I updated the app and my game files are gone, or Play does nothing
+
+Installing an update with another sideloader or another Apple ID makes a separate copy of the app with an empty folder, so the game files and saves stay in the old copy. Install over the old app the same way you installed it first, or open Game files and choose your game folder again. Since v1.4.5, Play without game files opens Game files and says what's missing.
+
 ## Extra memory
 
 ### What is GetMoreRam, and how do I get more RAM for the game?
 
-iOS gives an app about half of the iPhone's memory. To unlock more for free: install the app with SideStore, then install GetMoreRam, sign in with the same Apple ID you use in SideStore, pick GTA V Port, add Increased Memory Limit, and refresh GTA V Port in SideStore. Every IPA since v1.3.3 (and builder builds with "Enable increased memory entitlements" ticked) already asks for it. Check Settings › This device: it should say "Extra memory: on" and show a higher app limit. A paid developer account or TrollStore gives it without GetMoreRam.
+iOS gives an app about half of the iPhone's memory. To unlock more for free, install GTA V Port with AltStore 2.3 or newer (with AltServer on a Mac or PC): it adds Increased Memory Limit by itself on a free Apple ID, no GetMoreRam needed, and players in the group confirm it. SideStore currently drops extra memory when it signs with a free Apple ID (a SideStore bug; a fix is waiting to be merged), and GetMoreRam's Apple sign-in fails for most players since mid-October. Every IPA since v1.3.3 already asks for it. Check Settings › This device: it should say "Extra memory: on" and show a higher app limit. A paid developer account or TrollStore gives it too.
 
 ### I can't sign in to GetMoreRam or iRAM+ (bad credentials, data error). How do I fix it?
 
-GetMoreRam sign-in errors ("bad credentials", data error) come from Apple's servers. Sign in with the same Apple ID you use in SideStore, try again later, and use the newest GetMoreRam. Ask in the Install topic with the exact error.
+GetMoreRam's Apple sign-in fails for most players since mid-October (-80045, bad credentials, bad server response). You don't need it: install GTA V Port with AltStore 2.3 or newer, which adds the extra memory by itself on a free Apple ID. Some players also report iRAM+ working with LocalDevVPN running. A paid developer account always works.
 
 ### I tried to increase memory, but the game still shows only 2-3 GB. Why?
 
-Check Settings › This device. "Extra memory: off" means the install doesn't have the entitlement: install the current IPA (or rebuild with the memory box ticked). If it says on but the limit didn't change: after adding Increased Memory Limit in GetMoreRam you must refresh GTA V Port in SideStore, with the same Apple ID. iOS never lets the app use all of the phone's memory: about 3,500 MB or more on a 6 GB iPhone is normal with extra memory.
+Check Settings › This device. "Extra memory: off" means your install doesn't have it: SideStore on a free Apple ID drops it today, and GetMoreRam fails for most players. Install the current IPA with AltStore 2.3 or newer instead (don't delete the old app first: your game files and saves are inside it). iOS never lets the app use all of the phone's memory: about 3,500 MB or more on a 6 GB iPhone is normal with extra memory.
 
 ### Should I enable the 'increased memory entitlement' option, and do I need to reinstall?
 
-Keep "Enable increased memory entitlements" ticked when you build (it's on by default). Since v1.3.3 there's only one IPA and it always asks for extra memory. The entitlement alone doesn't add memory: you still need GetMoreRam (free Apple ID), a paid developer account or TrollStore. Untick it only if your installer refuses the app.
+Keep "Enable increased memory entitlements" ticked when you build (it's on by default). Since v1.3.3 there's only one IPA and it always asks for extra memory. The entitlement alone doesn't add memory: the installer has to keep it. AltStore 2.3 or newer does on a free Apple ID; SideStore currently drops it; a paid developer account or TrollStore keep it. Untick it only if your installer refuses the app.
 
 ### Does a paid developer certificate give extra memory, and what do I need to enable when signing?
 
@@ -263,13 +267,17 @@ That's from older versions. Since v1.3.3 there's only one IPA: it asks for extra
 
 ### Can I increase the RAM entitlement inside LiveContainer?
 
-Not tested. Inside LiveContainer the game gets LiveContainer's own memory limit, so the extra memory would have to be applied to LiveContainer itself. The supported way is installing GTA V Port directly with SideStore.
+Not tested. Inside LiveContainer the game gets LiveContainer's own memory limit, so the extra memory would have to be applied to LiveContainer itself. The supported way is installing GTA V Port directly, with AltStore 2.3 or newer for extra memory.
 
 ### How do I get GetMoreRam without a PC, or after installing with SideInstaller?
 
-You need a working SideStore install (set up once with a computer). Then install GetMoreRam, sign in with the same Apple ID as SideStore, add Increased Memory Limit to GTA V Port, and refresh GTA V Port in SideStore. No computer needed for that part.
+Not right now. The free way to get extra memory today is AltStore 2.3 or newer, which needs AltServer on a Mac or PC (also for the refresh every 7 days). SideStore currently drops extra memory on free Apple IDs, and GetMoreRam's sign-in fails for most players. Without extra memory the game still runs: use the preset marked (recommended) or Ultra Performance.
 
 ## Performance and graphics
+
+### Textures, ground or buildings disappear or don't load. How do I fix it?
+
+Missing or grey ground, blurry buildings or a map that stops loading usually means the game is short on memory. Update to the newest version and keep the Experimental settings (Settings › This device) on: v1.4.5 keeps the city loaded on 4 GB iPhones (Steady city on low memory, Lighter 3D models in memory). Unlock extra memory if you can (install with AltStore 2.3 or newer, or a paid account), use the preset marked (recommended) or lower and close other apps. A red ⚠️ next to the FPS counter means your iPhone gives the game little memory, so some missing textures are expected there. If it happens on the newest version, send a log right after it happens (Settings › This device › Send log to the developer, with a short note in "What happened?").
 
 ### What FPS can I expect on my device?
 
@@ -281,11 +289,11 @@ It runs on iPhones and iPads with iOS 16 or newer. What matters most is memory: 
 
 ### Does it work on iPhone 11, XR, SE 3rd gen or other 4 GB devices?
 
-It installs and starts, but 4 GB iPhones (iPhone XS, 11, 12, 12 mini, 13, 13 mini, SE 3rd generation) get only about 2 GB for the app, so expect low detail, missing textures and around 20-30 FPS. Use the Ultra Performance preset (Settings › Graphics), made for these phones since v1.4; v1.4 also made Sandbox smooth again on 4 GB iPhones. Since v1.4.3 the Experimental settings in Settings › This device (on by default) stop the ground turning grey after about 10 minutes and keep big textures lighter on iPhones before the 15 Pro. Grey or untextured far ground on 3 to 4 GB iPhones is still a known issue. Unlocking extra memory helps a little.
+It installs and starts, but 4 GB iPhones (iPhone XS, 11, 12, 12 mini, 13, 13 mini, SE 3rd generation) get only about 2 GB for the app, so expect low detail and around 20-30 FPS. Use the Ultra Performance preset (Settings › Graphics), made for these phones. v1.4.5 helps most: on these iPhones the city stays loaded while driving (fewer grey and missing textures) and the game gets about 80 MB more memory (Settings › This device › Experimental, on by default). The red ⚠️ next to the FPS counter marks a phone with this little memory. Unlocking extra memory helps a little.
 
 ### How do I raise FPS or unlock 60 FPS?
 
-Unlock extra memory first. Then in Settings › Graphics: pick the recommended preset (or lower), lower the Resolution (changes right away), and set Frame rate to 60 or Unlocked (up to 120 on ProMotion iPhones, applies at the next start). Close other apps, turn off Low Power Mode and keep the phone cool. Turn on Show FPS counter to compare.
+Unlock extra memory first. Then in Settings › Graphics: pick the recommended preset (or lower), lower the Resolution, and set Frame rate to 60 or Unlocked (up to 120 on ProMotion iPhones; 40 there too since v1.4.5). Resolution and frame rate change right away since v1.4.5. Close other apps, turn off Low Power Mode and keep the phone cool. Turn on Show FPS counter to compare.
 
 ### Why does the game stutter or drop FPS over time (iPhone 17, iPad, v1.3.4)?
 
@@ -313,11 +321,11 @@ Settings › Graphics › Fill the screen renders at your screen's shape instead
 
 ### How do I unlock 120 FPS on ProMotion devices?
 
-Settings › Graphics › Frame rate › Unlocked goes up to 120 on ProMotion iPhones (13 Pro and newer Pro models). It applies the next time you start the game. Reaching 120 depends on your phone and settings.
+Settings › Graphics › Frame rate › Unlocked goes up to 120 on ProMotion iPhones (13 Pro and newer Pro models); since v1.4.5 there's also 40, smoother than Unlocked when the game runs between 40 and 60. A new frame rate applies right away since v1.4.5 (at the next start on older versions). Reaching 120 depends on your phone and settings.
 
 ### I changed the graphics preset or frame rate but nothing changes in the game
 
-The graphics preset and the frame rate apply when the game starts. If you change them while playing, Settings shows "Restart needed": close the app completely (swipe it away in the app switcher), open it again and press Play. Only the resolution changes right away.
+The graphics preset applies when the game starts. If you change it while playing, Settings shows "Restart needed": close the app completely (swipe it away in the app switcher), open it again and press Play. The resolution changes right away, and since v1.4.5 the frame rate does too.
 
 ### The phone gets very hot. Is that normal?
 
@@ -330,6 +338,14 @@ Three settings added in v1.4.3, all on by default: Smarter texture loading keeps
 ### The pause menu keeps saying "You made changes but did not apply them" though I changed nothing. What do I press?
 
 That was a bug, fixed in v1.4.2: the pause menu's lowest shadow setting is Normal, while the app's lighter presets use Low or Off, so the game thought something had changed. On older versions choose Cancel (No) there, not Yes: Yes raises the shadows and re-applies the graphics, which costs FPS and memory. The app's own Settings › Graphics is the place to change graphics.
+
+### What's the 40 FPS option?
+
+On iPhones with a 120 Hz screen (ProMotion), Settings › Graphics › Frame rate has 40 since v1.4.5. Each picture stays up exactly 1/40 s, so when the game runs between 40 and 60 it looks smoother than Unlocked, which jumps between speeds. It applies right away.
+
+### What's the red ⚠️ next to the FPS counter?
+
+It means iOS gives the game little memory on your iPhone (the 4 GB models get about 2 GB), so a less detailed city and textures that load late or stay missing are expected there. It's there so a screenshot shows it at once; nothing is broken. Unlocking extra memory (AltStore 2.3 or newer, or a paid account) helps the most.
 
 ## Controls
 
@@ -412,6 +428,14 @@ Push the stick all the way to its edge to sprint. Or turn on the Sprint button (
 ### Will a Bluetooth keyboard and mouse work?
 
 Yes: Settings › Controls › Keyboard and mouse (WASD, mouse look). With both connected, the touch controls hide.
+
+### How do I jump (bunny hop) on the BMX?
+
+Since v1.4.5 bicycles have a Jump button where cars have drive-by. Hold it longer to hop higher.
+
+### The help box ("Press … to …") covers the map. Can I move it?
+
+Yes, since v1.4.5: Settings › Touch controls › Help messages: Top left (the game's place), Top right, Bottom middle, or Custom, where you drag the box anywhere. With the map at the top, Top right is the default. It applies the next time the game starts.
 
 ## Missions and Story mode
 
@@ -511,11 +535,27 @@ Sandbox starts with no story progress, and in GTA V shops, barbers and some buil
 
 Fixed since v1.4: the outfit you saved stays after restarting the game. Update to the newest version.
 
+### A mission asks me to press the D-pad (like calling elk while hunting with Cletus), but there's no button
+
+Since v1.4.5, when a mission's help asks for the D-pad, the matching on-screen buttons appear for as long as the hint shows (for example the elk call in Hunting with Cletus). Update the app.
+
 ## Mods
 
 ### After installing add-on cars the game stops with "CHandlingObject Pool Full". How do I fix it?
 
 Fixed in v1.4.2: the app gives the game room for 1500 vehicle handling entries instead of 560, so several add-on cars fit without editing gameconfig.xml. Update the app (install over the old one). If it still says Pool Full with a different pool name, send a log right after (Settings › This device › Send log to the developer) and say which mods you installed.
+
+### After updating the app some of my mods are switched off. Why?
+
+From v1.4.5 on, each start notes which switched-on mods the game actually loaded. The first start of a new version switches off the mods the old version had on but didn't load (they did nothing, and are the likeliest to break a start), and says which. Turn them back on in Settings › Mods if you want them.
+
+### An add-on car stays at "waiting for the game…" and never spawns
+
+Update to v1.4.5: cars made for newer PC updates (for example the Honda Fireblade CBR1000RR-R) name a texture set this game version doesn't have, and the game refused to load them. Now they use the game's shared vehicle textures and spawn. If a car still waits, send a log right after (Settings › This device › Send log to the developer) and say which car.
+
+### The game stops while starting after I installed a mod. What do I do?
+
+Since v1.4.5, after a start with mods that didn't finish, the app offers "Start without mods": the game starts once without them and your mods stay installed. Then switch off the mod you added last in Settings › Mods and start again. If it stops with that mod alone, send a log (Settings › This device › Send log to the developer) and say which mod.
 
 ## Features
 
@@ -561,7 +601,7 @@ Yes. Move or drag the unpacked folder into On My iPhone › GTA V Port (also wit
 
 ### Can custom radio MP3s work?
 
-Not in the game's radio yet: Self Radio (your own music on an in-game station) is planned for a later update. Since v1.4.3 you can play music from your own music app while you play: the game's sound plays alongside it (turn the car radio off in the game if you only want your music).
+Yes, since v1.4.5: Self Radio plays your own songs on the car radio, as on PC. Add songs in Settings › Self Radio › Add songs…, or copy them into Files › On My iPhone › GTA V Port › Self Radio (on Mac: Show the Self Radio folder in Finder). MP3, M4A/AAC, ALAC, WAV, AIFF and FLAC work; Apple Music and Spotify songs are protected and can't be added. With 3 songs or more, Self Radio is the smiley next to Los Santos Rock Radio in the radio wheel (the game calls it User Music FM). Songs added while you play reach the station at the next start.
 
 ### Can the app be in my language, and can I translate it?
 
@@ -573,7 +613,7 @@ The app uses the game's own in-game phone; an LB Phone-style phone like in FiveM
 
 ### Could GTA V be made fully playable on 4 GB devices?
 
-Since v1.4 the Ultra Performance preset (Settings › Graphics) makes 4 GB iPhones more playable, and v1.4.3's Experimental settings (Settings › This device, on by default) help with grey ground and big textures on iPhones before the 15 Pro. They still get much less memory than 6 GB iPhones, so expect lower detail; grey far ground on 3 to 4 GB iPhones is a known issue that is being worked on.
+It's getting closer: since v1.4 the Ultra Performance preset (Settings › Graphics) is made for 4 GB iPhones, and v1.4.5 keeps the city loaded while driving there and gives the game about 80 MB more memory (Settings › This device › Experimental, on by default). They still get much less memory than 6 GB iPhones, so expect lower detail.
 
 ### How can I remove the black bars?
 
@@ -607,9 +647,17 @@ Download the mod on your iPhone (Safari saves it to Files › Downloads), then i
 
 While a script mod (.asi) runs, a 'Mod keys' button shows at the top of the screen. It lists exactly the keys your mods use (Simple Trainer: F3 opens the menu, Num 8/2 move, Num 5 selects). Hold a key to press it; long-press to pin it next to the button. Shift/Ctrl/Alt stay down after a tap for combinations. Controller shortcuts work through the touch controls and Bluetooth controllers too (Simple Trainer: RB + X), and an iPad keyboard works. When a trainer asks you to type (spawn a car by name, a search), the iPhone keyboard opens by itself; type and tap OK.
 
+### I added songs to Self Radio but I can't find the station in the radio wheel
+
+Self Radio needs v1.4.5 and at least 3 songs (Settings › Self Radio lists what the app found). In a car, open the radio wheel: Self Radio is the smiley next to Los Santos Rock Radio, and the game names it User Music FM. Songs added or removed while you play reach the station the next time the game starts. Songs from Apple Music or Spotify are protected and can't play.
+
 ### My game crashes or looks wrong with mods. Can you fix it?
 
 Mods can cause crashes and glitches, and the port can't fix other people's mods. First try with the Mods folder empty: if the problem is gone, it's the mod (ask in the Mods topic (t.me/fivestarport/10779), with the mod's name and link). Send a log in Crashes & logs only if it also happens without mods. Logs show which mods were active.
+
+### Self Radio: how do I shuffle or skip a song?
+
+Settings › Self Radio › Play order: Shuffle (the default) and In order start each song from the beginning; Like a radio station joins songs midway, as the PC does. While a song plays in a car, the Next song button next to Radio skips it (not in Like a radio station).
 
 ## Mac
 
@@ -746,10 +794,6 @@ Texts showing as "... missing" were fixed in v1.4, and since v1.4.2 help boxes t
 ## Known issues
 
 Bugs we know about and are working on.
-
-### Textures, ground or buildings disappear or don't load. How do I fix it?
-
-Missing or grey ground, blurry buildings or a map that stops loading usually means the game is short on memory. Update to v1.4.3: its Experimental settings (Settings › This device, on by default) fix the ground turning grey after about 10 minutes (Smarter texture loading) and keep more of the world sharp on iPhones before the 15 Pro (Lighter big textures). Also unlock extra memory (GetMoreRam or a paid account), use the preset marked (recommended) or lower and close other apps. On 3 to 4 GB iPhones far areas can still stay untextured: a known issue. If it happens on v1.4.3, send a log right after it happens (Settings › This device › Send log to the developer, with a short note in "What happened?").
 
 ### I can't change clothes or get a haircut, or doing so crashes the game. Why?
 
