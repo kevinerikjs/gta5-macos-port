@@ -946,9 +946,7 @@ final class SettingsViewController: UITableViewController {
         present(nav, animated: true)
     }
     private func shareLogs(from cell: UITableViewCell?) {
-        let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let logs = ["native-port.log", "native-port-previous.log"].map { documents.appendingPathComponent($0) }
-            .filter { FileManager.default.fileExists(atPath: $0.path) }
+        let logs = RunEnd.reportLogs().map(\.url)
         guard !logs.isEmpty else { showAlert(AppLanguage.choose("No log yet"), AppLanguage.choose("Start the game once, then try again.")); return }
         let sheet = UIActivityViewController(activityItems: logs, applicationActivities: nil)
         sheet.popoverPresentationController?.sourceView = cell ?? view

@@ -28,14 +28,16 @@ enum LogUploader {
     }
 
     static func send(note: String, includeSave: Bool = false, done: @escaping ((String, String)) -> Void) {
-        let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let save = includeSave ? latestSave().flatMap { url in (try? Data(contentsOf: url)).map { (url.lastPathComponent, $0) } } : nil
         var body = Data()
-        for (title, name) in [("PREVIOUS RUN", "native-port-previous.log"), ("THIS RUN", "native-port.log")] {
-            guard let data = try? Data(contentsOf: documents.appendingPathComponent(name)), !data.isEmpty else { continue }
-            body.append("===== \(title) (\(name)) =====\n".data(using: .utf8)!)
-            // With a save the logs get a little less room, to stay under the site's 4 MB.
-            body.append(trimmed(data, to: save == nil ? perLog : 1_400_000))
+        // A stopped run and iOS's own reports go first when there are any (GTA-159); the logs share the site's 4 MB,
+        // with a little less room when a save goes too.
+        let logs = RunEnd.reportLogs()
+        let room = max(400_000, (save == nil ? 2 * perLog : 2 * 1_400_000) / max(1, logs.filter { $0.title.hasSuffix("RUN") }.count))
+        for (title, url) in logs {
+            guard let data = try? Data(contentsOf: url), !data.isEmpty else { continue }
+            body.append("===== \(title) (\(url.lastPathComponent)) =====\n".data(using: .utf8)!)
+            body.append(trimmed(data, to: title.hasSuffix("RUN") ? room : 65_536))
             body.append("\n".data(using: .utf8)!)
         }
         if let (name, data) = save {
@@ -65,6 +67,7 @@ enum LogUploader {
             let reply = data.flatMap { try? JSONSerialization.jsonObject(with: $0) as? [String: Any] }
             let result: (String, String)
             if status == 200 {
+                RunEnd.sent()
                 result = (AppLanguage.choose("Log sent, thank you!"), AppLanguage.interpolate(AppLanguage.choose("Reference: {arg0}. Mention it if you also ask for help in the community."), [String(describing: reply?["id"] as? String ?? "-")]))
             } else if error != nil {
                 result = (AppLanguage.choose("Couldn't send the log"), AppLanguage.choose("No internet connection? Try again, or use Share log instead."))

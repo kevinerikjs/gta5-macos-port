@@ -10,6 +10,10 @@ A quick update for iPhone and Mac.
 ### Mods
 - **Debug text on screen**: some players saw the game's developer debug text: small blue labels like "runVendingMachine", or "#Scripts", "Active Trackers" and "OVER BUDGET". This game build kept a developer shortcut: pressing B turned it on while a script mod had the keyboard. B no longer does that. (Restarting the game always cleared it.)
 
+### Logs
+- **The run where the game stopped is kept until you send a log.** The app keeps only the last two runs, so restarting a couple of times after a stop pushed the stop out of the log you sent. Now a run that stopped (the game stopped with a message, or the app ended while the game was running) is kept on its own and goes first in Settings › This device › Send log to the developer (and Share log), however often you start the game again.
+- **iOS's own report of why the app ended** (iPhone): when iOS closes the app for memory, or the app crashes without a message, the next start adds iOS's report to the log (MetricKit: the reason, and for crashes where it happened).
+
 Other bug fixes and improvements.
 
 ## v1.4.5

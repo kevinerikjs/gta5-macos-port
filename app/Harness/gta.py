@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Drive the game running in the iOS Simulator through its debug channel (App/DebugChannel.swift).
 
-    gta.py launch story|sandbox [--env K=V]... [--arg A]... [--install] [--root DIR]
+    gta.py launch story|sandbox [--env K=V]... [--arg A]... [--install] [--root DIR] [--keep-log]
     gta.py ping | state | ui
     gta.py n NAME|0xHASH [args]...          a game command (native) by its Script Hook V name
     gta.py batch "NAME args; NAME args"     several in one frame; r:K is command K's result
@@ -110,12 +110,15 @@ def shot(path=None):
     subprocess.run(["xcrun", "simctl", "io", SIM, "screenshot", path], capture_output=True)
     return path
 
-def launch(mode, envs, args, install=False, root=None, timeout=420):
+def launch(mode, envs, args, install=False, root=None, timeout=420, keep_log=False):
     subprocess.run(["xcrun", "simctl", "boot", SIM], capture_output=True)
     subprocess.run(["xcrun", "simctl", "bootstatus", SIM, "-b"], capture_output=True)
     if install: subprocess.run(["xcrun", "simctl", "install", SIM, os.environ["GTA_APP"]], check=True)
     log = log_path()
-    if os.path.exists(log): os.remove(log)
+    # --keep-log leaves the last run's log for the app to rotate (a stopped run is kept, GTA-159); the wait below
+    # then starts once the app has replaced it.
+    old = os.stat(log).st_ino if keep_log and os.path.exists(log) else None
+    if os.path.exists(log) and not keep_log: os.remove(log)
     env = dict(os.environ)
     env["SIMCTL_CHILD_PG_TEST_NO_MODS_NOTICE"] = "1"
     if os.environ.get("GTA_MODS"): env["SIMCTL_CHILD_PG_MODS_FOLDER"] = os.environ["GTA_MODS"]
@@ -128,6 +131,9 @@ def launch(mode, envs, args, install=False, root=None, timeout=420):
                "--local-game-folder", os.environ["GTA_GAME_FOLDER"], "--game-mode", mode, "--mute", "--boot-engine", "--touch-controls-preview"]
     if mode == "sandbox": command += ["-sandboxMap", "0"]
     subprocess.run(command + list(args), env=env, capture_output=True, check=True)
+    for _ in range(60):
+        if old is None or (os.path.exists(log) and os.stat(log).st_ino != old): break
+        time.sleep(0.5)
     global _channel
     _channel = None
     start = time.time()
@@ -346,15 +352,16 @@ def command(words, base="."):
         if rest: lines = [l for l in lines if re.search(rest[0], l)]
         print("\n".join(lines[-n:]))
     elif verb == "launch":
-        mode, envs, args, install, root = rest[0], [], [], False, None
+        mode, envs, args, install, root, keep_log = rest[0], [], [], False, None, False
         i = 1
         while i < len(rest):
             if rest[i] == "--env": envs.append(rest[i + 1]); i += 2
             elif rest[i] == "--arg": args.append(rest[i + 1]); i += 2
             elif rest[i] == "--root": root = rest[i + 1]; i += 2
             elif rest[i] == "--install": install = True; i += 1
+            elif rest[i] == "--keep-log": keep_log = True; i += 1
             else: raise SystemExit("launch: unknown option " + rest[i])
-        print("WORLD_READY after %.0f s" % launch(mode, envs, args, install, root))
+        print("WORLD_READY after %.0f s" % launch(mode, envs, args, install, root, keep_log=keep_log))
     elif verb == "run":
         path = rest[0]; base = os.path.splitext(path)[0] + "-out"
         os.makedirs(base, exist_ok=True)

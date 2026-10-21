@@ -513,6 +513,8 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         // (without playing) doesn't push the crash out.
         let previous = directory.appendingPathComponent("native-port-previous.log")
         let lastRunPlayed = ((try? FileManager.default.attributesOfItem(atPath: logFile!.path)[.size] as? NSNumber)?.intValue ?? 0) > 16_384
+        // A run that stopped is kept on its own until a log is sent, however often the game is started again (GTA-159).
+        let stopReason = RunEnd.keepIfStopped(log: logFile!, becomesPrevious: lastRunPlayed || !FileManager.default.fileExists(atPath: previous.path))
         if lastRunPlayed || !FileManager.default.fileExists(atPath: previous.path) {
             try? FileManager.default.removeItem(at: previous)
             try? FileManager.default.moveItem(at: logFile!, to: previous)
@@ -526,6 +528,12 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         #endif
         appendLog("Native UIKit + Metal host. Engine compiled into the app; no WebView or JIT.")
         appendLog("Metal device: \(device?.name ?? "unavailable")")
+        if let stopReason { appendLog("Last run: \(stopReason). Its log is kept (\(RunEnd.stoppedName)) and goes with the next log sent.") }
+        #if !targetEnvironment(macCatalyst)
+        IOSDiagnostics.shared.log = { [weak self] line in self?.appendLog(line) }
+        IOSDiagnostics.shared.start()
+        #endif
+        RunEnd.testCrashIfAsked(atLaunch: true)
         GameFolder.log = { [weak self] line in self?.appendLog(line) }
         // A game folder moved into Files › On My iPhone › GTA V Port is found without any picking.
         lookForGameFiles()
@@ -547,6 +555,9 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(leftApp), name: UIApplication.willTerminateNotification, object: nil)
         #endif
         // The log says when the app was in the background, so measurements and stalls can be told apart.
+        // An end while the game runs in the foreground is a stop (GTA-159); leaving the app first is not.
+        NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: .main) { _ in RunEnd.playing(false) }
+        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in RunEnd.playing(self?.engineStarted == true) }
         for (name, label) in [(UIApplication.willResignActiveNotification, "inactive"), (UIApplication.didEnterBackgroundNotification, "in the background"),
                               (UIApplication.willEnterForegroundNotification, "back in the foreground"), (UIApplication.didBecomeActiveNotification, "active")] {
             NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in self?.appendLog("App \(label).") }
@@ -663,6 +674,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
             NotificationCenter.default.addObserver(self, selector: #selector(thermalChanged), name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
             thermalChanged()
         }
+        if line == "WORLD_READY" { RunEnd.testCrashIfAsked() }
         if line == "WORLD_READY", stableTimer == nil {
             // Three minutes in the world counts as a launch that fits in memory.
             stableTimer = Timer.scheduledTimer(withTimeInterval: 180, repeats: false) { _ in GameSettings.shared.markBootStable(); ModGuard.startedStably() }
@@ -814,6 +826,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         home.settingsButton.isHidden = true
         home.layoutButton.isHidden = true
         engineStarted = true
+        RunEnd.playing(true)
         setNeedsUpdateOfPrefersPointerLocked()   // the pointer lock depends on engineStarted
         #if targetEnvironment(macCatalyst)
         macGameSize = view.bounds.size
@@ -1435,9 +1448,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: AppLanguage.choose("OK"), style: .cancel))
         alert.addAction(UIAlertAction(title: AppLanguage.choose("Share log"), style: .default) { _ in
-            let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let logs = ["native-port-previous.log", "native-port.log"].map { documents.appendingPathComponent($0) }
-                .filter { FileManager.default.fileExists(atPath: $0.path) }
+            let logs = RunEnd.reportLogs().map(\.url)
             let sheet = UIActivityViewController(activityItems: logs, applicationActivities: nil)
             sheet.popoverPresentationController?.sourceView = self.view
             self.present(sheet, animated: true)
@@ -1502,6 +1513,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
     }
 
     @objc private func leftApp() {
+        RunEnd.playing(false)
         if stableTimer?.isValid != false { GameSettings.shared.markBootInterrupted() }
         playStats.sessionEnded()
     }
