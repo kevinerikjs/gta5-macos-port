@@ -7,3 +7,5 @@
 // alone. gameFile(pcPath) gives the game's own loose file for a text/xml edit, or nil. When gameReadable
 // is false (the game folder isn't known yet) such edits are left out and *needsGame is set.
 NSArray<NSArray *> *pg_oiv_expand(NSString *modsFolder,NSString *(^gameFile)(NSString *pcPath),bool gameReadable,bool *needsGame,NSArray<NSString *> **skip);
+// A package the game uses this launch (GTA-153, NativeAssets.m).
+void pg_mod_path_used(const char *path);

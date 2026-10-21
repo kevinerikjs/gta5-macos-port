@@ -38,7 +38,24 @@ void PGSetAssetServer(const char *url);
 void PGSetLocalGameFolder(const char *dataPath);
 // The minimap's place (GTA-131, NativeAssets.m): offsets in the game's HUD units and a size factor; before the engine starts.
 void PGSetMinimapLayout(double dx, double dy, double scale);
+// Where help messages show (NativeAssets.m): the box's top-left corner in the game's HUD units (fractions of the
+// 16:9 HUD area from its top left; 0, 0 is the game's own place) and a size factor; before the engine starts.
+void PGSetHelpTextLayout(double x, double y, double scale);
 bool PGUsingLocalGameFolder(void);
+// Before PGStartEngine: Self Radio's song list from the songs in musicFolder (GTA-5, Source/NativeUserMusic.c).
+// Returns how many songs it lists; the game shows the station with 3 or more.
+int32_t PGUserMusicPrepare(const char *musicFolder, const char *filesRoot);
+// Self Radio's play order: 0 like a radio station (songs join midway, no skipping), 1 in order, 2 shuffle.
+void PGSetSelfRadioMode(int32_t mode);
+// A Self Radio song is playing now (its sound reached the game in the last second).
+bool PGSelfRadioAudible(void);
+// The next song, as the radio wheel's Next track does (not in the radio-station order).
+void PGSelfRadioNext(void);
+// Before PGStartEngine (GTA-153): true starts this once without anything from the Mods folder ("Start without mods").
+void PGSetModsOff(bool off);
+// The mods the game used this launch (GTA-153): the names of the Mods folder's top-level entries (a mod's folder,
+// or a file or game folder put in by hand), one per line, into out. Returns the length.
+size_t PGModsUsed(char *out, size_t capacity);
 void PGStartEngine(const char *manifestPath, const char *filesRoot, PGLogCallback, void *context);
 void PGUpdateController(PGControllerState state, double elapsedSeconds);
 // Player context: 0 on foot, otherwise the vehicle type + 1 (see NativeTouchContext.h).
@@ -76,6 +93,7 @@ typedef struct {
   uint32_t vehicleModel; // model name hash (joaat) of the vehicle the player is in, 0 on foot
   uint32_t pedModel;     // model name hash (joaat) of the player ped (a_c_chop while playing as Chop)
   bool trailerAttached;  // the player's vehicle pulls a trailer (the touch controls show Detach trailer)
+  bool selfRadioPlaying; // a Self Radio song is playing (the touch controls show Next song)
   bool passenger;        // in a vehicle, not in the driver's seat (taxi rides)
   bool taxiMenu;         // the taxi ride script (taxiservice) is running
   bool phoneBrowser;     // the phone's internet app (appinternet) is open

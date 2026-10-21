@@ -58,6 +58,24 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
     // Top left, or bottom left while the minimap sits at the top (GTA-131).
     private lazy var fpsAtTop = fpsLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8)
     private lazy var fpsAtBottom = fpsLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
+    /// iOS gives the game less than the city needs (the limit that recommends Ultra Performance; GTA-148). The FPS counter
+    /// then starts with a red warning triangle, so a screenshot of missing textures shows at once that it's this phone.
+    private lazy var lowMemoryDevice: Bool = {
+        #if targetEnvironment(macCatalyst)
+        return false
+        #else
+        return GameSettings.shared.tier.memoryLimitMB < 2600
+        #endif
+    }()
+    private lazy var lowMemoryMark: NSAttributedString = {
+        let triangle = NSTextAttachment()
+        triangle.image = UIImage(systemName: "exclamationmark.triangle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 11, weight: .bold))?
+            .withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+        triangle.bounds = CGRect(x: 0, y: -1.5, width: 13, height: 12)
+        let mark = NSMutableAttributedString(attachment: triangle)
+        mark.append(NSAttributedString(string: " "))
+        return mark
+    }()
     private func placeFPSLabel() {
         let bottom = GameSettings.shared.minimapAtTop
         fpsAtTop.isActive = !bottom
@@ -125,6 +143,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
     private var introView: IntroVideoView?
     private var lastCPU: (cpu: Double, wall: Double)?
     private var thermalFrameLimit: Int32 = -1
+    private var thermalPresentInterval = 0.0
 
     /// A hot phone runs slower (iOS lowers the chip's speed), so uncapped frame rates swing between
     /// 60 and 15 within minutes; a player's log went "serious" 30 s in. With "Steady frame rate when
@@ -135,20 +154,32 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         if ProcessInfo.processInfo.environment["PG_BENCHMARK"] != nil { return }
         DispatchQueue.main.async { [self] in
             let cap = GameSettings.shared.frameRateCap
-            let chosen: Int32 = cap == 0 ? 0 : cap == 60 ? 1 : 2
+            let chosen = GameSettings.engineFrameLimit(cap)
             let state = ProcessInfo.processInfo.thermalState
             var limit = chosen
             if GameSettings.shared.steadyWhenHot {
-                if state == .fair, chosen == 0 { limit = 1 }
+                if state == .fair, cap == 0 { limit = 1 }
                 if state == .serious || state == .critical { limit = 2 }
             }
-            guard limit != thermalFrameLimit else { return }
-            if thermalFrameLimit >= 0 || limit != chosen {
-                appendLog("Thermal state \(["nominal", "fair", "serious", "critical"][min(3, state.rawValue)]): frame limit \(limit == 0 ? "off" : limit == 1 ? "60 FPS" : "30 FPS").")
+            // 40 FPS paces the pictures in the renderer (the engine runs unlimited); 30 when hot replaces it.
+            let interval = limit == chosen ? GameSettings.presentInterval(cap) : 0
+            guard limit != thermalFrameLimit || interval != thermalPresentInterval else { return }
+            if thermalFrameLimit >= 0 || limit != chosen || interval > 0 {
+                appendLog("Thermal state \(["nominal", "fair", "serious", "critical"][min(3, state.rawValue)]): frame limit \(interval > 0 ? "40 FPS (paced)" : limit == 0 ? "off" : limit == 1 ? "60 FPS" : "30 FPS").")
                 PGSetFrameLimit(limit)
+                PGSetPresentInterval(interval)
             }
             thermalFrameLimit = limit
+            thermalPresentInterval = interval
+            updateDisplayRate()
         }
+    }
+    /// ProMotion screens only run above 60 Hz when the app asks: "Unlocked" asks for up to 120, and so does 40 FPS
+    /// (every third refresh of 120 Hz).
+    private func updateDisplayRate() {
+        let cap = GameSettings.shared.frameRateCap
+        let top = Float(UIScreen.main.maximumFramesPerSecond)
+        displayLink?.preferredFrameRateRange = cap == 0 || cap == 40 ? CAFrameRateRange(minimum: min(60, top), maximum: top, preferred: top) : .default
     }
     private var lastHealth: [UInt64] = [0, 0, 0, 0, 0, 0, 0, 0]
     private var padProof: PGPadState?
@@ -174,6 +205,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
     private var debugPad = PGPadState(), debugPadUntil: CFTimeInterval = 0
     private(set) var debugLastPad = PGPadState()
     var debugTouchControls: TouchControlsView { touchControls }
+    func debugPressPlay() { launchButton.sendActions(for: .touchUpInside) }
     func debugHold(_ pad: PGPadState, for seconds: Double) { debugPad = pad; debugPadUntil = CACurrentMediaTime() + seconds }
     override var canBecomeFirstResponder: Bool { true }
     override func viewDidAppear(_ animated: Bool) {
@@ -324,12 +356,13 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         launchButton.configurationUpdateHandler = { [weak self] button in
             playStyle?(button)
             // Before Play is pressed a disabled button still says Play (files or mode missing).
-            let title = button.isEnabled || !(self?.engineStarted ?? false) ? AppLanguage.choose("Play") : button.title(for: .disabled) ?? AppLanguage.choose("Loading…")
+            let play = ModGuard.withoutModsNextStart ? AppLanguage.choose("Play without mods") : AppLanguage.choose("Play")
+            let title = button.isEnabled || !(self?.engineStarted ?? false) ? play : button.title(for: .disabled) ?? AppLanguage.choose("Loading…")
             var text = AttributedString(title)
             text.font = Theme.display(20, .heavy)
             text.foregroundColor = button.isEnabled ? UIColor(red: 0.16, green: 0.07, blue: 0.02, alpha: 1) : UIColor(white: 1, alpha: 0.7)
             button.configuration?.attributedTitle = text
-            button.configuration?.image = title == AppLanguage.choose("Play") ? UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(weight: .heavy)) : nil
+            button.configuration?.image = title == play ? UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(weight: .heavy)) : nil
         }
         launchButton.addTarget(self, action: #selector(startEngine), for: .touchUpInside)
         output.isEditable = false
@@ -444,7 +477,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         NSLayoutConstraint.activate([
             fpsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 12),
             fpsAtTop,
-            fpsLabel.widthAnchor.constraint(equalToConstant: 68),
+            fpsLabel.widthAnchor.constraint(equalToConstant: lowMemoryDevice ? 84 : 68),
             fpsLabel.heightAnchor.constraint(equalToConstant: 24),
             inputTestLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 12),
             inputTestLabel.topAnchor.constraint(equalTo: fpsLabel.bottomAnchor, constant: 5),
@@ -499,11 +532,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(lookForGameFiles), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(installChanged), name: .gameInstallChanged, object: nil)
         displayLink = CADisplayLink(target: self, selector: #selector(pollController))
-        // ProMotion screens only run above 60 Hz when the app asks: "Unlocked" asks for up to 120.
-        if GameSettings.shared.frameRateCap == 0 {
-            let top = Float(UIScreen.main.maximumFramesPerSecond)
-            displayLink?.preferredFrameRateRange = CAFrameRateRange(minimum: min(60, top), maximum: top, preferred: top)
-        }
+        updateDisplayRate()
         displayLink?.add(to: .main, forMode: .common)
         #if targetEnvironment(simulator)
         DebugChannel.shared.start(self)
@@ -527,9 +556,18 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
             guard let self else { return }
             UpdateCheck.run(from: self) { [weak self] line in DispatchQueue.main.async { self?.appendLog(line) } }
         }
-        if let recovery = GameSettings.shared.recoverFromFailedBoot() {
-            appendLog("Previous launch on \(recovery.failed.title) did not finish; lowered to \(recovery.fallback.title)\(recovery.resetHeight.map { ", resolution \($0)p back to Auto" } ?? "").")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { self.explainRecovery(recovery) }
+        // GTA-153: after an update, mods the previous version had on but didn't use stay off; after a start with
+        // mods that didn't finish, the mods are the first suspect (17% of starts with mods failed on v1.4.4, 1.5% without).
+        let modsSwitchedOff = ModGuard.afterUpdate()
+        if !modsSwitchedOff.isEmpty {
+            appendLog("Mods: \(modsSwitchedOff.count) switched off after the update (the previous version didn't use them): \(modsSwitchedOff.joined(separator: ", ")).")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { self.explainModsSwitchedOff(modsSwitchedOff) }
+        }
+        if ModGuard.previousStartFailedWithMods(bootPending: GameSettings.shared.previousBootFailed) {
+            appendLog("Previous start had mods on and didn't finish; offering to start without them.")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { self.offerStartWithoutMods() }
+        } else {
+            recoverGraphicsAfterFailedBoot()
         }
         if ProcessInfo.processInfo.arguments.contains("--touch-controls-preview") {
             diagnosticsOverlay?.isHidden = true
@@ -548,6 +586,13 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         }
         if ProcessInfo.processInfo.arguments.contains("--open-layout-editor") {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) { self.showLayoutEditor() }
+        }
+        if ProcessInfo.processInfo.arguments.contains("--open-help-text-editor") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                let editor = HelpTextEditorController()
+                editor.modalPresentationStyle = .fullScreen
+                self.present(editor, animated: false)
+            }
         }
         if ProcessInfo.processInfo.arguments.contains("--open-game-files") || ProcessInfo.processInfo.arguments.contains("--install-link") {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) { self.showGameFiles() }
@@ -607,7 +652,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
             movementProofStarted = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 30) { self.verifyMovement() }
         }
-        if line == "WORLD_READY" { PGSetTargetingMode(Int32(GameSettings.shared.targetingMode)); if worldReadyAt == nil { worldReadyAt = CACurrentMediaTime() } }
+        if line == "WORLD_READY" { PGSetTargetingMode(Int32(GameSettings.shared.targetingMode)); PGSetSelfRadioMode(Int32(GameSettings.shared.selfRadioMode)); if worldReadyAt == nil { worldReadyAt = CACurrentMediaTime() } }
         // Debug: --open-settings-in-game opens Settings 10 s into the world.
         if line == "WORLD_READY", ProcessInfo.processInfo.arguments.contains("--open-settings-in-game") {
             DispatchQueue.main.asyncAfter(deadline: .now() + 10) { self.showSettings() }
@@ -620,7 +665,9 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         }
         if line == "WORLD_READY", stableTimer == nil {
             // Three minutes in the world counts as a launch that fits in memory.
-            stableTimer = Timer.scheduledTimer(withTimeInterval: 180, repeats: false) { _ in GameSettings.shared.markBootStable() }
+            stableTimer = Timer.scheduledTimer(withTimeInterval: 180, repeats: false) { _ in GameSettings.shared.markBootStable(); ModGuard.startedStably() }
+            // Which switched-on mods the game used (scripts load once the player exists), for the next update (GTA-153).
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30) { [weak self] in self?.recordModUse() }
             #if targetEnvironment(simulator)
             // Automation: --test-pause-resize <s> opens the pause menu that long into play, then resizes live
             // 3 s later, as Settings does when the resolution changes while the game is paused.
@@ -659,6 +706,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         // may be hidden (it is with a controller), so a panel offers Send log and Settings (GTA-21).
         if engineStarted, line.hasPrefix("Native game thread stopped:") || line.hasPrefix("Native boot stopped:")
             || line.hasPrefix("Engine stopped at unported host function:") {
+            if stableTimer?.isValid != false { ModGuard.stoppedWhileStarting() }
             showEngineStopped()
         }
         if !written { LogWriter.shared.write(line) }
@@ -724,6 +772,19 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
             appendLog("Asset manifest is missing from the app bundle.")
             return
         }
+        // No game files on this device and a server that doesn't answer: the game would start with no files and
+        // stop (8 v1.4.4 logs, GTA-153). Check the server once more; if it still doesn't answer, open Game files.
+        if !engineStarted, !GameFolder.isChosen, serverAnswered != true, !ProcessInfo.processInfo.arguments.contains("--boot-engine") {
+            launchButton.isEnabled = false
+            testAssetServer { [weak self] answered in
+                guard let self else { return }
+                if answered { self.startEngine(); return }
+                self.appendLog("Play: no game files on this device and the server doesn't answer (\(self.serverProblem)); opened Game files.")
+                self.updatePlayEnabled()
+                self.showGameFiles()
+            }
+            return
+        }
         #if targetEnvironment(macCatalyst)
         // Fullscreen first: the game keeps the size it starts at, so starting in a window and then going
         // fullscreen stretches the picture. Waits for the switch (about a second), then starts.
@@ -766,6 +827,8 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         PGSetStartMode(testMap ? 3 : Int32(mode.rawValue))
         let minimap = GameSettings.shared.minimapLayout
         PGSetMinimapLayout(minimap.dx, minimap.dy, minimap.scale)
+        let help = GameSettings.shared.helpTextLayout
+        PGSetHelpTextLayout(help.x, help.y, help.scale)
         PGSetSubtitleRaise(GameSettings.shared.subtitlesAboveHomeBar ? 0.05 : 0)
         TouchControlsView.minimapLayout = minimap
         placeFPSLabel()
@@ -780,10 +843,17 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         launchButton.setTitle(AppLanguage.choose("Loading…"), for: .disabled); launchButton.setNeedsUpdateConfiguration()
         appendLog("Native touch controls support held buttons, sprint and weapon selection.")
         installModsForTest()
-        noticeMods()
+        if ModGuard.starting() { PGSetModsOff(true) } else { noticeMods() }
+        noticeLowMemory()
         startAudio()
         let (root, rootNote) = EnginePaths.filesRoot()
         if let rootNote { appendLog(rootNote) }
+        // Self Radio (GTA-5): the song list the game reads, from Files › GTA V Port › Self Radio.
+        try? FileManager.default.createDirectory(at: SelfRadio.folder, withIntermediateDirectories: true)
+        let songs = Int(PGUserMusicPrepare(SelfRadio.folder.path, root))
+        if songs > 0 || !SelfRadio.files().isEmpty {
+            appendLog("Self Radio: \(songs) songs" + (songs < SelfRadio.minimumSongs ? " (the station shows with \(SelfRadio.minimumSongs) or more)." : "."))
+        }
         // The game's own settings.xml only holds graphics and display options, which the app sets on
         // every launch. Some choices in the game's pause menu (MSAA, DirectX version, resolution)
         // stopped it from starting at all, so the file is reset before each launch.
@@ -806,6 +876,19 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         path.withCString { manifest in
             root.withCString { PGStartEngine(manifest, $0, engineLog, Unmanaged.passUnretained(self).toOpaque()) }
         }
+    }
+
+    /// GTA-153: which of the switched-on mods this start used; the next update keeps the unused ones off.
+    private func recordModUse() {
+        guard !ModGuard.startsWithoutMods else { return }
+        var buffer = [CChar](repeating: 0, count: 65536)
+        PGModsUsed(&buffer, buffer.count)
+        let used = Set(String(cString: buffer).split(separator: "\n").map(String.init))
+        let on = ModInstaller.installed().filter { $0.enabled && $0.waiting == 0 }
+        guard !on.isEmpty else { return }
+        ModGuard.recordUse(used)
+        let unused = on.filter { !used.contains($0.name) }.map(\.name)
+        appendLog("Mods: this start used \(on.count - unused.count) of \(on.count) switched-on mods\(unused.isEmpty ? "" : "; not used: " + unused.joined(separator: ", ")).")
     }
 
     private func verifyMovement() {
@@ -1116,7 +1199,7 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         if !GameFolder.archivesFound.isEmpty { files += "; archives: " + GameFolder.archivesFound.map(\.lastPathComponent).joined(separator: ", ") }
         let free = (try? GameFolder.appFolder.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage).flatMap { $0 }
         let settings = GameSettings.shared
-        appendLog("Startup: game files \(files). Free storage \(free.map { ByteCountFormatter.string(fromByteCount: $0, countStyle: .file) } ?? "unknown"). Memory limit \(settings.tier.memoryLimitMB) MB (increased memory limit \(DeviceTier.increasedMemoryGranted.map { $0 ? "granted" : "not granted" } ?? "unknown")). \(settings.gameMode.title), \(settings.graphicsPreset.title).")
+        appendLog("Startup: game files \(files). Free storage \(free.map { ByteCountFormatter.string(fromByteCount: $0, countStyle: .file) } ?? "unknown"). Memory limit \(settings.tier.memoryLimitMB) MB (increased memory limit \(DeviceTier.increasedMemoryGranted.map { $0 ? "granted" : "not granted" } ?? "unknown")). \(settings.gameMode.title), \(settings.graphicsPreset.title).\(GameFolder.insideLiveContainer ? " Inside LiveContainer." : "")")
     }
     @objc private func installChanged() {
         guard !engineStarted else { return }
@@ -1236,9 +1319,30 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
                      message: AppLanguage.interpolate(AppLanguage.choose("{arg0} mod files are active. Mods can cause crashes and glitches that we can't fix: ask about them in the Mods topic on Telegram. Send logs only for problems that also happen without mods."), [String(count)]))
     }
 
+    /// Low memory (GTA-148): once, on a device where iOS gives the game less than the city needs (the limit that
+    /// recommends Ultra Performance), says what to expect there and that more memory is what helps.
+    private func noticeLowMemory() {
+        #if !targetEnvironment(macCatalyst)
+        let limit = GameSettings.shared.tier.memoryLimitMB, key = "lowMemoryNoticeShown"
+        guard lowMemoryDevice, !UserDefaults.standard.bool(forKey: key) else { return }
+        #if targetEnvironment(simulator)
+        if ProcessInfo.processInfo.environment["PG_TEST_NO_MODS_NOTICE"] != nil { return }   // the harness: no notices
+        #endif
+        UserDefaults.standard.set(true, forKey: key)
+        var message = AppLanguage.interpolate(AppLanguage.choose("iOS gives the game only about {arg0} MB on this device, less than the city needs. Expect a less detailed city and textures that load late or stay missing. That's normal here, so there's no need to report it."), [String(limit)])
+        if DeviceTier.increasedMemoryGranted != true {
+            message += AppLanguage.choose("\n\nMore memory helps the most: install the app with AltStore 2.3 or newer, which adds extra memory on a free Apple ID.")
+        }
+        message += AppLanguage.choose("\n\nThe red triangle next to the FPS counter marks a phone with this little memory.")
+        appendLog("Low memory notice shown (app limit \(limit) MB).")
+        showWhenFree(title: AppLanguage.choose("Low memory on this device"), message: message)
+        #endif
+    }
+
     private func showGameFiles() {
         guard !engineStarted, presentedViewController == nil else { return }
         let controller = GameFilesViewController()
+        controller.serverProblem = GameFolder.isChosen || serverAnswered != false || serverProblem.isEmpty ? nil : serverProblem
         controller.onChange = { [weak self] in self?.updateServerStatus() }
         controller.onServer = { [weak self] server in
             GameFolder.clear()
@@ -1262,24 +1366,61 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         alert.addAction(UIAlertAction(title: AppLanguage.choose("OK"), style: .default))
         present(alert, animated: true)
     }
+    /// The server answered with the game's file list (nil: not checked yet).
+    private var serverAnswered: Bool?
+    private var serverProblem = ""
     /// Checks that the server answers with the game's file list.
-    private func testAssetServer() {
+    private func testAssetServer(then done: ((Bool) -> Void)? = nil) {
         var server = GameSettings.shared.assetServer
         while server.hasSuffix("/") { server.removeLast() }
         guard let url = URL(string: server + "/data/manifest.json"), url.scheme?.hasPrefix("http") == true else {
-            updateServerStatus(AppLanguage.choose("not a valid address")); return
+            serverAnswered = false; serverProblem = "not a valid address"
+            updateServerStatus(AppLanguage.choose("not a valid address")); done?(false); return
         }
+        serverAnswered = nil
         updateServerStatus(AppLanguage.choose("checking…"))
         var request = URLRequest(url: url, timeoutInterval: 10)
         request.httpMethod = "HEAD"
         URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
             let code = (response as? HTTPURLResponse)?.statusCode ?? 0
             DispatchQueue.main.async {
-                if code == 200 { self?.updateServerStatus(AppLanguage.choose("connected ✓")) }
-                else if let error { self?.updateServerStatus(AppLanguage.interpolate(AppLanguage.choose("can't connect ({arg0})"), [error.localizedDescription])) }
-                else { self?.updateServerStatus(AppLanguage.interpolate(AppLanguage.choose("answered {arg0}; is the address the folder with data/ and b/?"), [String(code)])) }
+                guard let self else { return }
+                self.serverAnswered = code == 200
+                self.serverProblem = code == 200 ? "" : error?.localizedDescription ?? "HTTP \(code)"
+                if code == 200 { self.updateServerStatus(AppLanguage.choose("connected ✓")) }
+                else if let error { self.updateServerStatus(AppLanguage.interpolate(AppLanguage.choose("can't connect ({arg0})"), [error.localizedDescription])) }
+                else { self.updateServerStatus(AppLanguage.interpolate(AppLanguage.choose("answered {arg0}; is the address the folder with data/ and b/?"), [String(code)])) }
+                done?(code == 200)
             }
         }.resume()
+    }
+    private func recoverGraphicsAfterFailedBoot() {
+        guard let recovery = GameSettings.shared.recoverFromFailedBoot() else { return }
+        appendLog("Previous launch on \(recovery.failed.title) did not finish; lowered to \(recovery.fallback.title)\(recovery.resetHeight.map { ", resolution \($0)p back to Auto" } ?? "").")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { self.explainRecovery(recovery) }
+    }
+    /// The previous start had mods on and didn't finish (GTA-153): start once without them, or keep them.
+    private func offerStartWithoutMods() {
+        let alert = UIAlertController(title: AppLanguage.choose("The game stopped while starting"),
+                                      message: AppLanguage.choose("Your mods were on. A broken or unsupported mod is the most common reason a start fails. Start without mods this time? They stay installed, and the next start uses them again."),
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: AppLanguage.choose("Start without mods"), style: .default) { _ in
+            ModGuard.withoutModsNextStart = true
+            GameSettings.shared.markBootInterrupted()   // the mods get the blame, not the graphics settings
+            self.appendLog("Chose to start without mods.")
+            self.launchButton.setNeedsUpdateConfiguration()
+        })
+        alert.addAction(UIAlertAction(title: AppLanguage.choose("Keep my mods"), style: .cancel) { _ in
+            self.appendLog("Kept the mods after the failed start.")
+            self.recoverGraphicsAfterFailedBoot()
+        })
+        present(alert, animated: true)
+    }
+    /// After an update: the mods switched off because the previous version didn't use them (GTA-153).
+    private func explainModsSwitchedOff(_ names: [String]) {
+        let list = names.prefix(10).map { "• " + $0 }.joined(separator: "\n") + (names.count > 10 ? "\n" + AppLanguage.interpolate(AppLanguage.choose("…and {arg0} more"), [String(names.count - 10)]) : "")
+        showWhenFree(title: AppLanguage.choose("Some mods are off after the update"),
+                     message: AppLanguage.choose("This version handles mods differently. The previous version didn't load these, so they could act differently now. They're off until you turn them on in Settings › Mods:") + "\n\n" + list)
     }
     /// The popup after a launch that ran out of memory: what happened, what changed, and the way back.
     private func explainRecovery(_ recovery: GameSettings.BootRecovery) {
@@ -1643,7 +1784,14 @@ final class NativePortViewController: UIViewController, MTKViewDelegate {
         if now - lastFPSLabelUpdate >= 0.25 {
             if touchControlsAvailable { fpsLabel.isHidden = !GameSettings.shared.showFPS }
             let fps = PGRenderedFramesPerSecond()
-            fpsLabel.text = fps > 0 ? String(format: "%.0f FPS", fps) : "— FPS"
+            let text = fps > 0 ? String(format: "%.0f FPS", fps) : "— FPS"
+            if lowMemoryDevice {
+                let line = NSMutableAttributedString(attributedString: lowMemoryMark)
+                line.append(NSAttributedString(string: text, attributes: [.font: fpsLabel.font as Any, .foregroundColor: UIColor.white]))
+                fpsLabel.attributedText = line
+            } else {
+                fpsLabel.text = text
+            }
             lastFPSLabelUpdate = now
         }
         let elapsed = lastControllerPoll.map { now - $0 } ?? (1.0 / 60.0)

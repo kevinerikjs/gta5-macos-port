@@ -22,6 +22,8 @@
 #include <TargetConditionals.h>
 #include <pthread.h>
 #include <mutex>
+#include <unordered_map>
+#include <sys/mman.h>
 #include <functional>
 #include <algorithm>
 #include <cmath>
@@ -61,7 +63,15 @@ struct SlabFree { uint64_t serial; int32_t slab; uint32_t off, len; };
 static std::vector<SlabFree> gSlabPending;
 static const uint32_t kSlabBytes = 4 << 20, kSlabLargest = 64 << 10, kSlabAlign = 256;
 static uint64_t currentSerial();
+extern "C" {
+uint32_t PGMeshRelease(uint32_t oid, const uint8_t *contents, uint32_t bytes, uint64_t *firstPage, uint32_t *pageCount, uint32_t *pageOffset);
+void PGMeshForget(uint64_t firstPage, uint32_t pageCount, int gone);
+void PGMeshReleaseStats(uint64_t *released, uint64_t *byFault, uint64_t *byForget, uint64_t *byTouch, uint64_t *mismatched, uint64_t *page,
+                        uint64_t *orphanedPages, uint64_t *orphanWritten, uint64_t *orphanRead);
+int PGMeshReleaseOn(void);
+}
 Buffer::~Buffer() {
+	if (meshPages) PGMeshForget(meshPage, meshPages, 1);
 	if (!shadow.empty()) { gBufferStats.cbCount--; gBufferStats.cbBytes -= (int64_t)shadow.size(); if (version) gBufferStats.cbWritten--; }
 	if (slab >= 0) gSlabPending.push_back({currentSerial(), slab, (uint32_t)base, (bytes + kSlabAlign - 1) & ~(kSlabAlign - 1)});
 	if (!counted) return;
@@ -310,6 +320,8 @@ static id<MTLBlitCommandEncoder> blitEncoder() {
 static void storeResult(uint64_t addr, uint64_t value, uint32_t seq);
 enum CommitReason { CPresent, CFence, CReadback, CIdle, CReasons };
 static const char *kCommitNames[CReasons] = {"present", "fence", "readback", "idle queries"};
+// Settings › Graphics › Frame rate 40 (GTA-154): how long each picture stays up at least (0: no pacing here).
+static std::atomic<double> gPresentInterval{0};
 static void commit(CommitReason reason, id<CAMetalDrawable> drawable = nil) {
 	endEncoders();
 	if (!R->pendingQueries.empty()) {
@@ -329,7 +341,17 @@ static void commit(CommitReason reason, id<CAMetalDrawable> drawable = nil) {
 		if (R->visNext > OCCLUSION_SLOTS - 1024 && !R->activeOcclusion) R->visNext = 0;
 	}
 	id<MTLCommandBuffer> cb = commandBuffer();
-	if (drawable) [cb presentDrawable:drawable];
+	// 40 FPS (Settings › Graphics › Frame rate): each picture stays up 1/40 s, every third refresh of a 120 Hz screen.
+	if (drawable) {
+		double interval = gPresentInterval.load();
+		if (interval <= 0) [cb presentDrawable:drawable];
+#if TARGET_OS_SIMULATOR
+		// The simulator's Metal has no minimum-duration present: the same pacing from present times, for tests.
+		else { static double next; double now = CACurrentMediaTime(); next = next > now && next - now < 1 ? next + interval : now + interval; [cb presentDrawable:drawable atTime:next - interval]; }
+#else
+		else [cb presentDrawable:drawable afterMinimumDuration:interval];
+#endif
+	}
 	uint64_t serial = R->serial++;
 	auto *callbacks = new std::vector<std::function<void()>>();
 	callbacks->swap(R->onComplete);
@@ -616,12 +638,73 @@ static void uploadTexture(const uint32_t *p) {
 	R->work.uploads += nowMs() - t0;
 	R->work.uploadBytes += p[11];
 }
+// Trace (PG_TRACE_HELD, GTA-148): does the engine keep its own copy of what it uploaded? Every texture level and
+// vertex or index buffer upload of at least 16 KB is remembered by its first and last 64 bytes, and twice in a run
+// the engine's resident memory is searched for them (8-byte steps; the renderer stops for some seconds). Found
+// means the same bytes sit in engine memory as well as on the GPU: memory the game holds twice.
+extern "C" const uint8_t *pg_engine_memory(uint64_t *size);
+struct Held { uint64_t head[8], tail[8]; uint32_t size; bool texture, found; };
+static int gTraceHeld = -1;
+static std::unordered_map<uint32_t, std::vector<Held>> gHeld;		// by object; renderer thread only
+static void rememberHeld(uint32_t oid, const uint8_t *data, uint32_t size, bool texture) {
+	if (gTraceHeld < 0) gTraceHeld = getenv("PG_TRACE_HELD") != NULL;
+	if (!gTraceHeld || size < 16384) return;
+	Held h; memcpy(h.head, data, 64); memcpy(h.tail, data + size - 64, 64); h.size = size; h.texture = texture; h.found = false;
+	gHeld[oid].push_back(h);
+}
+static void scanHeld() {
+	uint64_t memSize = 0; const uint8_t *mem = pg_engine_memory(&memSize);
+	if (!mem || !memSize) return;
+	const double t0 = nowMs(), MB = 1048576.0;
+	// First nonzero head word of each upload, in a bitmap (quick reject) and a multimap (index of that word).
+	std::vector<uint64_t> bits(1 << 18);
+	std::unordered_multimap<uint64_t, std::pair<Held *, int>> words;
+	uint64_t texBytes = 0, meshBytes = 0, texCount = 0, meshCount = 0;
+	for (auto &kv : gHeld) for (auto &h : kv.second) {
+		h.found = false;
+		(h.texture ? texBytes : meshBytes) += h.size; (h.texture ? texCount : meshCount)++;
+		for (int k = 0; k < 8; k++) if (h.head[k]) {
+			uint64_t b = (h.head[k] * 0x9E3779B97F4A7C15ull) >> 40;
+			bits[b >> 6] |= 1ull << (b & 63); words.emplace(h.head[k], std::make_pair(&h, k)); break;
+		}
+	}
+	// Only pages the engine has used are read (in memory or compressed); never-touched ones would become resident.
+	const size_t page = (size_t)getpagesize(), pages = (size_t)((memSize + page - 1) / page);
+	std::vector<char> resident(pages);
+	if (mincore((caddr_t)mem, (size_t)memSize, resident.data()) != 0) { logf("[metal] held twice [trace]: mincore failed"); return; }
+	uint64_t foundTex = 0, foundMesh = 0, nTex = 0, nMesh = 0, scanned = 0, compressed = 0;
+	for (size_t pg = 0; pg < pages; pg++) {
+		if (!(resident[pg] & (MINCORE_INCORE | MINCORE_PAGED_OUT))) continue;		// in memory or compressed: never-touched pages are skipped
+		const uint64_t start = pg * page, end = std::min<uint64_t>(memSize, start + page);
+		scanned += end - start;
+		if (!(resident[pg] & MINCORE_INCORE)) compressed += end - start;
+		for (uint64_t off = start; off + 8 <= end; off += 8) {
+			uint64_t w; memcpy(&w, mem + off, 8);
+			if (!w) continue;
+			uint64_t b = (w * 0x9E3779B97F4A7C15ull) >> 40;
+			if (!(bits[b >> 6] >> (b & 63) & 1)) continue;
+			auto range = words.equal_range(w);
+			for (auto it = range.first; it != range.second; ++it) {
+				Held &h = *it->second.first;
+				if (h.found || off < (uint64_t)it->second.second * 8) continue;
+				const uint64_t at = off - (uint64_t)it->second.second * 8;
+				if (at + h.size > memSize || memcmp(mem + at, h.head, 64) || memcmp(mem + at + h.size - 64, h.tail, 64)) continue;
+				h.found = true;
+				if (h.texture) { foundTex += h.size; nTex++; } else { foundMesh += h.size; nMesh++; }
+			}
+		}
+	}
+	logf("[metal] held twice [trace]: textures %.0f of %.0f MB uploaded are still in engine memory (%llu of %llu), meshes %.0f of %.0f MB (%llu of %llu); searched %.0f MB used (%.0f MB of it compressed) of %.0f MB in %.0f ms",
+	     foundTex / MB, texBytes / MB, (unsigned long long)nTex, (unsigned long long)texCount, foundMesh / MB, meshBytes / MB, (unsigned long long)nMesh, (unsigned long long)meshCount,
+	     scanned / MB, compressed / MB, memSize / MB, nowMs() - t0);
+}
 static void uploadTextureInner(const uint32_t *p) {
 	Texture *t = texture(p[0]);
 	if (!t || !t->tex) return;
 	uint32_t mip = p[1], slice = p[2], x = p[3], y = p[4], z = p[5], w = p[6], h = p[7], d = std::max(1u, p[8]);
 	uint32_t bpr = p[9], rpi = p[10], size = p[11];
 	const uint8_t *data = (const uint8_t *)(p + 12);
+	if (!x && !y && !z) rememberHeld(p[0], data, size, true);
 	if (mip >= t->mips) return;
 	if (mip < t->skip) return;		// Lite: the dropped level
 	const uint32_t level = mip - t->skip;		// the GPU texture's level for this mip
@@ -740,10 +823,12 @@ static void uploadBuffer(const uint32_t *p, bool noOverwrite) {
 	if (!b) return;
 	uint32_t offset = p[1], size = p[2];
 	const uint8_t *data = (const uint8_t *)(p + 3);
+	if (b->meshPages) { PGMeshForget(b->meshPage, b->meshPages, 0); b->meshPages = 0; }		// rewritten: the engine's bytes go back first
 	if (!b->shadow.empty() && offset < b->shadow.size()) {
 		memcpy(b->shadow.data() + offset, data, std::min<size_t>(size, b->shadow.size() - offset));
 		b->cbFrame = UINT64_MAX; if (!b->version++) gBufferStats.cbWritten++;
 	}
+	if (!offset && b->shadow.empty() && (b->bind & (BIND_VB | BIND_IB))) rememberHeld(p[0], data, size, false);
 	if (!b->buf || offset >= b->bytes) return;
 	size = std::min(size, b->bytes - offset);
 	if (!noOverwrite && inFlight(b->lastUse)) {
@@ -766,6 +851,11 @@ static void uploadBuffer(const uint32_t *p, bool noOverwrite) {
 		b->lastUse = 0;
 	}
 	memcpy((uint8_t *)b->buf.contents + b->base + offset, data, size);
+	// Mesh release (GTA-152): the whole mesh is in buf now, so the engine's copy of it can go.
+	if (offset + size >= b->size && (b->bind & (BIND_VB | BIND_IB)) && !(b->bind & ~(BIND_VB | BIND_IB)) && !b->misc && PGMeshReleaseOn()) {
+		uint64_t first; uint32_t count, at;
+		if (PGMeshRelease(p[0], (const uint8_t *)b->buf.contents + b->base, b->size, &first, &count, &at)) { b->meshPage = first; b->meshPages = count; }
+	}
 }
 
 // A constant buffer's current contents at a GPU address valid for this frame, with at least `need` bytes readable.
@@ -2028,6 +2118,7 @@ static void capture(Texture *t, const std::string &name, id<MTLRenderPipelineSta
 // brings it to the screen's own resolution (up to 3 times the render size) with edge-aware sharpening.
 static std::atomic<bool> gUpscale{false};
 extern "C" void PGMetalRendererSetUpscaling(int on) { gUpscale.store(on != 0); }
+extern "C" void PGMetalRendererSetPresentInterval(double seconds) { gPresentInterval.store(seconds > 0 && seconds < 1 ? seconds : 0); }
 #if PG_METALFX
 static struct { id<MTLFXSpatialScaler> scaler; id<MTLTexture> out; uint32_t inW, inH, outW, outH; MTLPixelFormat format; bool unsupported; } FX;
 static id<MTLTexture> upscaled(Texture *t) {
@@ -2216,6 +2307,7 @@ static void destroyObject(uint32_t oid) {
 	if (o->kind == OQuery) for (auto &pq : R->pendingQueries) if (pq.q == o) pq.q = nullptr;
 	if (o->kind == OShader) { Shader *s = (Shader *)o; auto it = s->info ? R->shaderObjects.find(s->info) : R->shaderObjects.end(); if (it != R->shaderObjects.end() && it->second == oid) R->shaderObjects.erase(it); }
 	if (o->kind == OBuffer || o->kind == OLayout || o->kind == OState || o->kind == OShader) R->pipeDirty = true;
+	if (gTraceHeld > 0) gHeld.erase(oid);
 	R->objs.erase(oid);
 }
 static void resetState() {
@@ -2371,6 +2463,15 @@ static void report() {
 	double now = nowMs();
 	if (!R->statT) { R->statT = now; R->statDraws = R->draws; R->statPresents = R->presents; R->statSkips = R->skipped; R->statPending = R->pendingSkips; R->statCommits = R->commits; return; }
 	if (now - R->statT < 10000) return;
+	static int reports; reports++;
+	if (gTraceHeld > 0 && (reports == 20 || reports == 30)) scanHeld();
+	if (PGMeshReleaseOn()) {
+		uint64_t released, byFault, byForget, byTouch, mismatched, page, orphanedPages, orphanWritten, orphanRead;
+		PGMeshReleaseStats(&released, &byFault, &byForget, &byTouch, &mismatched, &page, &orphanedPages, &orphanWritten, &orphanRead);
+		logf("[metal] mesh release: %.0f MB of engine memory handed back now; pages released %llu, put back when the game read them %llu, before a file read %llu, when their buffer went away %llu; kept because they changed %llu; left empty with their buffer %llu (written again %llu, read again %llu)",
+		     (double)(released - byFault - byForget - byTouch - orphanWritten - orphanRead) * page / 1048576.0, (unsigned long long)released, (unsigned long long)byFault, (unsigned long long)byTouch,
+		     (unsigned long long)byForget, (unsigned long long)mismatched, (unsigned long long)orphanedPages, (unsigned long long)orphanWritten, (unsigned long long)orphanRead);
+	}
 	double frames = (double)(R->presents - R->statPresents);
 	logf("[metal] fps: %.1f (%.0f frames, %.0f draws/frame, %.1f command buffers/frame), skipped +%llu (waiting for pipelines +%llu), clamped %llu, pipelines %u (%u compiling), renderer busy %.1f ms/frame",
 	     frames * 1000 / (now - R->statT), frames, (R->draws - R->statDraws) / std::max(1.0, frames), (R->commits - R->statCommits) / std::max(1.0, frames),

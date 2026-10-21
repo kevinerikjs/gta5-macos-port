@@ -123,7 +123,7 @@ final class PlayStats {
             guard now - lastGameStart > 60 else { return }   // a world reload during play is not a new game
             lastGameStart = now; started = now
             let settings = GameSettings.shared
-            let experimental = [settings.smarterTextureLoading ? "textures" : nil, settings.lighterBigTextures ? "big_mips" : nil, settings.fastEngineThreads ? "threads" : nil, settings.compressedAlphaTextures ? "alpha_astc" : nil, settings.smallerEngineHeaps ? "small_heaps" : nil].compactMap { $0 }
+            let experimental = [settings.smarterTextureLoading ? "textures" : nil, settings.lighterBigTextures ? "big_mips" : nil, settings.fastEngineThreads ? "threads" : nil, settings.compressedAlphaTextures ? "alpha_astc" : nil, settings.steadyCityLowMemory ? "low_mem_city" : nil, settings.meshMemoryRelease ? "mesh_release" : nil, settings.smallerEngineHeaps ? "small_heaps" : nil].compactMap { $0 }
             Analytics.shared.track("game_start", ["mode": mode, "preset": String(describing: settings.graphicsPreset), "mods": mods, "script_mods": scriptMods,
                                                   "addon_packs": addonPacks, "experimental": experimental.joined(separator: ","), "files": GameFolder.isChosen || GameFolder.inAppFolder ? "local" : "server"])
         } else if line.hasPrefix("Mods active: ") {

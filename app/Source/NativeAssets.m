@@ -110,10 +110,37 @@ const char *pg_assets_manifest_override(void){
   if(modsWantLocal){static bool told;if(!told){told=true;pg_log("Mods: cars, skins and add-on packs inside the game's archives need the game files on this iPhone (Game files > A folder on this iPhone); with a server they are not loaded. Whole-file mods still work.");}}
   return modsManifest.fileSystemRepresentation;
 }
+// "Start without mods" (GTA-153): this launch reads an empty folder instead, so no mod file, pack or script loads.
+static bool modsOff;
 static NSString *modsFolder(void){
+  if(modsOff)return [NSTemporaryDirectory() stringByAppendingPathComponent:@"NoMods"];
   const char *test=getenv("PG_MODS_FOLDER");
   if(test&&*test)return @(test);
   return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES).firstObject stringByAppendingPathComponent:@"Mods"];
+}
+void PGSetModsOff(bool off){
+  if(modsOff==off||modsLocked)return;
+  modsOff=off;
+  if(off){[NSFileManager.defaultManager removeItemAtPath:modsFolder() error:nil];pg_log("Mods: off for this start (Start without mods); they stay installed.");}
+  if(modsBaseFiles)PGReapplyMods();
+}
+// Which of the Mods folder's top-level entries the game used this launch (GTA-153): after an update, a mod the
+// previous version didn't use stays off until the player turns it on (ModGuard in App/ModInstaller.swift).
+static NSMutableSet<NSString *> *modsUsed;
+void pg_mod_path_used(const char *path){
+  if(!path||modsOff)return;
+  NSString *root=[modsFolder().stringByResolvingSymlinksInPath stringByAppendingString:@"/"],*full=@(path).stringByResolvingSymlinksInPath;
+  if(![full hasPrefix:root])return;
+  NSString *entry=[full substringFromIndex:root.length].pathComponents.firstObject;
+  if(!entry.length)return;
+  @synchronized(NSFileManager.class){if(!modsUsed)modsUsed=[NSMutableSet set];[modsUsed addObject:entry];}
+}
+size_t PGModsUsed(char *out,size_t capacity){
+  if(!out||!capacity)return 0;
+  NSString *list;
+  @synchronized(NSFileManager.class){list=[modsUsed.allObjects componentsJoinedByString:@"\n"]?:@"";}
+  snprintf(out,capacity,"%s",list.UTF8String);
+  return strlen(out);
 }
 // Mods made for GTA V Enhanced (the 2025 PC edition, GTA-87) keep their models and textures in newer resource
 // versions, and the game here (the original PC version) stops on them: "Code is expecting version 162 but
@@ -239,6 +266,7 @@ static NSDictionary *modsBaseManifest;
 static NSArray *applyMods(NSArray *files,NSDictionary *manifest){
   modsBaseFiles=files;modsBaseManifest=manifest;modsWantLocal=false;
   modFiles=nil;modsManifest=nil;modArchiveCount=0;   // earlier slots are left allocated: the engine may hold pointers into them
+  @synchronized(NSFileManager.class){[modsUsed removeAllObjects];}
   NSString *folder=modsFolder();NSFileManager *fm=NSFileManager.defaultManager;
   [fm createDirectoryAtPath:folder withIntermediateDirectories:YES attributes:nil error:nil];
   NSString *readme=[folder stringByAppendingPathComponent:@"README.txt"];
@@ -255,7 +283,7 @@ static NSArray *applyMods(NSArray *files,NSDictionary *manifest){
   for(NSUInteger i=0;i<files.count;i++)ids[[files[i][0] lowercaseString]]=@(i);
   NSMutableArray *merged=nil;NSMutableDictionary *mods=[NSMutableDictionary dictionary];
   NSMutableDictionary<NSNumber *,NSMutableArray *> *inside=[NSMutableDictionary dictionary];   // archive id -> @[inner, full]
-  NSMutableArray<NSString *> *packs=[NSMutableArray array];
+  NSMutableArray<NSString *> *packs=[NSMutableArray array],*packSources=[NSMutableArray array];
   NSMutableDictionary<NSNumber *,NSMutableArray<NSString *> *> *packFiles=[NSMutableDictionary dictionary];   // size -> pack files added
   NSString *resolvedFolder=folder.stringByResolvingSymlinksInPath;
   // OpenIV packages (NativeOIV.m) become mod files at PC paths; their own files in Mods are left to them.
@@ -343,7 +371,7 @@ static NSArray *applyMods(NSArray *files,NSDictionary *manifest){
         NSString *pack=relative.pathComponents[2];
         NSString *path=[NSString stringWithFormat:@"x64/dlcPacks/%@/dlc.rpf",pack];
         mods[@(merged.count)]=full;ids[path.lowercaseString]=@(merged.count);
-        [merged addObject:@[path,size,@((uint64_t)NSDate.date.timeIntervalSince1970)]];[packs addObject:pack];
+        [merged addObject:@[path,size,@((uint64_t)NSDate.date.timeIntervalSince1970)]];[packs addObject:pack];[packSources addObject:full];
         char line[PATH_MAX+96];snprintf(line,sizeof line,"Mods: add-on pack %s (%llu bytes).",pack.UTF8String,size.unsignedLongLongValue);pg_log(line);continue;
       }
       char line[PATH_MAX+80];snprintf(line,sizeof line,"Mods: %s is not a game file path; ignored.",original.UTF8String);pg_log(line);continue;
@@ -351,11 +379,12 @@ static NSArray *applyMods(NSArray *files,NSDictionary *manifest){
     if(!merged)merged=[files mutableCopy];
     NSUInteger index=identity.unsignedIntegerValue;
     merged[index]=@[files[index][0],size,@((uint64_t)NSDate.date.timeIntervalSince1970)];
-    mods[identity]=full;
+    mods[identity]=full;pg_mod_path_used(full.fileSystemRepresentation);
     char line[PATH_MAX+96];snprintf(line,sizeof line,"Mods: %s replaces the game's file (%llu bytes, was %llu).",[files[index][0] UTF8String],size.unsignedLongLongValue,[files[index][1] unsignedLongLongValue]);pg_log(line);
   }
   // Files inside archives: slots past each archive's end.
   if((inside.count||packs.count)&&!localDataRoot){modsWantLocal=true;[inside removeAllObjects];[packs removeAllObjects];}
+  else for(NSString *source in packSources)pg_mod_path_used(source.fileSystemRepresentation);
   if(inside.count){
     if(!merged)merged=[files mutableCopy];
     modArchives=calloc(inside.count,sizeof *modArchives);
@@ -373,7 +402,7 @@ static NSArray *applyMods(NSArray *files,NSDictionary *manifest){
         if(got==4&&header[0]==0x37435352){slot->info.resource=1;slot->skip=0;slot->info.length=size;slot->info.low=header[2];slot->info.high=header[3];}
         else {slot->info.resource=0;slot->skip=0;slot->info.length=size;slot->info.low=(uint32_t)size;slot->info.high=0;}
         if(slot->info.length>=0xFFFFFF&&slot->info.resource){char line[PATH_MAX+96];snprintf(line,sizeof line,"Mods: %s is over 16 MB; not supported inside archives yet, ignored.",[item[1] lastPathComponent].UTF8String);pg_log(line);continue;}
-        slot->info.inner=slot->inner;slot->info.offset=cursor;cursor=align512(cursor+slot->info.length);a->count++;
+        slot->info.inner=slot->inner;slot->info.offset=cursor;cursor=align512(cursor+slot->info.length);a->count++;pg_mod_path_used(slot->file);
         char line[PATH_MAX+128];snprintf(line,sizeof line,"Mods: %s/%s comes from the Mods folder (%llu bytes%s).",a->path,slot->inner,slot->info.length,slot->info.resource?", game resource":"");pg_log(line);
       }
       if(!a->count)continue;
@@ -657,6 +686,7 @@ static int64_t readLocalAsset(uint32_t id,uint64_t offset,uint8_t *destination,u
 }
 static int64_t readAssetImpl(uint32_t id,uint64_t offset,uint8_t *destination,uint32_t length) {
   if(id>=assetFiles.count)return -1;
+  PGMeshTouch(destination,length);		// pread into a released mesh page would fail (GTA-152)
   if(localDataRoot||modFiles[@(id)])return readLocalAsset(id,offset,destination,length);
   if(assetTraceFD>=0&&length){char record[96];int n=snprintf(record,sizeof record,"%u,%llu,%u\n",id,offset,length);if(n>0&&n<sizeof record)write(assetTraceFD,record,(size_t)n);}
 #if TARGET_OS_SIMULATOR
@@ -835,12 +865,21 @@ static void gameConfigOverlay(uint32_t id,uint64_t offset,uint8_t *destination,i
 // alignY="B" a negative posY is higher up) and a size factor around the minimap's own corner. The expanded
 // map moves with it but stays on screen. A Mods replacement of the file is moved too. Same compact-and-pad as gameconfig.
 static double minimapDX, minimapDY, minimapScale = 1, subtitleRaise;
+// Help messages (the box with "Press ... to ..."): HUD_HELP_TEXT, top left of the HUD at 0, 0 (0.203 × 0.389). With the
+// minimap at the top left it covers the map, so the app can put it elsewhere: its top-left corner in HUD units
+// (fractions of the HUD area, from its top left) and a size factor (the text grows with it).
+static double helpX, helpY, helpScale = 1;
+static bool helpMoved;
 static NSData *frontendLayout;
 // Subtitles above the home bar (GTA-95): HUD_SUBTITLE_TEXT sits at the bottom edge (alignY="B" posY=".0051"), where
 // the home bar covers it; it moves up by this fraction of the screen height. (The game's safe zone doesn't move it.)
 void PGSetSubtitleRaise(double raise) { subtitleRaise = raise >= 0 && raise < 0.3 ? raise : 0; }
 void PGSetMinimapLayout(double dx, double dy, double scale) {
   minimapDX = dx; minimapDY = dy; minimapScale = scale > 0.4 && scale < 2.5 ? scale : 1;
+}
+void PGSetHelpTextLayout(double x, double y, double scale) {
+  helpX = x >= -0.1 && x <= 1 ? x : 0; helpY = y >= -0.1 && y <= 1 ? y : 0; helpScale = scale > 0.4 && scale < 2.5 ? scale : 1;
+  helpMoved = helpX != 0 || helpY != 0 || helpScale != 1;
 }
 NSData *PGFrontendRewrite(NSData *original, double dx, double dy, double scale) {
   NSString *text = [[NSString alloc] initWithData:original encoding:NSUTF8StringEncoding];
@@ -865,6 +904,25 @@ NSData *PGFrontendRewrite(NSData *original, double dx, double dy, double scale) 
     NSRegularExpression *subtitle = [NSRegularExpression regularExpressionWithPattern:@"(<component name=\"HUD_SUBTITLE_TEXT\"[^>]*?posY=\")([-\\d.]+)(\")" options:0 error:nil];
     NSTextCheckingResult *t = [subtitle firstMatchInString:changed options:0 range:NSMakeRange(0, changed.length)];
     if (t) [changed replaceCharactersInRange:[t rangeAtIndex:2] withString:[NSString stringWithFormat:@"%.4f", [[changed substringWithRange:[t rangeAtIndex:2]] doubleValue] - subtitleRaise]];
+  }
+  if (helpMoved) {
+    NSRegularExpression *help = [NSRegularExpression regularExpressionWithPattern:
+      @"(<component name=\"HUD_HELP_TEXT\"[^>]*?alignX=\")([A-Z])(\"[^>]*?alignY=\")([A-Z])(\"[^>]*?posX=\")([-\\d.]+)(\"[^>]*?posY=\")([-\\d.]+)(\"[^>]*?sizeX=\")([-\\d.]+)(\"[^>]*?sizeY=\")([-\\d.]+)(\")"
+      options:0 error:nil];
+    NSTextCheckingResult *h = [help firstMatchInString:changed options:0 range:NSMakeRange(0, changed.length)];
+    if (h) {
+      double w = [[changed substringWithRange:[h rangeAtIndex:10]] doubleValue], height = [[changed substringWithRange:[h rangeAtIndex:12]] doubleValue];
+      NSString *values[6] = {@"L", @"T", [NSString stringWithFormat:@"%.5f", helpX], [NSString stringWithFormat:@"%.5f", helpY],
+        [NSString stringWithFormat:@"%.5f", w * helpScale], [NSString stringWithFormat:@"%.5f", height * helpScale]};
+      NSUInteger groups[6] = {12, 10, 8, 6, 4, 2};	// right to left, so earlier ranges stay valid
+      for (int i = 0; i < 6; i++) [changed replaceCharactersInRange:[h rangeAtIndex:groups[i]] withString:values[5 - i]];
+      // In the top-left list (listId 2) the game stacks the box at the top by itself, whatever posY says (posX does
+      // apply). For a place lower down it leaves the list (as the floating help messages have listId -1); a place
+      // along the top stays in it, as the game made it.
+      NSRegularExpression *list = [NSRegularExpression regularExpressionWithPattern:@"(<component name=\"HUD_HELP_TEXT\"[^>]*?listId=\")(-?\\d+)(\"\\s+listPriority=\")(-?\\d+)(\")" options:0 error:nil];
+      NSTextCheckingResult *l = [list firstMatchInString:changed options:0 range:NSMakeRange(0, changed.length)];
+      if (l && (helpY != 0 || helpScale != 1)) { [changed replaceCharactersInRange:[l rangeAtIndex:4] withString:@"-1"]; [changed replaceCharactersInRange:[l rangeAtIndex:2] withString:@"-1"]; }
+    }
   }
   // The subtitle entry comes before the minimap's in the file: find the minimap entries again in the edited text.
   matches = [entry matchesInString:changed options:0 range:NSMakeRange(0, changed.length)];
@@ -902,18 +960,21 @@ static void frontendOverlay(uint32_t id, uint64_t offset, uint8_t *destination, 
       // Test (PG_MINIMAP="dx,dy,scale"): a layout without the app's Settings, for calibrating the editor.
       double tx, ty, ts; const char *test = getenv("PG_MINIMAP");
       if (test && sscanf(test, "%lf,%lf,%lf", &tx, &ty, &ts) == 3) PGSetMinimapLayout(tx, ty, ts);
+      // Test (PG_HELP_TEXT="x,y,scale"): a help message place without the app's Settings.
+      test = getenv("PG_HELP_TEXT");
+      if (test && sscanf(test, "%lf,%lf,%lf", &tx, &ty, &ts) == 3) PGSetHelpTextLayout(tx, ty, ts);
 #endif
       // A mod's frontend.xml is moved too: the player chose the place, and the default changes nothing.
       // (A leftover copy of the game's own file in Mods kept the setting from working, GTA-131.)
       NSData *rewritten = nil;
-      if (minimapDX != 0 || minimapDY != 0 || minimapScale != 1 || subtitleRaise > 0) {
+      if (minimapDX != 0 || minimapDY != 0 || minimapScale != 1 || subtitleRaise > 0 || helpMoved) {
         uint64_t size = [assetFiles[id][1] unsignedLongLongValue];
         NSMutableData *original = [NSMutableData dataWithLength:(NSUInteger)size];
         if (readAssetImpl(id, 0, original.mutableBytes, (uint32_t)size) == (int64_t)size)
           rewritten = PGFrontendRewrite(original, minimapDX, minimapDY, minimapScale);
         char line[160];
-        snprintf(line, sizeof line, rewritten ? "Minimap: moved by %.3f, %.3f, size %.2f; subtitles raised by %.3f%s." : "Minimap: frontend.xml not as expected; position %.3f, %.3f, size %.2f, subtitles %.3f not applied%s.",
-                 minimapDX, minimapDY, minimapScale, subtitleRaise, modFiles[@(id)] ? " (in a mod's frontend.xml)" : "");
+        snprintf(line, sizeof line, rewritten ? "Minimap: moved by %.3f, %.3f, size %.2f; subtitles raised by %.3f; help messages at %.3f, %.3f, size %.2f%s." : "Minimap: frontend.xml not as expected; position %.3f, %.3f, size %.2f, subtitles %.3f, help messages %.3f, %.3f, %.2f not applied%s.",
+                 minimapDX, minimapDY, minimapScale, subtitleRaise, helpX, helpY, helpScale, modFiles[@(id)] ? " (in a mod's frontend.xml)" : "");
         pg_log(line);
       }
       frontendLayout = rewritten ?: [NSData data];

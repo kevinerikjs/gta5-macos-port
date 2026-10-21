@@ -27,7 +27,7 @@ enum ControlStyle {
     static let accent = UIColor(red: 0.365, green: 0.714, blue: 0.898, alpha: 1)
     /// SF Symbols for controls that have no generated icon.
     static let fallbackSymbol: [String: String] = [
-        "radio": "radio", "mods": "puzzlepiece.extension.fill", "look_back": "arrow.uturn.backward", "up": "chevron.up", "down": "chevron.down",
+        "radio": "radio", "next_song": "forward.end.fill", "mods": "puzzlepiece.extension.fill", "look_back": "arrow.uturn.backward", "up": "chevron.up", "down": "chevron.down",
         "left": "chevron.left", "right": "chevron.right", "accept": "checkmark", "back": "arrow.uturn.left",
         "tab_left": "chevron.left.2", "tab_right": "chevron.right.2", "dive": "arrow.down.to.line",
         "surface": "arrow.up.to.line", "crouch": "figure.walk", "pedal": "bicycle",
@@ -42,7 +42,8 @@ enum ControlStyle {
         "script_lb": "lb.button.roundedbottom.horizontal.fill", "script_rb": "rb.button.roundedbottom.horizontal.fill",
         "script_lt": "lt.button.roundedtop.horizontal.fill", "script_rt": "rt.button.roundedtop.horizontal.fill",
         "script_y": "y.circle.fill", "script_x": "x.circle.fill", "script_a": "a.circle.fill", "script_b": "b.circle.fill",
-        "script_ls": "l.joystick.press.down.fill", "script_rs": "r.joystick.press.down.fill"]
+        "script_ls": "l.joystick.press.down.fill", "script_rs": "r.joystick.press.down.fill",
+        "script_pad_up": "dpad.up.fill", "script_pad_down": "dpad.down.fill", "script_pad_left": "dpad.left.fill"]
     /// A short label drawn like a symbol, for buttons no SF Symbol fits ("LT+RT").
     static func textIcon(_ text: String) -> UIImage {
         let font = UIFont.systemFont(ofSize: 15, weight: .heavy)
@@ -416,6 +417,8 @@ final class TouchControlsView: UIView {
     private let gas = ControlButton("gas", icon: "gas", label: AppLanguage.choose("Gas"))
     private let brake = ControlButton("brake", icon: "brake", label: AppLanguage.choose("Brake and reverse"))
     private let handbrake = ControlButton("handbrake", icon: "handbrake", label: AppLanguage.choose("Handbrake"))
+    /// Bicycles jump (bunny hop) with INPUT_VEH_JUMP, R1 on the pad; hold it longer for a higher hop (GTA-150).
+    private let bikeJump = ControlButton("bikeJump", icon: "jump", label: AppLanguage.choose("Jump"))
     // Settings › Steering buttons: left/right buttons instead of the steering stick.
     private let steerLeft = ControlButton("steer_left", icon: "steer_left", label: AppLanguage.choose("Steer left"))
     private let steerRight = ControlButton("steer_right", icon: "steer_right", label: AppLanguage.choose("Steer right"))
@@ -430,6 +433,9 @@ final class TouchControlsView: UIView {
     private let roof = ControlButton("roof", icon: "roof", label: AppLanguage.choose("Raise or lower the roof"))
     /// Unhitches a trailer: the game's input is the headlights held, which nobody guesses on touch (GTA-76).
     private let detachTrailer = ControlButton("detachTrailer", icon: "tow_hook", label: AppLanguage.choose("Detach trailer"))
+    /// The next Self Radio song (GTA-5): on PC, a key in the radio wheel; shown while a Self Radio song plays.
+    private let nextSong = ControlButton("nextSong", icon: "next_song", label: AppLanguage.choose("Next song"))
+    private var nextSongWasPressed = false
     private var detachTrailerWasPressed = false
     private let towArmUp = ControlButton("towArmUp", icon: "tow_arm_up", label: AppLanguage.choose("Raise tow arm"))
     private let towArmDown = ControlButton("towArmDown", icon: "tow_arm_down", label: AppLanguage.choose("Lower tow arm"))
@@ -477,7 +483,7 @@ final class TouchControlsView: UIView {
     /// Mission buttons (GTA-51): a script asks for one of its own inputs (INPUT_SCRIPT_*, engine ids
     /// 222-231) that no button on screen sends, e.g. "Press RT to flip the chair" in By the Book. The
     /// button shows while the script keeps polling it (the engine reports polls, PGInputPolledWithin).
-    private struct MissionButton { let input: Int32; let button: ControlButton; let pad: PadButtons?; let trigger: Int; var menuInput: Int32? = nil }
+    private struct MissionButton { let input: Int32; let button: ControlButton; let pad: PadButtons?; let trigger: Int; var menuInput: Int32? = nil; var helpOnly = false }
     private lazy var missionButtons: [MissionButton] = [
         MissionButton(input: 226, button: ControlButton("script_lb", icon: "script_lb", label: AppLanguage.choose("LB")), pad: .l1, trigger: 0, menuInput: 205),
         MissionButton(input: 228, button: ControlButton("script_lt", icon: "script_lt", label: AppLanguage.choose("LT")), pad: nil, trigger: 1, menuInput: 207),
@@ -488,7 +494,13 @@ final class TouchControlsView: UIView {
         MissionButton(input: 223, button: ControlButton("script_a", icon: "script_a", label: AppLanguage.choose("A")), pad: .a, trigger: 0),
         MissionButton(input: 225, button: ControlButton("script_b", icon: "script_b", label: AppLanguage.choose("B")), pad: .b, trigger: 0),
         MissionButton(input: 230, button: ControlButton("script_ls", icon: "script_ls", label: AppLanguage.choose("Left stick click")), pad: .l3, trigger: 0),
-        MissionButton(input: 231, button: ControlButton("script_rs", icon: "script_rs", label: AppLanguage.choose("Right stick click")), pad: .r3, trigger: 0)]
+        MissionButton(input: 231, button: ControlButton("script_rs", icon: "script_rs", label: AppLanguage.choose("Right stick click")), pad: .r3, trigger: 0),
+        // The script D-pad, only while the help names it (other scripts poll it in normal play): the elk call in
+        // Hunting with Cletus is "~INPUT_SCRIPT_PAD_LEFT~ to call" (hunting2 reads IS_CONTROL_JUST_RELEASED(2, 234)), and
+        // on foot no button sent D-pad left (GTA-149). D-pad right is the interact button (helpContext).
+        MissionButton(input: 232, button: ControlButton("script_pad_up", icon: "script_pad_up", label: AppLanguage.choose("Up")), pad: .up, trigger: 0, helpOnly: true),
+        MissionButton(input: 233, button: ControlButton("script_pad_down", icon: "script_pad_down", label: AppLanguage.choose("Down")), pad: .down, trigger: 0, helpOnly: true),
+        MissionButton(input: 234, button: ControlButton("script_pad_left", icon: "script_pad_left", label: AppLanguage.choose("Left")), pad: .left, trigger: 0, helpOnly: true)]
     private var polledMission: Set<Int32> = []
     /// A script polls the frontend D-pad up and down (INPUT_FRONTEND_UP/DOWN, 188/187): a shop or script menu is
     /// open (the barber reads both). Down alone isn't a menu: after swipe-camera mouse movement a game script reads
@@ -534,9 +546,11 @@ final class TouchControlsView: UIView {
         if list.contains(where: { $0 === accept }) { covered.insert(223) }
         if list.contains(where: { $0 === back }) { covered.insert(225) }
         if list.contains(where: { $0 === promptOption }) { covered.insert(224) }
+        if list.contains(where: { $0 === up }) { covered.formUnion([232, 233, 234]) }		// the D-pad is on screen
         let both = polledMission.isSuperset(of: [228, 229]) || polledMission.isSuperset(of: [207, 208])
         if both { covered.formUnion([228, 229]) }
-        let asked = { (m: MissionButton) in self.polledMission.contains(m.input) || (m.menuInput.map(self.polledMission.contains) ?? false) }
+        let help = helpAsked
+        let asked = { (m: MissionButton) in m.helpOnly ? help.contains(m.input) : self.polledMission.contains(m.input) || (m.menuInput.map(self.polledMission.contains) ?? false) }
         return (both ? [bothTriggers] : []) + missionButtons.filter { asked($0) && !covered.contains($0.input) }.map(\.button)
     }
     private let tabLeft = ControlButton("tabLeft", icon: "tab_left", label: AppLanguage.choose("Previous tab"))
@@ -544,8 +558,8 @@ final class TouchControlsView: UIView {
 
     private var allButtons: [ControlButton] {
         missionButtons.map(\.button) + [fire, aim, leftFire, jump, sprint, enter, weapons, reload, cover, crouch, switcher, special, interact, detonate, zoomIn, zoomOut,
-         weaponPrev, weaponNext, gas, brake, handbrake, steerLeft, steerRight, driveBy, driveAim, duck, horn, lookBack,
-         vehicleWeapon, towHook, towArmUp, towArmDown, roof, detachTrailer, dive, surface, airFire, gear, throttleUp, throttleDown, yawLeft, yawRight, camera, phone, pause, settings, mods, lights, radio,
+         weaponPrev, weaponNext, gas, brake, handbrake, bikeJump, steerLeft, steerRight, driveBy, driveAim, duck, horn, lookBack,
+         vehicleWeapon, towHook, towArmUp, towArmDown, roof, detachTrailer, dive, surface, airFire, gear, throttleUp, throttleDown, yawLeft, yawRight, camera, phone, pause, settings, mods, lights, radio, nextSong,
          up, down, left, right, accept, back, phoneOption, taxiHurry, taxiStop, tabLeft, tabRight, promptOption, bothTriggers]
     }
     /// Refresh accessibility names for the active language without recreating controls.
@@ -572,6 +586,7 @@ final class TouchControlsView: UIView {
             "towHook": AppLanguage.choose("Release tow hook"),
             "roof": AppLanguage.choose("Raise or lower the roof"),
             "detachTrailer": AppLanguage.choose("Detach trailer"),
+            "nextSong": AppLanguage.choose("Next song"),
             "towArmUp": AppLanguage.choose("Raise tow arm"),
             "towArmDown": AppLanguage.choose("Lower tow arm"),
             "dive": AppLanguage.choose("Dive"),
@@ -678,6 +693,7 @@ final class TouchControlsView: UIView {
             if context == .car && hints.trailerAttached { list.append(detachTrailer) }
         }
         if playing && context == .heli && ControlStyle.cargobobs.contains(hints.vehicleModel) { list.append(towHook) }
+        if playing && context.driving && hints.selfRadioPlaying { list.append(nextSong) }
         return list
     }
 
@@ -686,7 +702,7 @@ final class TouchControlsView: UIView {
         let changed = next.helpShown != hints.helpShown || next.specialShown != hints.specialShown || next.canDetonate != hints.canDetonate || next.helpContext != hints.helpContext
             || next.helpDetonate != hints.helpDetonate
             || next.vehicleModel != hints.vehicleModel || next.passenger != hints.passenger || next.taxiMenu != hints.taxiMenu || next.phoneBrowser != hints.phoneBrowser
-            || next.pedModel != hints.pedModel || next.trailerAttached != hints.trailerAttached
+            || next.pedModel != hints.pedModel || next.trailerAttached != hints.trailerAttached || next.selfRadioPlaying != hints.selfRadioPlaying
         if changed || next.specialReady != hints.specialReady || next.specialActive != hints.specialActive || next.radioWheelOpen != hints.radioWheelOpen {
             hintsChanged?("Control hints: special \(next.specialShown ? (next.specialActive ? "active" : next.specialReady ? "ready" : "charging") : "none") \(Int(next.specialFill * 100))%, detonate \(next.canDetonate), help \(next.helpShown ? (next.helpContext ? "asks for interact" : "shown") : "none"), radio wheel \(next.radioWheelOpen ? "open" : "closed"), vehicle model 0x\(String(next.vehicleModel, radix: 16))")
         }
@@ -739,7 +755,7 @@ final class TouchControlsView: UIView {
         case .bike:
             return utility + [gas, brake, handbrake, enter, driveBy, driveAim, duck, horn, lookBack] + steering
         case .bicycle:
-            return [camera, phone, pause, settings, radio, gas, brake, handbrake, enter, lookBack] + steering
+            return [camera, phone, pause, settings, radio, gas, brake, handbrake, bikeJump, enter, lookBack] + steering
         case .sub:
             return utility + [gas, brake, enter, dive, surface, lookBack] + steering
         // Aircraft weapons are switched by PGNextAircraftWeapon, separately from the radio.
@@ -867,7 +883,7 @@ final class TouchControlsView: UIView {
         rightStick.idleOrigin = planeStickEnabled ? point(0.80, 0.60) : nil
 
         // Utility bar, top centre: rare actions in the hard-to-reach zone.
-        let order = [radio, lights, camera, phone, pause, settings, mods]
+        let order = [radio, nextSong, lights, camera, phone, pause, settings, mods]
         let bar = order.filter { visible.contains($0) }
         for (i, button) in bar.enumerated() {
             let offset = (CGFloat(i) - CGFloat(bar.count - 1) / 2) * 54 * scale / safe.width
@@ -904,6 +920,7 @@ final class TouchControlsView: UIView {
         place(steerLeft, 0.08, 0.76, 80)
         place(steerRight, 0.215, 0.76, 80)
         place(driveBy, 0.655, 0.50, 58)
+        place(bikeJump, 0.655, 0.50, 58)		// bicycles have no drive-by: the same spot
         place(driveAim, 0.655, 0.71, 50)
         place(duck, 0.555, 0.50, 46)
         place(horn, 0.06, 0.36, 46)
@@ -1436,6 +1453,7 @@ final class TouchControlsView: UIView {
                 } else { pedalClock = 0 }
                 if brake.pressed { state.leftTrigger = 1 }
                 if handbrake.pressed { state.rightTrigger = 1 }
+                if bikeJump.pressed { held.insert(.r1) }
             } else {
                 if gas.pressed { state.rightTrigger = 1 }
                 if brake.pressed { state.leftTrigger = 1 }
@@ -1459,6 +1477,8 @@ final class TouchControlsView: UIView {
             // Detach trailer: a tap holds the headlight input (D-pad right) for 1.5 s, which unhitches the trailer.
             if detachTrailer.pressed && !detachTrailerWasPressed { pulse(.right, for: 1.5) }
             detachTrailerWasPressed = detachTrailer.pressed
+            if nextSong.pressed && !nextSongWasPressed { PGSelfRadioNext() }
+            nextSongWasPressed = nextSong.pressed
             // INPUT_VEH_GRAPPLING_HOOK, D-pad right in the game's standard pad layout.
             if towHook.pressed { held.insert(.right) }
             // The tow arm moves with the left stick up/down, as on a controller.

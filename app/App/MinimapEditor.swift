@@ -8,7 +8,7 @@ enum MinimapGeometry {
     static let corner = CGPoint(x: -0.0045, y: 0.002)
     static let size = CGSize(width: 0.150, height: 0.188888)
 
-    private static func hudArea(_ bounds: CGRect) -> CGRect {
+    static func hudArea(_ bounds: CGRect) -> CGRect {
         let width = min(bounds.width, bounds.height * 16 / 9)
         return CGRect(x: bounds.midX - width / 2, y: bounds.minY, width: width, height: bounds.height)
     }

@@ -111,6 +111,10 @@ struct Buffer : Object {
 	// buf adds base. slab is the slab's index, or -1 for a buffer of its own.
 	NSUInteger base = 0;
 	int32_t slab = -1;
+	// Engine pages of this mesh's source handed back to iOS (GTA-152, NativeMeshRelease.c); their bytes are read
+	// back from buf, so they're put back before buf changes or goes away.
+	uint64_t meshPage = 0;
+	uint32_t meshPages = 0;
 	~Buffer() override;
 };
 

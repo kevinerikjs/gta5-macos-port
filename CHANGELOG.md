@@ -1,5 +1,48 @@
 # Changelog
 
+## v1.4.5
+
+The same version for iPhone and Mac (the iPhone app is in [gta5-ios-port](https://github.com/kevinerikjs/gta5-ios-port)).
+
+### Self Radio
+- **Your own music on the car radio**, as on PC: add songs in Settings › Self Radio › Add songs…, or copy them into On My iPhone › GTA V Port › Self Radio (subfolders work too; on Mac, Show the Self Radio folder in Finder). MP3, M4A/AAC, ALAC, WAV, AIFF and FLAC play; songs from Apple Music or Spotify are protected and can't be added.
+- With 3 songs or more, the station is in the radio wheel: the smiley next to Los Santos Rock Radio (the game calls it User Music FM). This game's audio data had no Self Radio station at all, so the app now adds one; with fewer than 3 songs nothing changes.
+- **Play order**: Shuffle (the default) and In order start each song from the beginning; Like a radio station joins songs midway, as the PC's default does. Shuffle no longer repeats the song that just played.
+- **Next song**: a button next to Radio while Self Radio plays.
+
+### 4 GB iPhones
+- **Fewer grey and missing textures while driving**: on iPhones that give the game about 2 GB, Ultra Performance draws detail a little closer and keeps what it just loaded, instead of throwing it out and loading it again. On a recorded drive the ground matched the no-limit drive much more closely, and the game re-read about 140 MB per 10 s instead of up to 970 MB. Settings › This device › Experimental › Steady city on low memory turns it off.
+- **Lighter 3D models in memory** (on by default on 4 GB iPhones): the game kept a second copy of every 3D model after the GPU had it; about 80 MB of it goes back to iOS.
+- A one-time note when you start on an iPhone with little memory, and a red ⚠️ next to the FPS counter there, so a screenshot shows it at once.
+
+### Mods
+- **After a failed start**: if the game stops while starting with mods on (or iOS closes it while loading), the next start offers "Start without mods". Your mods stay installed; the game reads them again at the start after that.
+- **Across updates**: each start notes which switched-on mods the game used. From the next update on, the first start of a new version switches off the mods the old version had on but didn't load, and says which.
+- **Add-on cars made for newer PC updates spawn**: cars whose textures name a texture set this game version doesn't have (for example the Honda Fireblade CBR1000RR-R) waited 30 s and failed; they now use the game's shared vehicle textures.
+
+### Controls
+- **Help messages can move**: Settings › Touch controls › Help messages: Top left (the game's place), Top right (the default when the map is at the top), Bottom middle, or Custom, where you drag the box anywhere.
+- **BMX**: a Jump button (hold longer to hop higher).
+- **D-pad prompts in missions**: when a mission asks for the D-pad (like calling elk while hunting with Cletus), on-screen buttons appear for as long as the hint shows.
+
+### Display
+- **40 FPS** on iPhones with a 120 Hz screen (ProMotion): Settings › Graphics › Frame rate. Smoother than Unlocked when the game runs between 40 and 60.
+- A new frame rate applies right away while playing.
+
+### Game files
+- **Play without game files** opens Game files and says what's missing, instead of starting into a stop when the game server doesn't answer.
+- **"Updated and my files are gone"**: the Game files screen explains that installing with another sideloader or Apple ID makes a separate copy of the app with an empty folder.
+- **LiveContainer**: its folder picker hands your game folder over once GTA V Port's **Fix File Picker** and **Use LiveContainer's Bundle ID** are on (in LiveContainer's settings for the app, under Fixes; found by a player). The Game files screen now names both, and shows the tip first when the app runs inside LiveContainer.
+
+### Mac
+- Settings › Self Radio and Settings › Mods open their folders in Finder.
+- Settings › This device shows how much of the Mac's memory the game may use, instead of the iPhone's "Extra memory: off".
+
+### Translations
+- More Arabic (93 → 133 lines) and Vietnamese (124 → 155), and Uzbek is new. Thanks @uk9_v, @lekhoi2811 and @muhammadiminov_007!
+
+Other bug fixes and improvements.
+
 ## v1.4.4 for Mac (first Mac release)
 
 The iPhone app's v1.4.4, built for Apple Silicon Macs (M1 or newer, macOS 13 or later). Setup: [docs/MAC.md](docs/MAC.md).

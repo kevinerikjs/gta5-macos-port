@@ -70,7 +70,7 @@ final class DebugChannel {
             _ = done.wait(timeout: .now() + 90)
             return Self.json(["ok": true, "title": reply.0, "detail": reply.1])
         }
-        if ["ui", "touch", "tap", "drag", "pad", "mark", "resize"].contains(command) {
+        if ["ui", "touch", "tap", "drag", "pad", "mark", "resize", "alert", "play", "screen"].contains(command) {
             var reply: [String: Any] = [:]
             DispatchQueue.main.sync { reply = self.runOnMain(command, Array(words.dropFirst())) }
             return Self.json(reply)
@@ -154,6 +154,28 @@ final class DebugChannel {
         case "mark":
             GameFolder.log("MARK: \(arguments.joined(separator: " "))")
             return ["ok": true]
+        case "alert":
+            // alert: the alert on screen (title, message, buttons); alert <n>: press its button n (GTA-153 tests).
+            var top: UIViewController? = controller
+            while let next = top?.presentedViewController { top = next }
+            guard let alert = top as? UIAlertController else { return ["ok": false, "error": "no alert on screen"] }
+            let reply: [String: Any] = ["ok": true, "title": alert.title ?? "", "message": alert.message ?? "", "actions": alert.actions.map { $0.title ?? "" }]
+            if let index = arguments.first.flatMap(Int.init), alert.actions.indices.contains(index) {
+                typealias Handler = @convention(block) (UIAlertAction) -> Void
+                let action = alert.actions[index], handler = action.value(forKey: "handler") as AnyObject?
+                alert.dismiss(animated: false) { if let handler { unsafeBitCast(handler, to: Handler.self)(action) } }
+            }
+            return reply
+        case "play":
+            // Presses Play on the home screen, as a player would.
+            controller.debugPressPlay()
+            return ["ok": true]
+        case "screen":
+            // The screen on top: its type and title (Game files, Settings…).
+            var top: UIViewController? = controller
+            while let next = top?.presentedViewController { top = next }
+            let shown = (top as? UINavigationController)?.topViewController ?? top
+            return ["ok": true, "screen": shown.map { String(describing: type(of: $0)) } ?? "", "title": shown?.title ?? ""]
         case "resize":
             // resize <width> <height>: the live back-buffer resize a resolution change in Settings or a TV makes (GTA-89).
             guard arguments.count == 2, let width = Int32(arguments[0]), let height = Int32(arguments[1]) else {

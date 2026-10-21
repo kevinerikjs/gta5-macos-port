@@ -37,7 +37,13 @@ python3 Scripts/prepare_stale_texture_slots.py
 python3 Scripts/prepare_control_trace.py
 python3 Scripts/prepare_pause_ready.py
 python3 Scripts/prepare_streaming_health.py
+python3 Scripts/prepare_evict_protect.py
+python3 Scripts/prepare_mesh_release.py
+python3 Scripts/prepare_txd_parent.py
+python3 Scripts/prepare_stream_alloc_trace.py
+python3 Scripts/prepare_request_trace.py
 python3 Scripts/prepare_heap_return.py
+python3 Scripts/prepare_user_music.py
 python3 Scripts/prepare_memory_file_create.py
 python3 Scripts/prepare_longjmp.py
 python3 Scripts/build_opus.py --sdk iphonesimulator

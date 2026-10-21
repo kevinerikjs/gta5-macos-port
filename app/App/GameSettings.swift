@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// How the engine starts: the same two choices as the web build's loading
 /// screen (Story Mode / Sandbox Mode). Raw values are the engine's start mode.
@@ -248,6 +248,14 @@ final class GameSettings {
         get { defaults.object(forKey: "expCompressedAlphaTextures") as? Bool ?? true }
         set { defaults.set(newValue, forKey: "expCompressedAlphaTextures") }
     }
+    var steadyCityLowMemory: Bool {     // GTA-148: about 2 GB for the app: Lite draws detail closer, fewer people and cars
+        get { defaults.object(forKey: "expSteadyCityLowMemory") as? Bool ?? true }
+        set { defaults.set(newValue, forKey: "expSteadyCityLowMemory") }
+    }
+    var meshMemoryRelease: Bool {       // GTA-152: the engine's copy of each mesh handed back once the GPU has it; on by default below a 2,600 MB app limit (Kevin, 2026-10-21)
+        get { defaults.object(forKey: "expMeshMemoryRelease") as? Bool ?? (tier.memoryLimitMB < 2600) }
+        set { defaults.set(newValue, forKey: "expMeshMemoryRelease") }
+    }
     var smallerEngineHeaps: Bool {      // GTA-124: Replay and debug heaps 16/128 MB instead of 196/220, off by default
         get { defaults.object(forKey: "expSmallerEngineHeaps") as? Bool ?? false }
         set { defaults.set(newValue, forKey: "expSmallerEngineHeaps") }
@@ -261,6 +269,7 @@ final class GameSettings {
         if !settings.fastEngineThreads { off("PG_ENGINE_QOS", "off"); off("PG_QUERY_COMMIT_MS", "2") }
         if !settings.compressedAlphaTextures { off("PG_ASTC_BC3", "0") }
         if settings.smallerEngineHeaps { off("PG_SMALL_ENGINE_HEAPS", "1") }
+        if settings.meshMemoryRelease { off("PG_MESH_RELEASE", "2") }
     }
     var showFPS: Bool {
         get { defaults.object(forKey: "showFPS") as? Bool ?? true }
@@ -305,11 +314,49 @@ final class GameSettings {
         case .custom: return minimapCustom
         }
     }
+    /// Touch controls › Help messages: where the game shows its help box ("Press … to …"). Its own place is the top left,
+    /// where a minimap moved to the top covers it (and it covers the map), so then Top right is the default.
+    enum HelpTextPlace: Int, CaseIterable {
+        case topLeft, topRight, bottomMiddle, custom
+        var title: String { [AppLanguage.choose("Top left"), AppLanguage.choose("Top right"), AppLanguage.choose("Bottom middle"), AppLanguage.choose("Custom")][rawValue] }
+    }
+    var defaultHelpTextPlace: HelpTextPlace { minimapAtTop ? .topRight : .topLeft }
+    var helpTextPlace: HelpTextPlace {
+        get { (defaults.object(forKey: "helpTextPlace") as? Int).flatMap(HelpTextPlace.init) ?? defaultHelpTextPlace }
+        set { defaults.set(newValue.rawValue, forKey: "helpTextPlace") }
+    }
+    /// The custom place: the box's corner in the game's HUD units (from the HUD's top left); the size stays 1 (a larger
+    /// size made the game's box only a little wider, not its text larger).
+    var helpTextCustom: (x: Double, y: Double, scale: Double) {
+        get {
+            let v = defaults.array(forKey: "helpTextCustom") as? [Double] ?? []
+            return v.count == 3 ? (v[0], v[1], v[2]) : (0, 0, 1)
+        }
+        set { defaults.set([newValue.x, newValue.y, newValue.scale], forKey: "helpTextCustom") }
+    }
+    /// What the game gets for a place (HelpTextGeometry: the box starts 0.0165 right of it and is 0.2 wide). Top right
+    /// keeps the box inside the HUD's right edge, at the top as the game stacks it; bottom middle puts it low in the middle (a little left of centre, clear of the cover and crouch buttons),
+    /// above the subtitles.
+    func helpTextLayout(for place: HelpTextPlace) -> (x: Double, y: Double, scale: Double) {
+        switch place {
+        case .topLeft: return (0, 0, 1)
+        case .topRight: return (0.742, 0, 1)
+        case .bottomMiddle: return (0.354, 0.62, 1)
+        case .custom: return helpTextCustom
+        }
+    }
+    var helpTextLayout: (x: Double, y: Double, scale: Double) { helpTextLayout(for: helpTextPlace) }
     /// The map sits in the top half: the FPS counter moves to the bottom left instead.
     var minimapAtTop: Bool { minimapLayout.dy < -0.4 && minimapLayout.dx < 0.25 }
     var keyboardMouse: Bool {
         get { defaults.object(forKey: "keyboardMouse") as? Bool ?? true }
         set { defaults.set(newValue, forKey: "keyboardMouse") }
+    }
+    /// Self Radio's play order (GTA-5): 2 shuffle (the default here: songs start at the beginning and Next song
+    /// works), 1 in order, 0 like a radio station (the PC's default: songs join midway, no skipping).
+    var selfRadioMode: Int {
+        get { defaults.object(forKey: "selfRadioMode") as? Int ?? 2 }
+        set { defaults.set(min(max(newValue, 0), 2), forKey: "selfRadioMode") }
     }
     /// Hide the touch controls while a game controller is connected (on by default).
     var hideTouchWithController: Bool {
@@ -320,7 +367,7 @@ final class GameSettings {
     /// Frame rate cap: 30, 60, or 0 for unlocked (up to the screen's refresh rate, 120 on ProMotion).
     var frameRateCap: Int {
         get {
-            if let cap = defaults.object(forKey: "frameRateCap") as? Int, [0, 30, 60].contains(cap) { return cap }
+            if let cap = defaults.object(forKey: "frameRateCap") as? Int, [0, 30, 60].contains(cap) || cap == 40 && Self.supports40 { return cap }
             #if targetEnvironment(macCatalyst)
             if defaults.object(forKey: "sixtyFPS") == nil { return 0 } // Mac: unlocked by default, no battery or heat limit like a phone's
             #endif
@@ -329,6 +376,21 @@ final class GameSettings {
         set { defaults.set(newValue, forKey: "frameRateCap") }
     }
     static func frameRateTitle(_ cap: Int) -> String { cap == 0 ? AppLanguage.choose("Unlocked") : "\(cap) FPS" }
+    /// 40 FPS: a third of a 120 Hz ProMotion screen's refreshes, so each frame shows equally long. Smoother than
+    /// unlocked for phones that run between 40 and 60 (a quarter of ProMotion play sessions, PostHog 2026-10-21).
+    /// A 60 Hz screen can't show 40 evenly, so the choice is only there with 120 Hz.
+    static var supports40: Bool {
+        #if targetEnvironment(simulator)
+        // The simulator says 60 Hz; PG_TEST_40_FPS=1 offers 40 anyway, to test the pacing path.
+        if ProcessInfo.processInfo.environment["PG_TEST_40_FPS"] == "1" { return true }
+        #endif
+        return UIScreen.main.maximumFramesPerSecond >= 120
+    }
+    static var frameRateChoices: [Int] { supports40 ? [30, 40, 60, 0] : [30, 60, 0] }
+    /// The engine's frame limiter (in 60 Hz refreshes: 0 none, 1 = 60, 2 = 30); 40 runs unlimited and the
+    /// renderer paces the pictures instead (PGSetPresentInterval).
+    static func engineFrameLimit(_ cap: Int) -> Int32 { cap == 60 ? 1 : cap == 30 ? 2 : 0 }
+    static func presentInterval(_ cap: Int) -> Double { cap == 40 ? 1.0 / 40 : 0 }
 
     // Crash fallback: a launch that never reached a stable world is treated
     // as a memory kill, and the last preset that worked is restored.
@@ -347,6 +409,13 @@ final class GameSettings {
         /// The custom resolution that was set back to Auto, if any.
         let resetHeight: Int?
         let memoryLimitMB: Int
+    }
+    /// The previous launch didn't finish starting (iOS closed the app while it loaded). Changes nothing.
+    var previousBootFailed: Bool {
+        #if targetEnvironment(simulator)
+        if !ProcessInfo.processInfo.arguments.contains("--simulate-failed-boot") { return false }
+        #endif
+        return bootPending
     }
     /// Lowers the settings when the previous launch failed. Returns what changed, or nil.
     func recoverFromFailedBoot() -> BootRecovery? {

@@ -185,6 +185,49 @@ static void pg_vehicle_catalog_tick(w2c_game *instance) {
   pthread_mutex_unlock(&vehicleMenuLock);
   char line[96]; snprintf(line, sizeof line, "Vehicle menu: found %u vehicle models.", count); pg_log(line);
 }
+u32 PG_FN_STREAM_VIRTUAL_SIZE(w2c_game*, u64, u32, u32);
+u32 PG_FN_STREAM_PHYSICAL_SIZE(w2c_game*, u64, u32);
+u64 PG_FN_STREAM_OBJECT_NAME(w2c_game*, u32);
+// A spawn still loading after 10 s (GTA-151): what the engine is waiting for. Big add-on cars sat at "waiting for the
+// game" until the 30 s timeout with nothing in the log; this names every object still requested or loading, with the
+// memory it needs, so a player log shows which file of the pack is stuck and how big it is.
+static void pg_vehicle_log_waiting(w2c_game *instance) {
+  uint64_t size, base; uint32_t count;
+  const uint8_t *m = pg_engine_memory(&size);
+  if (!m || size < 11607316) return;
+  memcpy(&base, m + 11607304, 8); memcpy(&count, m + 11607312, 4);
+  int logged = 0;
+  for (uint32_t i = 0; i < count && logged < 12 && base + i * 16ull + 16 <= size; i++) {
+    const int status = m[base + i * 16ull + 4] & 3;		// 2 requested, 3 loading (NativeStreamingHealth.c)
+    if (status != 2 && status != 3) continue;
+    const u64 info = base + i * 16ull;
+    const u32 virt = PG_FN_STREAM_VIRTUAL_SIZE(instance, info, i, 0), phys = PG_FN_STREAM_PHYSICAL_SIZE(instance, info, i);
+    const u64 name = PG_FN_STREAM_OBJECT_NAME(instance, i);
+    char line[200];
+    snprintf(line, sizeof line, "Vehicle menu: still waiting for %s (%s; %u KB, %u KB of it graphics).", name ? pg_string(&env, name) : "?",
+             status == 3 ? "loading" : "requested", (virt + phys) >> 10, phys >> 10);
+    pg_log(line); logged++;
+  }
+  if (!logged) pg_log("Vehicle menu: still waiting, but the game has nothing requested or loading.");
+  // The model's own files (cbr1000rrr.yft, cbr1000rrr.ytd, cbr1000rrr_hi.yft...): their state and size, also when the
+  // engine refused them and nothing is waiting ("Request failed for ... requesting dependency ... failed").
+  char model[64] = "";		// its model name, from the menu's list
+  pthread_mutex_lock(&vehicleMenuLock);
+  for (int32_t c = 0; c < vehicleCatalogCount; c++) if (vehicleCatalog[c].model == vehicleSpawnModel) { snprintf(model, sizeof model, "%s", vehicleCatalog[c].name); break; }
+  pthread_mutex_unlock(&vehicleMenuLock);
+  const size_t length = strlen(model);
+  for (uint32_t i = 0; length && i < count && base + i * 16ull + 16 <= size; i++) {
+    const u64 name = PG_FN_STREAM_OBJECT_NAME(instance, i);
+    const char *text = name ? pg_string(&env, name) : NULL;
+    if (!text || strncasecmp(text, model, length) || (text[length] && text[length] != '.' && text[length] != '_')) continue;
+    const u64 info = base + i * 16ull;
+    const u32 virt = PG_FN_STREAM_VIRTUAL_SIZE(instance, info, i, 0), phys = PG_FN_STREAM_PHYSICAL_SIZE(instance, info, i);
+    static const char *const states[] = {"not loaded", "loaded", "requested", "loading"};
+    char line[200];
+    snprintf(line, sizeof line, "Vehicle menu: %s is object %u, %s (%u KB, %u KB of it graphics).", text, i, states[m[info + 4] & 3], (virt + phys) >> 10, phys >> 10);
+    pg_log(line);
+  }
+}
 static void pg_vehicle_menu_step(w2c_game *instance, u64 vector) {
   pg_vehicle_catalog_tick(instance);
   static double began;
@@ -229,6 +272,9 @@ static void pg_vehicle_menu_step(w2c_game *instance, u64 vector) {
       pg_vehicle_spawn_status(PGVehicleSpawnLoading);
     }
   }
+  static bool waitLogged;
+  if (!requested) waitLogged = false;
+  if (requested && !waitLogged && now - began > 10000) { waitLogged = true; pg_vehicle_log_waiting(instance); }
   if (requested) {
     if (!ready) result = PGVehicleSpawnNotReady;
     else if (now - began > 30000) result = PGVehicleSpawnTimedOut;

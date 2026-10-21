@@ -386,8 +386,10 @@ static uint64_t openFile(const char *windows, uint64_t access, uint64_t disposit
 }
 static uint64_t k_CreateFileW(void) { char n[1024]; wToUtf8(ARG(0), -1, n, sizeof n); return openFile(n, ARG(1), ARG(4)); }
 static uint64_t k_CreateFileA(void) { return openFile((const char *)G(ARG(0)), ARG(1), ARG(4)); }
+void PGMeshTouch(const void *start, uint64_t length);	// NativeMeshRelease.c (GTA-152)
 static uint64_t k_ReadFile(void) {
   Handle *f = handleFor(ARG(0)); if (!f || f->fd < 0) { if (ARG(3)) wr32(ARG(3), 0); return ARG(0) == 0x10 ? 1 : 0; }
+  PGMeshTouch(G(ARG(1)), (uint32_t)ARG(2));
   ssize_t n = read(f->fd, G(ARG(1)), (size_t)(uint32_t)ARG(2)); if (n < 0) return 0; if (ARG(3)) wr32(ARG(3), (uint32_t)n); return 1;
 }
 static void consoleWrite(const char *s, size_t n) { char line[512]; size_t k = n < sizeof line - 1 ? n : sizeof line - 1; memcpy(line, s, k); line[k] = 0; while (k && (line[k - 1] == '\n' || line[k - 1] == '\r')) line[--k] = 0; if (k) logf_("ASI console: %s", line); }

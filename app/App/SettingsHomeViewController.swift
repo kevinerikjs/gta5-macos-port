@@ -50,6 +50,10 @@ final class SettingsHomeViewController: UITableViewController {
             let count = ModInstaller.installed().filter(\.enabled).count
             return count == 0 ? AppLanguage.choose("Install car, skin and script mods") : AppLanguage.interpolate(AppLanguage.choose("{arg0} mods on"), [String(count)])
         }, sections: [], page: { ModsViewController() }))
+        list.append(Category(icon: "radio", title: AppLanguage.choose("Self Radio"), summary: {
+            let count = SelfRadio.files().count
+            return count == 0 ? AppLanguage.choose("Your own music as a radio station") : AppLanguage.interpolate(AppLanguage.choose("{arg0} songs"), [String(count)])
+        }, sections: [], page: { SelfRadioViewController() }))
         list.append(Category(icon: "iphone", title: AppLanguage.choose("This device"), summary: {
             AppLanguage.choose("Memory, logs and the Telegram group")
         }, sections: [.device]))
@@ -74,7 +78,9 @@ final class SettingsHomeViewController: UITableViewController {
         Theme.styleSettingsTable(tableView)
         // Automation: --settings-section opens that category's page.
         let arguments = ProcessInfo.processInfo.arguments
-        if let i = arguments.firstIndex(of: "--settings-section"), i + 1 < arguments.count {
+        if let i = arguments.firstIndex(of: "--settings-section"), i + 1 < arguments.count, arguments[i + 1] == "selfradio" {
+            DispatchQueue.main.async { self.navigationController?.pushViewController(SelfRadioViewController(), animated: false) }
+        } else if let i = arguments.firstIndex(of: "--settings-section"), i + 1 < arguments.count {
             let wanted: SettingsViewController.Section? = ["files": .files, "graphics": .graphics, "resolution": .graphics, "device": .device, "controls": .controls, "cheats": .cheats, "spawn": .cheats][arguments[i + 1]]
             if let wanted, let index = categories.firstIndex(where: { $0.sections.contains(wanted) }) {
                 DispatchQueue.main.async { self.open(self.categories[index], animated: false) }

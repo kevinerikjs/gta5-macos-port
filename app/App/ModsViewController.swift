@@ -86,8 +86,7 @@ final class ModsViewController: UITableViewController, UIDocumentPickerDelegate 
         } else if indexPath.row == 2 {
             if let url = URL(string: "https://github.com/kevinerikjs/gta5-ios-port/blob/main/docs/MODS.md") { UIApplication.shared.open(url) }
         } else {
-            try? FileManager.default.createDirectory(at: ModInstaller.modsFolder, withIntermediateDirectories: true)
-            if let url = URL(string: "shareddocuments://" + ModInstaller.modsFolder.path) { UIApplication.shared.open(url) }
+            showInFiles(ModInstaller.modsFolder)
         }
     }
 

@@ -34,7 +34,7 @@ final class SettingsViewController: UITableViewController {
     private enum ControlsTab: Int { case stick = 0, swipe = 1 }
     private enum ControlsRow {
         case tab, swipeLook, swipeAim, stickLook, stickAim
-        case targeting, fireAlsoAims, sprintButton, steeringButtons, airplaneRightStick, buttonSize, buttonOpacity, editLayout, minimap
+        case targeting, fireAlsoAims, sprintButton, steeringButtons, airplaneRightStick, buttonSize, buttonOpacity, editLayout, minimap, helpText
         case hideTouchWithController, keyboardMouse, inputState, safeZone
     }
     private var controlsTab: ControlsTab {
@@ -44,7 +44,7 @@ final class SettingsViewController: UITableViewController {
     private var controlsRows: [ControlsRow] {
         let camera: [ControlsRow] = controlsTab == .stick ? [.stickLook, .stickAim] : [.swipeLook, .swipeAim]
         return [.tab] + camera + [.targeting, .fireAlsoAims, .sprintButton, .steeringButtons, .airplaneRightStick, .buttonSize, .buttonOpacity,
-                                  .editLayout, .minimap, .safeZone, .hideTouchWithController, .keyboardMouse]
+                                  .editLayout, .minimap, .helpText, .safeZone, .hideTouchWithController, .keyboardMouse]
     }
 
     @objc private func controlsTabChanged(_ sender: UISegmentedControl) {
@@ -122,6 +122,12 @@ final class SettingsViewController: UITableViewController {
         editor.onDone = { [weak self] in self?.reload(.controls) }
         present(editor, animated: true)
     }
+    private func editHelpText() {
+        let editor = HelpTextEditorController()
+        editor.modalPresentationStyle = .fullScreen
+        editor.onDone = { [weak self] in self?.reload(.controls) }
+        present(editor, animated: true)
+    }
     private func reload(_ section: Section) {
         if let index = shown.firstIndex(of: section) { tableView.reloadSections([index], with: .none) }
     }
@@ -158,7 +164,7 @@ final class SettingsViewController: UITableViewController {
         case .cheats: return engineRunning ? StoryCheats.all.count + storyCheatStart : 0
         case .gyro: return (settings.gyroAim == .off ? 1 : 3) + (settings.tiltSteer == .off ? 1 : 2)
         case .files: return engineRunning ? 0 : fileRows.count
-        case .device: return 9
+        case .device: return 11
         case .language: return 1
         }
     }
@@ -339,14 +345,18 @@ final class SettingsViewController: UITableViewController {
                     }
                 } else {
                     content.text = AppLanguage.choose("Frame rate")
-                    content.secondaryText = AppLanguage.choose("Higher uses more power and heat; 30 FPS is steadiest. Unlocked goes up to 120 on ProMotion iPhones.")
+                    content.secondaryText = GameSettings.supports40
+                        ? AppLanguage.choose("Higher uses more power and heat; 30 FPS is steadiest. 40 FPS is smoother than Unlocked when the game runs between 40 and 60. Unlocked goes up to 120.")
+                        : AppLanguage.choose("Higher uses more power and heat; 30 FPS is steadiest. Unlocked goes up to 120 on ProMotion iPhones.")
                     let button = UIButton(type: .system)
                     button.setTitle(GameSettings.frameRateTitle(settings.frameRateCap) + " ▾", for: .normal)
                     button.showsMenuAsPrimaryAction = true
                     button.accessibilityLabel = AppLanguage.choose("Frame rate")
-                    button.menu = UIMenu(children: [30, 60, 0].map { cap in
+                    button.menu = UIMenu(children: GameSettings.frameRateChoices.map { cap in
                         UIAction(title: GameSettings.frameRateTitle(cap), state: cap == settings.frameRateCap ? .on : .off) { [weak self] _ in
                             self?.settings.frameRateCap = cap; self?.reloadFooters(); self?.tableView.reloadData()
+                            // Applied in play too: the frame limit follows the setting (see thermalChanged).
+                            NotificationCenter.default.post(name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
                         }
                     })
                     button.sizeToFit()
@@ -466,6 +476,23 @@ final class SettingsViewController: UITableViewController {
                     UIAction(title: place.title, state: place == settings.minimapPlace ? .on : .off) { [weak self] _ in
                         guard let self else { return }
                         if place == .custom { self.editMinimap() } else { self.settings.minimapPlace = place; self.reload(.controls) }
+                    }
+                })
+                button.sizeToFit()
+                cell.accessoryView = button
+                cell.selectionStyle = .none
+            case .helpText:
+                // Where the game's help messages show: the game reads it when it starts.
+                content.text = AppLanguage.choose("Help messages")
+                content.secondaryText = AppLanguage.choose("Where the game's \"Press … to …\" box shows. Changes apply the next time the game starts.")
+                let button = UIButton(type: .system)
+                button.setTitle(settings.helpTextPlace.title + " ▾", for: .normal)
+                button.accessibilityLabel = AppLanguage.choose("Help messages")
+                button.showsMenuAsPrimaryAction = true
+                button.menu = UIMenu(children: GameSettings.HelpTextPlace.allCases.map { place in
+                    UIAction(title: place.title, state: place == settings.helpTextPlace ? .on : .off) { [weak self] _ in
+                        guard let self else { return }
+                        if place == .custom { self.editHelpText() } else { self.settings.helpTextPlace = place; self.reload(.controls) }
                     }
                 })
                 button.sizeToFit()
@@ -602,7 +629,11 @@ final class SettingsViewController: UITableViewController {
             if indexPath.row == 0 {
                 content.text = settings.tier.displaySummary
                 content.secondaryText = settings.tier.increasedMemoryStatus
+                #if targetEnvironment(macCatalyst)
+                content.secondaryTextProperties.color = .secondaryLabel
+                #else
                 content.secondaryTextProperties.color = DeviceTier.increasedMemoryGranted == false ? .systemOrange : .secondaryLabel
+                #endif
                 content.textProperties.font = .preferredFont(forTextStyle: .footnote)
                 content.textProperties.color = .secondaryLabel
                 cell.selectionStyle = .none
@@ -621,6 +652,8 @@ final class SettingsViewController: UITableViewController {
                     (AppLanguage.choose("Lighter big textures"), AppLanguage.choose("Experimental. The largest textures use a quarter of the memory on iPhones before the 15 Pro, so more of the world stays sharp. Turn off for the sharpest close-ups."), \.lighterBigTextures),
                     (AppLanguage.choose("Faster engine threads"), AppLanguage.choose("Experimental. Keeps the game on the fast processor cores for steadier FPS. Turn off if your iPhone gets too hot."), \.fastEngineThreads),
                     (AppLanguage.choose("Compressed see-through textures"), AppLanguage.choose("Experimental. On iPhones before the 15 Pro, leaves, fences, smoke and decals use a quarter of the memory, so more of the world stays sharp. Turn off if soft see-through edges show steps."), \.compressedAlphaTextures),
+                    (AppLanguage.choose("Steady city on low memory"), AppLanguage.choose("Experimental. On iPhones that give the game about 2 GB (the 4 GB models), Ultra Performance draws detail closer and places fewer people and cars, so the ground and roads load instead of staying grey. Turn off for more detail."), \.steadyCityLowMemory),
+                    (AppLanguage.choose("Lighter 3D models in memory"), AppLanguage.choose("Experimental, on by default on 4 GB iPhones. The game keeps a second copy of every 3D model after the GPU has it; this hands about 80 MB of it back to iOS. Turn off if the game crashes more often."), \.meshMemoryRelease),
                     (AppLanguage.choose("More engine memory"), AppLanguage.choose("Experimental, off by default. Gives the game about 270 MB more room inside its 4 GB, for fewer stops after long play on 6-8 GB iPhones. Turn off if the game stops more often."), \.smallerEngineHeaps),
                 ]
                 let (title, detail, key) = rows[indexPath.row - 4]

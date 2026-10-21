@@ -68,9 +68,60 @@ void pg_stream_requested(uint32_t index) {
 	os_unfair_lock_unlock(&lock);
 }
 
+// Trace (PG_TRACE_STREAM_LOADS, GTA-148): loads per object, to find what streams in again and again; the engine
+// thread names the most-loaded ones every ~10 s (EngineHost.c pg_trace_stream_loads).
+static struct { uint32_t key, count; } loads[8192];
+static int traceLoads = -1;
+static void countLoad(uint32_t index) {
+	if (traceLoads < 0) traceLoads = getenv("PG_TRACE_STREAM_LOADS") != NULL;
+	if (!traceLoads) return;
+	uint32_t key = index + 1;
+	for (uint32_t i = (key * 2654435761u) >> 19, n = 0; n < 8192; i = (i + 1) & 8191, n++) {
+		if (loads[i].key == key) { loads[i].count++; return; }
+		if (!loads[i].key) { loads[i].key = key; loads[i].count = 1; return; }
+	}
+}
+// The `max` most-loaded objects since the last call (index, count), most first; resets the counts.
+int PGStreamTopLoads(uint32_t *index, uint32_t *count, int max) {
+	int n = 0;
+	os_unfair_lock_lock(&lock);
+	for (uint32_t i = 0; i < 8192; i++) {
+		if (!loads[i].key) continue;
+		const uint32_t c = loads[i].count;
+		int at;
+		if (n < max) at = n++;			// room left: goes at the end, then moves up
+		else if (c > count[max - 1]) at = max - 1;	// beats the smallest kept: replaces it
+		else continue;
+		while (at > 0 && count[at - 1] < c) { index[at] = index[at - 1]; count[at] = count[at - 1]; at--; }
+		index[at] = loads[i].key - 1; count[at] = c;
+	}
+	memset(loads, 0, sizeof loads);
+	os_unfair_lock_unlock(&lock);
+	return n;
+}
+
+// When each object last finished loading, for pg_may_evict (GTA-148). One slot per index modulo the table (a
+// collision only forgets an older load time, which makes that object evictable as before).
+static uint32_t loadedAt[65536];
+static int protectMS = -1;
+// Forced eviction (the memory guard below its reserve) took objects the engine had loaded moments ago and
+// needed again at once: the same map pieces and weapon models loaded 50-270 times every 10 s, 95% of all
+// reading was repeats, and the ground stayed grey (4 GB phones). An object loaded in the last
+// PG_EVICT_PROTECT_MS (0 = off, the default; the app sets 4000 on the smallest memory limits, GraphicsOptions.swift)
+// counts as in use for DeleteNextLeastUsedObject (Scripts/prepare_evict_protect.py): stale objects still go,
+// nothing bounces in and out. Alone it starves new loads; with Lite's closer detail it doesn't.
+uint32_t pg_may_evict(uint32_t index) {
+	if (protectMS < 0) { const char *v = getenv("PG_EVICT_PROTECT_MS"); protectMS = v ? atoi(v) : 0; }
+	if (protectMS <= 0) return 1;
+	const uint32_t at = loadedAt[index & 65535];
+	return !at || nowMS() - at >= (uint32_t)protectMS;
+}
+
 void pg_stream_loaded(uint32_t index) {
 	uint32_t now = nowMS();
+	loadedAt[index & 65535] = now ? now : 1;
 	os_unfair_lock_lock(&lock);
+	countLoad(index);
 	int i = lookup(index + 1);
 	if (i >= 0) {
 		waits[waitCount < 512 ? waitCount : loadedCount % 512] = now - table[i].ms;

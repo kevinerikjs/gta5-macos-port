@@ -26,7 +26,7 @@ enum MacText {
             "Choose your unpacked game folder below. Any folder above it works too: the app searches everything inside, however deep the game is.",
         "Somewhere else? Choose any folder above it, even On My iPhone itself, and the app searches everything inside.":
             "The app remembers the folder, so you only choose it once.",
-        "Can't pick it? A cloud icon next to the file means it's still in iCloud Drive: move it to On My iPhone first. In LiveContainer, turn on its Fix file selection setting.":
+        "Can't pick it? A cloud icon next to the file means it's still in iCloud Drive: move it to On My iPhone first. In LiveContainer, turn on Fix File Picker and Use LiveContainer's Bundle ID in GTA V Port's settings (under Fixes).":
             "Can't pick it? A cloud icon next to the folder means it's still in iCloud Drive: in Finder, Control-click it and choose Download Now first.",
         "\"{arg0}\" on this iPhone: all {arg1} game files checked ({arg2}).":
             "\"{arg0}\" on this Mac: all {arg1} game files checked ({arg2}).",
@@ -88,5 +88,11 @@ enum MacText {
             "Experimental. For iPhones before the 15 Pro; a Mac reads these textures directly, so this changes nothing here.",
         "Experimental. On iPhones before the 15 Pro, leaves, fences, smoke and decals use a quarter of the memory, so more of the world stays sharp. Turn off if soft see-through edges show steps.":
             "Experimental. For iPhones before the 15 Pro; a Mac reads leaves, fences and smoke directly, so this changes nothing here.",
+        "Show the Self Radio folder in Files":
+            "Show the Self Radio folder in Finder",
+        "Pick songs from Files (MP3, M4A, AAC, WAV, AIFF or FLAC), or copy them into Files › On My iPhone › GTA V Port › Self Radio. Songs from Apple Music or Spotify can't be added: they're protected.":
+            "Click Add songs… (MP3, M4A, AAC, WAV, AIFF or FLAC), or copy songs into the Self Radio folder in Finder. Songs from Apple Music or Spotify can't be added: they're protected.",
+        "Without it there are no game files to play. Check the address, or use one of the ways below to put the files on this iPhone.":
+            "Without it there are no game files to play. Check the address, or use one of the ways below to put the files on this Mac.",
     ]
 }

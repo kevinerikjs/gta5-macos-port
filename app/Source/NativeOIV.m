@@ -409,6 +409,7 @@ NSArray<NSArray *> *pg_oiv_expand(NSString *modsFolder,NSString *(^gameFile)(NSS
       if(![output writeToFile:file atomically:YES encoding:NSUTF8StringEncoding error:nil]){oivLog(@"Mods: %@: couldn't save the edited %@.",title,path);continue;}
       edited[lower]=file;
     }
+    pg_mod_path_used([root stringByAppendingPathComponent:package].fileSystemRepresentation);   // GTA-153: this package was used
     oivLog(@"Mods: installed %@ (%lu file%s, %lu edit%s) from %@.",title,(unsigned long)counts.files,counts.files==1?"":"s",(unsigned long)counts.edits,counts.edits==1?"":"s",package.lastPathComponent);
   }
   // Edited files go in once, with every package's edits applied.

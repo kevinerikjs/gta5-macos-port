@@ -15,6 +15,8 @@ int PGTextureRatioPercent(void);
 void PGNoteTextureRatio(int64_t gpuBytes, int64_t gameBytes);
 // Settings › Sharper upscaling: MetalFX scales the picture to the screen's resolution (changes live).
 void PGSetSharperUpscaling(int on);
+// Frame rate 40 (ProMotion screens): each picture stays up at least this long; 0 for the other frame rates.
+void PGSetPresentInterval(double seconds);
 #ifdef __cplusplus
 }
 #endif

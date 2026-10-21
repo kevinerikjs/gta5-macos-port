@@ -147,11 +147,16 @@ struct DeviceTier {
     static let increasedMemoryGranted: Bool? = entitlement("com.apple.developer.kernel.increased-memory-limit")
     /// For Settings and the log: is the extra memory actually in effect?
     var increasedMemoryStatus: String {
+        #if targetEnvironment(macCatalyst)
+        // macOS has no per-app memory limit to raise (GTA-9).
+        return AppLanguage.interpolate(AppLanguage.choose("The game may use up to {arg0} MB of this Mac's memory."), ["\(memoryLimitMB)"])
+        #else
         switch Self.increasedMemoryGranted {
         case true?: return AppLanguage.interpolate(AppLanguage.choose("Extra memory: on. This install has the increased memory limit, so the game may use up to {arg0} MB."), ["\(memoryLimitMB)"])
-        case false?: return AppLanguage.interpolate(AppLanguage.choose("Extra memory: off. This install was signed without the increased memory limit, so the game gets the normal {arg0} MB. Install the \"unlimited\" build with a paid developer account, or GetMoreRam on a free one, for more."), ["\(memoryLimitMB)"])
+        case false?: return AppLanguage.interpolate(AppLanguage.choose("Extra memory: off. This install was signed without the increased memory limit, so the game gets the normal {arg0} MB. For more, install the app with AltStore 2.3 or newer (free Apple ID) or with a paid developer account."), ["\(memoryLimitMB)"])
         case nil: return AppLanguage.interpolate(AppLanguage.choose("Extra memory: unknown. The game may use up to {arg0} MB."), ["\(memoryLimitMB)"])
         }
+        #endif
     }
 
     /// Reads a boolean entitlement of this app (SecTask is not public on iOS, so it is looked up at run time).
@@ -202,13 +207,26 @@ enum GraphicsConfiguration {
         let own = GraphicsDetail.all.compactMap { detail in overrides[detail.option].map { "\(detail.option) \($0)" } }
         // The engine and renderer read PG_LITE when they start, after this. The Lite build always sets it.
         if preset == .lite { setenv("PG_LITE", "1", 1) } else if !Theme.isLite { unsetenv("PG_LITE") }
+        // The smallest memory limits (4 GB iPhones: about 2.1 GB for the app) can't hold the city at Lite's usual
+        // detail: the engine evicted what it needed a moment later, re-read the same files hundreds of times and
+        // the ground stayed grey. There Lite draws detail closer and places fewer people and cars, and what was
+        // just loaded isn't evicted for 4 s (GTA-148; This device › Experimental turns it off). Simulator, 2,098 MB,
+        // a 4.8 km drive scored against the same drive without a limit: detail 0.4 was closest in all four runs;
+        // 0.5 and 0.35 had runs worse than today, and without the 4 s the files were re-read 4-5 times as much.
+        // Switches already set (tests) win.
+        if preset == .lite || Theme.isLite, settings.tier.memoryLimitMB < 2600, settings.steadyCityLowMemory {
+            for (name, value) in [("PG_LITE_LOD", "0.4"), ("PG_LITE_DENSITY", "0.25"), ("PG_EVICT_PROTECT_MS", "4000")] where getenv(name) == nil {
+                setenv(name, value, 1)
+            }
+        }
         PGSetMemoryCap(Int32(settings.memoryCapMB))
         PGSetSharperUpscaling(settings.sharperUpscaling ? 1 : 0)
+        PGSetPresentInterval(GameSettings.presentInterval(settings.frameRateCap))
         var pointers = options.map { strdup($0) }
         defer { pointers.forEach { free($0) } }
         pointers.withUnsafeMutableBufferPointer { buffer in
             buffer.baseAddress!.withMemoryRebound(to: UnsafePointer<CChar>?.self, capacity: buffer.count) {
-                PGConfigureEngine($0, UInt32(buffer.count), Int32(width), Int32(height), settings.frameRateCap == 0 ? 0 : settings.frameRateCap == 60 ? 1 : 2)
+                PGConfigureEngine($0, UInt32(buffer.count), Int32(width), Int32(height), GameSettings.engineFrameLimit(settings.frameRateCap))
             }
         }
         return "\(preset.title) \(width)×\(height) at \(GameSettings.frameRateTitle(settings.frameRateCap))" + (own.isEmpty ? "" : ", own settings: " + own.joined(separator: ", "))

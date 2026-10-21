@@ -27,6 +27,20 @@ enum GameFolder {
     /// Game archives (zip, rar, 7z) seen by the last look, which the app can unpack.
     static private(set) var archivesFound: [URL] = []
 
+    /// Whether the app runs inside LiveContainer, whose folder picker only hands a folder over with its Fix File
+    /// Picker and Use LiveContainer's Bundle ID fixes on (a player found it, 2026-10-21). LiveContainer runs the app
+    /// from its own storage, not from iOS's app folder.
+    static let insideLiveContainer: Bool = {
+        #if targetEnvironment(simulator)
+        return ProcessInfo.processInfo.environment["PG_TEST_LIVECONTAINER"] == "1"
+        #elseif targetEnvironment(macCatalyst)
+        return false
+        #else
+        let executable = (CommandLine.arguments.first ?? "").lowercased()
+        return executable.contains("livecontainer") || !Bundle.main.bundlePath.lowercased().contains("/containers/bundle/application/")
+        #endif
+    }()
+
     static var isChosen: Bool { inAppFolder || UserDefaults.standard.data(forKey: bookmarkKey) != nil }
     static var inAppFolder: Bool { UserDefaults.standard.bool(forKey: inAppKey) }
     static var name: String { UserDefaults.standard.string(forKey: nameKey) ?? "folder" }

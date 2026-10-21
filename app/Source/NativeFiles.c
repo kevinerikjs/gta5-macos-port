@@ -114,6 +114,7 @@ u32 pg_file_io(struct w2c_env *h,u32 fd,u64 vectors,u64 count,u64 offset,u64 out
   if(fd>=3&&n<0)return 8;if(writing&&fd==0)return 8;if(!writing&&(fd==1||fd==2))return 8;
   for(u64 i=0;i<count;i++){
     u64 size=iov[2*i+1];if(size>SSIZE_MAX)return 28;void *p=pg_pointer(h,iov[2*i],size);ssize_t actual;
+    if(fd>=3)PGMeshTouch(p,size);		// the kernel can't fault a released mesh page back in (GTA-152)
     if(fd==0)actual=0;
     else if(fd<3){char line[2048];u64 left=size;char *s=p;while(left){size_t len=left<2047?left:2047;memcpy(line,s,len);line[len]=0;pg_log(line);s+=len;left-=len;}actual=size;}
     else if(writing)actual=positioned?pwrite(n,p,size,(int64_t)(offset+total)):write(n,p,size);

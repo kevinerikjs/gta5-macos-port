@@ -404,3 +404,90 @@ enum ModInstaller {
         }
     }
 }
+
+/// Mods across updates and crashes (GTA-153). Each update loads some mods the previous one skipped (add-on
+/// engine sounds in v1.4.3, "dlc 2.rpf" in v1.4.4), so a Mods folder that ran clean can crash after an update.
+///  - After an update, a mod that the previous version had switched on but didn't use stays off until the
+///    player turns it on again in Settings › Mods.
+///  - After the game stopped while starting with mods on, the next launch offers to start once without them.
+enum ModGuard {
+    private static var defaults: UserDefaults { .standard }
+    /// The version the record belongs to. Simulator tests set PG_TEST_APP_VERSION to play an update.
+    static var version: String {
+        #if targetEnvironment(simulator)
+        if let test = ProcessInfo.processInfo.environment["PG_TEST_APP_VERSION"], !test.isEmpty { return test }
+        #endif
+        return Theme.appVersion
+    }
+    /// Per mod folder name: "<version>|1" when that version used the mod, "<version>|0" when it had it on but didn't.
+    private static var history: [String: String] {
+        get { defaults.dictionary(forKey: "modGuardHistory") as? [String: String] ?? [:] }
+        set { defaults.set(newValue, forKey: "modGuardHistory") }
+    }
+
+    /// Once the game has run a while (scripts load once the player exists): which switched-on mods it used.
+    static func recordUse(_ used: Set<String>) {
+        guard !startsWithoutMods else { return }
+        var all = history
+        for mod in ModInstaller.installed() where mod.enabled && mod.waiting == 0 {
+            all[mod.name] = version + (used.contains(mod.name) ? "|1" : "|0")
+        }
+        history = all
+    }
+
+    /// At launch: the first start of a new version switches off the mods the previous version had on but
+    /// didn't use. Returns their names (for a one-time notice).
+    static func afterUpdate() -> [String] {
+        let previous = defaults.string(forKey: "modGuardVersion")
+        guard previous != version else { return [] }
+        defaults.set(version, forKey: "modGuardVersion")
+        guard previous != nil else { return [] }
+        var switchedOff: [String] = []
+        for mod in ModInstaller.installed() where mod.enabled {
+            guard let entry = history[mod.name], entry.hasSuffix("|0"), !entry.hasPrefix(version + "|") else { continue }
+            if (try? ModInstaller.setEnabled(mod, false)) != nil { switchedOff.append(mod.name) }
+        }
+        return switchedOff
+    }
+
+    // MARK: Start without mods
+
+    /// The current start reads no mods (chosen after a crash).
+    private(set) static var startsWithoutMods = false
+    /// "Start without mods" was chosen: the next Play starts once without them.
+    static var withoutModsNextStart: Bool {
+        get { defaults.bool(forKey: "modGuardWithoutMods") }
+        set { defaults.set(newValue, forKey: "modGuardWithoutMods") }
+    }
+    /// Switched-on mods with something in them (what a start would load).
+    static var anyModsOn: Bool {
+        guard let walk = FileManager.default.enumerator(at: ModInstaller.modsFolder, includingPropertiesForKeys: [.isRegularFileKey]) else { return false }
+        for case let url as URL in walk {
+            let name = url.lastPathComponent
+            if name.hasSuffix(".off") || name == ".pending" { walk.skipDescendants(); continue }
+            if name != "README.txt", !name.hasPrefix("."), (try? url.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true { return true }
+        }
+        return false
+    }
+    /// At Play: whether this start loads mods, remembered until the game has run stably.
+    static func starting() -> Bool {
+        startsWithoutMods = withoutModsNextStart
+        withoutModsNextStart = false
+        defaults.set(!startsWithoutMods && anyModsOn, forKey: "modGuardBootWithMods")
+        defaults.set(false, forKey: "modGuardStoppedWithMods")
+        return startsWithoutMods
+    }
+    /// The game ran stably: it didn't stop while starting.
+    static func startedStably() { defaults.set(false, forKey: "modGuardBootWithMods") }
+    /// The game stopped (a trap, not iOS closing the app) before it ran stably.
+    static func stoppedWhileStarting() {
+        if defaults.bool(forKey: "modGuardBootWithMods") { defaults.set(true, forKey: "modGuardStoppedWithMods") }
+    }
+    /// At launch: the previous start had mods on and didn't finish (closed by iOS, or the game stopped).
+    static func previousStartFailedWithMods(bootPending: Bool) -> Bool {
+        let failed = defaults.bool(forKey: "modGuardStoppedWithMods") || (bootPending && defaults.bool(forKey: "modGuardBootWithMods"))
+        defaults.set(false, forKey: "modGuardStoppedWithMods")
+        defaults.set(false, forKey: "modGuardBootWithMods")
+        return failed && anyModsOn
+    }
+}

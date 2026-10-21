@@ -212,6 +212,13 @@ void PGDebugCommand(const char *command, char *reply, size_t size) {
     pg_json_put(&j, "{\"ok\":true,\"engine\":%s,\"frames\":%llu}", atomic_load(&inputBlock) ? "true" : "false", (unsigned long long)atomic_load(&pg_debug_frames));
   } else if (!strcmp(word, "state")) {
     pg_debug_state_json(&j);
+  } else if (!strcmp(word, "audiodump")) {
+    // audiodump <path> <seconds>: the next seconds of the game's sound into a file (see PGFillAudio)
+    char path[1024] = ""; double seconds = 0;
+    sscanf(rest, "%1023s %lf", path, &seconds);
+    if (pg_audio_dump || !path[0] || seconds <= 0 || seconds > 120 || !(pg_audio_dump = fopen(path, "wb"))) { pg_json_put(&j, "{\"ok\":false,\"error\":\"audiodump <path> <seconds up to 120>, one at a time\"}"); return; }
+    atomic_store(&pg_audio_dump_frames, (int64_t)(seconds * 48000));
+    pg_json_put(&j, "{\"ok\":true}");
   } else if (!strcmp(word, "native")) {
     pg_debug_on_game_thread(command, &j);
   } else if (!strcmp(word, "peek")) {

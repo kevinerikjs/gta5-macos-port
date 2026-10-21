@@ -140,6 +140,13 @@ What does work: Script Hook V scripts (`.asi` files, written in C++), like Simpl
 
 In **Settings › Mods**, swipe a mod to remove it or switch it off. Files you put in by hand: delete them from the Mods folder. Start the game again afterwards. The game's own files are never changed.
 
+## After an update, or when the game stops while starting
+
+Each update loads some mods that the previous version skipped. A Mods folder that worked can then make the game stop. Two things protect you:
+
+- **After an update**, a mod that was switched on but that the previous version didn't use stays off. The app lists those mods once. Turn them back on in **Settings › Mods** when you want to try them.
+- **When the game stops while starting** with mods on, the next launch asks whether to start without mods this time. Play then says **Play without mods**. Your mods stay installed, and the next start uses them again.
+
 ## Something isn't working
 
 1. Check the log (Settings › This device › Send log to the developer). Every mod file is listed with what happened to it. "Mods: ... ignored" lines say why a file wasn't used.

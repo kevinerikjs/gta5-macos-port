@@ -9,6 +9,8 @@ final class GameFilesViewController: UIViewController, UIDocumentPickerDelegate,
     var onChange: (() -> Void)?
     /// Called with a game server address the user entered (streams the files instead of storing them).
     var onServer: ((String) -> Void)?
+    /// Why the saved game server didn't answer, when Play found no files because of it (GTA-153).
+    var serverProblem: String?
     /// Where unpacked games go: inside the app's folder, so the app finds them like any other.
     static var installFolder: URL { GameFolder.appFolder.appendingPathComponent("GTA V") }
 
@@ -146,7 +148,13 @@ final class GameFilesViewController: UIViewController, UIDocumentPickerDelegate,
         let files = Theme.glassButton(AppLanguage.choose("Open GTA V Port in Files"), symbol: "arrow.up.forward.app")
         files.addAction(UIAction { [weak self] _ in self?.openAppFolderInFiles() }, for: .touchUpInside)
         let filesRow = UIStackView(arrangedSubviews: [files, UIView()])
-        return card(AppLanguage.choose("Already on this iPhone"), [
+        var liveContainer: [UIView] = []
+        if GameFolder.insideLiveContainer {
+            let first = note(AppLanguage.choose("Inside LiveContainer the picker can't open your game folder until two of its fixes are on: in LiveContainer, open GTA V Port's settings and under Fixes turn on Fix File Picker and Use LiveContainer's Bundle ID. Then choose your game folder, also one kept from an earlier version."))
+            first.textColor = Theme.text
+            liveContainer.append(first)
+        }
+        return card(AppLanguage.choose("Already on this iPhone"), liveContainer + [
             note(AppLanguage.choose("Easiest: in the Files app, move your unpacked game folder into On My iPhone › GTA V Port. The app finds it there by itself, however deep it is.")),
             note(AppLanguage.choose("This button opens that folder in Files. Move your game folder into it (touch and hold the game folder › Move), then come back: the app checks it by itself.")),
             filesRow,
@@ -192,7 +200,7 @@ final class GameFilesViewController: UIViewController, UIDocumentPickerDelegate,
         return card(AppLanguage.choose("From an archive in Files"), [
             note(AppLanguage.choose("Got a .zip or .rar of the game (or all parts of a multi-part one) in Files? The app unpacks it straight into its own folder and checks every file. No separate unzip app needed.")),
             // GTA-62: the two reasons players found for a picker that does nothing.
-            note(AppLanguage.choose("Can't pick it? A cloud icon next to the file means it's still in iCloud Drive: move it to On My iPhone first. In LiveContainer, turn on its Fix file selection setting.")),
+            note(AppLanguage.choose("Can't pick it? A cloud icon next to the file means it's still in iCloud Drive: move it to On My iPhone first. In LiveContainer, turn on Fix File Picker and Use LiveContainer's Bundle ID in GTA V Port's settings (under Fixes).")),
             archivesStack, buttons
         ])
     }
@@ -245,12 +253,20 @@ final class GameFilesViewController: UIViewController, UIDocumentPickerDelegate,
         } else if let problem = GameFolder.appFolderReport {
             let explanation = problem.explanation
             setStatus(false, title: explanation.title, detail: AppLanguage.choose("Found a game folder in GTA V Port, but it can't be used yet. ") + explanation.message)
+        } else if !server.isEmpty, let serverProblem {
+            setStatus(false, title: AppLanguage.choose("Your game server doesn't answer"),
+                      detail: server + " · " + serverProblem + "\n\n" + AppLanguage.choose("Without it there are no game files to play. Check the address, or use one of the ways below to put the files on this iPhone."))
         } else if !server.isEmpty {
             setStatus(true, title: AppLanguage.choose("Streaming from your server"), detail: server)
         } else if lookedAgain {
             setStatus(false, title: AppLanguage.choose("Nothing in this app's folder"), detail: AppLanguage.choose("The app looked through every folder in On My iPhone › GTA V Port and found no game. If your game is somewhere else (another folder, or another app's folder), tap Choose a folder… below and pick it, or pick On My iPhone itself to search everything. iOS only lets an app into other folders once you pick them."))
         } else {
-            setStatus(nil, title: AppLanguage.choose("No game files yet"), detail: AppLanguage.choose("Use one of the ways below. Whichever you choose, the app checks every file before you play."))
+            // A player who updated with another sideloader or Apple ID gets a second, empty app (GTA-153).
+            var detail = AppLanguage.choose("Use one of the ways below. Whichever you choose, the app checks every file before you play.")
+            #if !targetEnvironment(macCatalyst)
+            detail += "\n\n" + AppLanguage.choose("Updated the app and your files are gone? Installing with another sideloader or Apple ID makes a separate copy of the app with an empty folder. Install over the old app the same way, or choose your game folder again.")
+            #endif
+            setStatus(nil, title: AppLanguage.choose("No game files yet"), detail: detail)
         }
         lookedAgain = false
         // An install that stopped (lost connection, app closed): it continues where it stopped (GTA-93).
@@ -388,6 +404,10 @@ final class GameFilesViewController: UIViewController, UIDocumentPickerDelegate,
         // On some sideloaded installs the picker's Open never answers, so players can only cancel (GTA-62).
         GameFolder.log("Game files: the folder picker was closed without a folder")
         if GameFolder.isChosen, lastReport?.isComplete == true { return }   // the game is set up already
+        if GameFolder.insideLiveContainer {
+            setStatus(nil, title: AppLanguage.choose("Open didn't work?"), detail: AppLanguage.choose("Inside LiveContainer the picker can't open your game folder until two of its fixes are on: in LiveContainer, open GTA V Port's settings and under Fixes turn on Fix File Picker and Use LiveContainer's Bundle ID. Then choose your game folder, also one kept from an earlier version."))
+            return
+        }
         setStatus(nil, title: AppLanguage.choose("Open didn't work?"), detail: AppLanguage.choose("Some sideloaded installs can't hand a folder to the app. Tap Open GTA V Port in Files, move your game folder there, then come back: the app finds it by itself."))
     }
 

@@ -65,6 +65,7 @@ The app checks every game file before you play and tells you exactly what's miss
 - **Keyboard and mouse.** The game's own PC controls, and the game shows PC key prompts. The mouse looks and aims and the scroll wheel switches weapons. While you play, the cursor stays hidden in the game.
 - **Settings.** **⌘,** opens Settings at any time, and the game's pause menu (**Esc**) shows **Settings** and **Mods** buttons at the top right. Click them with the game's cursor.
 - **Graphics.** On a Mac the app starts on Quality with the frame rate unlocked. Settings › Graphics has every preset up to Max, plus the resolution and a frame rate cap.
+- **Self Radio.** Your own songs on the car radio: Settings › Self Radio › **Add songs…**, or copy them into the folder that **Show the Self Radio folder in Finder** opens (MP3, M4A/AAC, ALAC, WAV, AIFF, FLAC). With 3 songs or more, Self Radio is the smiley next to Los Santos Rock Radio in the radio wheel.
 - **Mods.** Settings › Mods, the same as on iPhone: see [MODS.md](docs/MODS.md). Script mods use your real keyboard keys.
 - **Something went wrong?** Settings › **Send log to the developer** sends this run's log and the previous one in one click.
 
