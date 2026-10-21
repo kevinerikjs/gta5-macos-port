@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.4.6
+
+A quick update for iPhone and Mac.
+
+### Memory
+- **More room for the game on iPhones and iPads with 8 GB or more (with extra memory) and on Macs.** The game engine keeps its data in one block of memory reserved when the game starts, and on most devices that block was 4 GB. In player logs, every time the block filled up the app still had 2 to 4 GB of its memory free, and the game then stopped loading the city: grey ground and late textures, most of all while driving fast. The block is now the app's memory limit less 1 GB, up to 7 GB: about 5.5 GB on 8 GB iPhones with extra memory, 7 GB on 8 GB iPads with extra memory and on Macs. The memory guard still stops loading before iOS's limit. On a recorded drive in the simulator (Max preset, an 8 GB iPhone's limit), the guard had to hold loading back half as often, with the same FPS. If iOS doesn't allow a block that big (installs without the extended address space), the app takes the biggest one iOS allows, as before.
+
+### Mods
+- **Debug text on screen**: some players saw the game's developer debug text: small blue labels like "runVendingMachine", or "#Scripts", "Active Trackers" and "OVER BUDGET". This game build kept a developer shortcut: pressing B turned it on while a script mod had the keyboard. B no longer does that. (Restarting the game always cleared it.)
+
+Other bug fixes and improvements.
+
 ## v1.4.5
 
 The same version for iPhone and Mac (the iPhone app is in [gta5-ios-port](https://github.com/kevinerikjs/gta5-ios-port)).

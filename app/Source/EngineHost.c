@@ -429,9 +429,13 @@ uint64_t pg_streaming_resource_memory(uint64_t engineAvailable){
  if(result<(int64_t)engineAvailable&&result<=0)atomic_fetch_add(result<0?&memoryBudgetEvictions:&memoryBudgetClamps,1);
  return (uint64_t)result;
 }
-// The engine heap's reservation. 4095 MB unless the process may use clearly more: the game's
-// heap hit that ceiling on 8 GB-limit phones while about 1 GB of the limit was still free.
-// About 3 GB of the limit stays for textures, Metal and the app.
+// The engine heap's reservation: the limit less 1 GB, at least 4095 MB and at most 7168 MB. The engine runs out of
+// address space long before the phone runs out of memory: in every player log where the heap refused to grow
+// (2026-10-22, 102 logs), the app still had about 2 GB (5 GB limits) to 3.2 GB (6.6 GB limits) to 4 GB+ (8 GB
+// limits) free at that moment, because the engine hands freed pages back to iOS. The old rule (4095 MB below a
+// 7.7 GB limit, else the limit less 3 GB) left that unused. The memory guard still holds streaming before the
+// process limit, with the textures counted; if iOS won't reserve this much (no extended-address entitlement),
+// the reservation steps down (the fallback steps where it is mapped).
 void PGSetMemoryCap(int mb) { if (!atomic_load(&started)) memoryCapMB = mb > 0 ? (uint64_t)mb : 0; }
 static uint64_t pg_engine_memory_mb(void){
  const char *configured=getenv("PG_ENGINE_MEMORY_MB");
@@ -446,7 +450,7 @@ static uint64_t pg_engine_memory_mb(void){
    limitMB=memoryCapMB;
   }
   processLimitMB=limitMB;
-  if(limitMB>=4095+3072+512)return limitMB-3072<6144?limitMB-3072:6144;
+  if(limitMB>4095+1024)return limitMB-1024<7168?limitMB-1024:7168;
  }
 #endif
  return 4095;
@@ -2965,8 +2969,19 @@ static void *boot(void *ignored) {
   void *allocation=mmap(NULL,capacity+guardBytes,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANON,-1,0);
   // Smaller reservations when iOS refuses: iPhones with 3 GB (iPhone 8, 8 Plus, X) on a free Apple ID
   // couldn't reserve 4095 MB and the game never started. 3392 MB is the 3328 MB starting heap plus a
-  // little room to grow.
-  static const uint64_t fallbackMB[]={4095,3840,3584,3392};
+  // little room to grow. Above 4095 MB, installs without the extended-address entitlement may be refused too.
+  // PG_TEST_RESERVE_MAX_MB (simulator) refuses anything larger, to test the steps.
+  static const uint64_t fallbackMB[]={6144,5120,4608,4095,3840,3584,3392};
+#if TARGET_OS_SIMULATOR
+  {const char *v=getenv("PG_TEST_RESERVE_MAX_MB");uint64_t most=v?(uint64_t)atol(v):0;
+   if(most&&capacity/1048576>most&&allocation!=MAP_FAILED){munmap(allocation,capacity+guardBytes);allocation=MAP_FAILED;}
+   for(size_t i=0;allocation==MAP_FAILED&&most&&i<sizeof fallbackMB/sizeof *fallbackMB;i++){
+    if(fallbackMB[i]>=capacity/1048576)continue;
+    char line[96];snprintf(line,sizeof line,"iOS could not reserve that much; trying %llu MB.",(unsigned long long)fallbackMB[i]);pg_log(line);
+    env.memory.max_pages=fallbackMB[i]*1024*1024/wasm2c_game_pagesize_env_memory;capacity=env.memory.max_pages*env.memory.page_size;
+    if(fallbackMB[i]<=most)allocation=mmap(NULL,capacity+guardBytes,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANON,-1,0);
+   }}
+#endif
   for (size_t i=0;allocation==MAP_FAILED&&i<sizeof fallbackMB/sizeof *fallbackMB;i++) {
     if (fallbackMB[i]>=capacity/1048576) continue;
     char line[96];snprintf(line,sizeof line,"iOS could not reserve that much; trying %llu MB.",(unsigned long long)fallbackMB[i]);pg_log(line);
