@@ -739,6 +739,10 @@ The GTA VI test map crashing soon after loading was fixed in v1.4: update to the
 
 The freeze at the house when a TV comes on was fixed in v1.3. Update to the newest version.
 
+### The game stopped earlier and I restarted it a few times. Does a log I send now still show the stop?
+
+Since v1.4.6, yes: the app keeps the run where the game stopped (it stopped with a message, or iOS closed it while you played) and sends it first with the next log, however often you started the game since. On older versions the app keeps only the last two runs, so send the log right after the stop: open the app and go to Settings › This device › Send log to the developer before you press Play. On iPhone, v1.4.6 also adds iOS's own report of why the app ended.
+
 ### Why does the game crash in Sandbox mode?
 
 Update to the newest version: since v1.4 Sandbox runs smoothly again on 4 GB iPhones and Sandbox and the GTA VI test map no longer crash soon after loading. If it still crashes, send a log right after it happens (Settings › This device › Send log to the developer, with a short note in "What happened?").
