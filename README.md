@@ -6,7 +6,7 @@
 
 > Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Rights holders: contact kevin@aether.ee and the repository will be taken down promptly.
 
-**Website:** [fivestarport.site](https://fivestarport.site): the guide, the builder and the translate page in one place.
+**Website:** [fivestarport.site](https://fivestarport.site): the guides, the questions and answers and the translate page in one place.
 
 On iPhone? See **[gta5-ios-port](https://github.com/kevinerikjs/gta5-ios-port)**. Both apps come from the same code and are released together with the same version numbers.
 
