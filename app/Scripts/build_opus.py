@@ -9,6 +9,8 @@ build, NEON on arm64). The release archive is checked against Xiph's published S
 writes Tools/opus-lib/<sdk>/libopus.a (the project links Tools/opus-lib/$(PLATFORM_NAME)).
 """
 import argparse
+import os
+import platform
 import hashlib
 import shutil
 import subprocess
@@ -43,16 +45,20 @@ if not (source / 'CMakeLists.txt').exists():
 for sdk in sdks:
     # Mac Catalyst: the macOS SDK with the Catalyst target; Xcode names its platform macosx (the library folder).
     catalyst = sdk == 'maccatalyst'
+    arch = os.environ.get('PG_MAC_ARCH', platform.machine()) if catalyst else 'arm64'
+    if arch not in ('arm64', 'x86_64'):
+        sys.exit(f'Unsupported architecture: {arch}')
+    processor = 'aarch64' if arch == 'arm64' else 'x86_64'
     library = root / f'Tools/opus-lib/{"macosx" if catalyst else sdk}/libopus.a'
     # CMAKE_SYSTEM_PROCESSOR: a cross build for iOS doesn't set it, and without it libopus leaves out its
     # NEON code (every 64-bit iPhone has NEON, so it is presumed rather than detected).
-    args = ['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_SYSTEM_NAME=iOS', '-DCMAKE_SYSTEM_PROCESSOR=aarch64',
-            f'-DCMAKE_OSX_SYSROOT={sdk}', '-DCMAKE_OSX_ARCHITECTURES=arm64', '-DCMAKE_OSX_DEPLOYMENT_TARGET=16.0',
+    args = ['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_SYSTEM_NAME=iOS', f'-DCMAKE_SYSTEM_PROCESSOR={processor}',
+            f'-DCMAKE_OSX_SYSROOT={sdk}', f'-DCMAKE_OSX_ARCHITECTURES={arch}', '-DCMAKE_OSX_DEPLOYMENT_TARGET=16.0',
             '-DOPUS_BUILD_TESTING=OFF', '-DOPUS_BUILD_PROGRAMS=OFF', '-DBUILD_SHARED_LIBS=OFF',
             '-DOPUS_INSTALL_PKG_CONFIG_MODULE=OFF', '-DOPUS_INSTALL_CMAKE_CONFIG_MODULE=OFF']
     if catalyst:
         args = [a for a in args if not a.startswith(('-DCMAKE_SYSTEM_NAME', '-DCMAKE_OSX_SYSROOT', '-DCMAKE_OSX_DEPLOYMENT'))]
-        args += ['-DCMAKE_OSX_SYSROOT=macosx', '-DCMAKE_C_FLAGS=-target arm64-apple-ios16.0-macabi']
+        args += ['-DCMAKE_OSX_SYSROOT=macosx', f'-DCMAKE_C_FLAGS=-target {arch}-apple-ios16.0-macabi']
     stamp = library.with_suffix('.args')
     if library.exists() and stamp.exists() and stamp.read_text() == ' '.join(args):
         print(f'libopus {VERSION} for {sdk} already built.')

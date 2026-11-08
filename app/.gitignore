@@ -6,3 +6,5 @@ Resources/manifest.json
 xcuserdata/
 GeneratedResources/
 __pycache__/
+
+Resources/shader-index.json

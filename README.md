@@ -22,6 +22,9 @@ The same app as on iPhone, built for Apple Silicon Macs. It runs the game native
 | **Memory** | 16 GB plays the Quality preset smoothly. With 8 GB the app starts on a lighter preset by itself. |
 | **Your own game files** | Web build `8b0b5899ed`: the folder that contains `data/` and `b/8b0b5899ed/`, about 21 GB. |
 
+Experimental Intel builds are documented in [docs/INTEL.md](docs/INTEL.md),
+including prerequisites, validation results, and current limitations.
+
 ## 1. Get the app
 
 **Prebuilt:** download `GTA5Port-mac-vX.Y.Z.zip` from the **[Releases topic of the Five Star Port Telegram](https://t.me/fivestarport/786)**. The newest post there has the newest version. Get it there rather than from random sites, which can have old or modified copies.

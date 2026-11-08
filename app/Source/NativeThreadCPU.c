@@ -384,5 +384,16 @@ static void startProfiler(void) {
   pthread_detach(thread);
 }
 #else
+#include <dlfcn.h>
+// Intel keeps ordinary CPU accounting without the ARM stack sampler. Trap and
+// buffer diagnostics still need the symbol lookup API on every architecture.
+const char *pg_app_symbol(uintptr_t pc) {
+  Dl_info symbol, self;
+  if (!dladdr((const void *)pg_app_symbol, &self) ||
+      !dladdr((const void *)pc, &symbol) || symbol.dli_fbase != self.dli_fbase)
+    return NULL;
+  const char *name = symbol.dli_sname;
+  return name && name[0] == '_' ? name + 1 : name;
+}
 static void startProfiler(void) {}
 #endif

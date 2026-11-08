@@ -15,6 +15,8 @@ Vendor/blink is upstream commit Vendor/blink/UPSTREAM-COMMIT.txt (blink/ sources
 writes Tools/blink-lib/<sdk>/libblink.a (the project links Tools/blink-lib/$(PLATFORM_NAME)).
 """
 import argparse
+import os
+import platform
 import hashlib
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
@@ -37,9 +39,13 @@ digest = hashlib.sha256()
 for path in sorted(source.rglob('*')):
     if path.is_file(): digest.update(path.name.encode()); digest.update(path.read_bytes())
 for sdk in sdks:
+    arch = os.environ.get('PG_MAC_ARCH', platform.machine()) if sdk == 'maccatalyst' else 'arm64'
+    if arch not in ('arm64', 'x86_64'):
+        raise SystemExit(f'Unsupported architecture: {arch}')
+    target = TARGETS[sdk].replace('arm64', arch)
     library = root / f'Tools/blink-lib/{SDK.get(sdk, sdk)}/libblink.a'
     stamp = library.with_suffix('.sha256')
-    key = digest.hexdigest() + ' ' + ' '.join(FLAGS) + ' ' + TARGETS[sdk]
+    key = digest.hexdigest() + ' ' + ' '.join(FLAGS) + ' ' + target
     if library.exists() and stamp.exists() and stamp.read_text() == key:
         print(f'Blink for {sdk} already built.')
         continue
@@ -47,7 +53,7 @@ for sdk in sdks:
     objects.mkdir(parents=True, exist_ok=True)
     def compile(path):
         out = objects / (path.stem + '.o')
-        subprocess.run(['xcrun', '-sdk', SDK.get(sdk, sdk), 'clang', '-c', '-arch', 'arm64', '-target', TARGETS[sdk], *FLAGS, '-o', str(out), str(path)], check=True)
+        subprocess.run(['xcrun', '-sdk', SDK.get(sdk, sdk), 'clang', '-c', '-arch', arch, '-target', target, *FLAGS, '-o', str(out), str(path)], check=True)
         return out
     with ThreadPoolExecutor(4) as pool:
         built = list(pool.map(compile, files))

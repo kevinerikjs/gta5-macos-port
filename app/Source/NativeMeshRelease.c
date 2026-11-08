@@ -99,7 +99,15 @@ static void recRetire(struct PageRec *r) {
 static struct { uint32_t oid; uint32_t size; uint64_t src; } sources[SOURCES];
 static os_unfair_lock sourceLock = OS_UNFAIR_LOCK_INIT;
 
-static void spin(void) { __asm__ volatile("yield"); }
+static void spin(void) {
+#if defined(__aarch64__)
+    __asm__ volatile("yield");
+#elif defined(__x86_64__)
+    __asm__ volatile("pause");
+#else
+    atomic_signal_fence(memory_order_seq_cst);
+#endif
+}
 // A PENDING page back to NORMAL (any thread, also the fault handler), after the caller took it from PENDING to
 // REOPENING: writable first, NORMAL after (GTA-245). It used to be NORMAL first. In between, the page said NORMAL but was
 // still read-only, and a thread writing there faulted again at once: the handler takes a fault on a NORMAL page for a
@@ -229,7 +237,14 @@ static void fault(int sig, siginfo_t *info, void *context) {
 		uint64_t page = (at - (uintptr_t)base) / pageSize;
 		// The data abort's WnR bit tells a read (2) from a write (1): reading an orphaned page means something
 		// still used the dead mesh's bytes, which mode 2 can't give back.
+#if defined(__aarch64__)
 		int read = !((((ucontext_t *)context)->uc_mcontext->__es.__esr >> 6) & 1);
+#elif defined(__x86_64__)
+		// x86 page-fault error code bit 1 is set for writes.
+		int read = !((((ucontext_t *)context)->uc_mcontext->__es.__err >> 1) & 1);
+#else
+#error Unsupported fault context architecture
+#endif
 		if (atomic_load(&state[page]) != NORMAL) { repeats = 0; restore(page, &restoredByFault, read ? 2 : 1); return; }
 		if (at != lastFault) { lastFault = at; repeats = 0; }
 		if (++repeats < 1000) return;
