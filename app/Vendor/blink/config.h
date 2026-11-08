@@ -38,7 +38,8 @@
 #define HAVE_REALPATH
 #define HAVE_SETREUID
 #define HAVE_FDATASYNC
-#define HAVE_STRCHRNUL
+// macOS 13 / older Catalyst SDKs use blink/strchrnul.c.
+// #define HAVE_STRCHRNUL
 #define HAVE_VASPRINTF
 // #define HAVE_SETRESUID
 // #define HAVE_KERN_ARND

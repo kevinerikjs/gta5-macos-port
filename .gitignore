@@ -10,3 +10,5 @@ app/Resources/wgpu_worker.js
 app/*.xcodeproj
 *.ipa
 .DS_Store
+
+intel-*.log

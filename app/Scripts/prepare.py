@@ -3,6 +3,7 @@ import argparse
 import hashlib
 from pathlib import Path
 import platform
+import os
 import shutil
 import subprocess
 import tarfile
@@ -12,13 +13,11 @@ root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--mirror', type=Path, required=True, help='folder containing data/ and b/8b0b5899ed/game.wasm')
 parser.add_argument('--prebuilt-dawn', action='store_true', help=argparse.SUPPRESS)  # accepted for old scripts; Dawn is no longer used
-parser.add_argument('--sdk', action='append', choices=['iphoneos', 'iphonesimulator'], help='Metal library to build (default: iphoneos)')
+parser.add_argument('--sdk', action='append', choices=['iphoneos', 'iphonesimulator', 'maccatalyst'], help='Metal library to build (default: iphoneos)')
 options = parser.parse_args()
-def apple_silicon():
-    try: return subprocess.run(['sysctl', '-n', 'hw.optional.arm64'], capture_output=True, text=True).stdout.strip() == '1'
-    except OSError: return False
-if platform.system() != 'Darwin' or not apple_silicon():
-    raise SystemExit('This preparation script targets an Apple Silicon Mac with Xcode.')
+options.mirror = options.mirror.resolve()
+if platform.system() != 'Darwin' or platform.machine() not in ('arm64', 'x86_64'):
+    raise SystemExit('This preparation script requires a supported Mac with Xcode.')
 engine = options.mirror / 'b/8b0b5899ed/game.wasm'
 if hashlib.sha256(engine.read_bytes()).hexdigest() != '11ca8d2c04c5e843d18ff4aea4899d72c86973c6b031df334e67c446b2ae83e0':
     raise SystemExit('The engine does not match the build this native experiment supports.')
@@ -33,10 +32,11 @@ def download(url, destination):
         destination.write_bytes(response.read())
 
 wabt = root / 'Tools/wabt-1.0.42'
-if not wabt.exists():
+if not (wabt / 'lib/libwabt.a').exists():
     release = 'https://github.com/WebAssembly/wabt/releases/download/1.0.42/'
-    filename = 'wabt-1.0.42-macos-arm64.tar.gz'
-    archive = root / 'Tools/wabt.tar.gz'
+    intel = platform.machine() == 'x86_64'
+    filename = 'wabt-1.0.42.tar.xz' if intel else 'wabt-1.0.42-macos-arm64.tar.gz'
+    archive = root / ('Tools/wabt.tar.xz' if intel else 'Tools/wabt.tar.gz')
     download(release + filename, archive)
     checksum = urllib.request.urlopen(release + filename + '.sha256').read().decode().split()[0]
     if hashlib.sha256(archive.read_bytes()).hexdigest() != checksum:
@@ -44,6 +44,15 @@ if not wabt.exists():
     from safe_extract import extract
     with tarfile.open(archive) as package:
         extract(package, root / 'Tools')
+    if intel:
+        # WABT 1.0.42 publishes no Intel macOS binaries. Build the pinned source
+        # with tests disabled; its source release does not include test submodules.
+        build = root / 'Tools/wabt-host-build'
+        run('cmake', '-S', str(wabt), '-B', str(build),
+            '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_TESTS=OFF',
+            '-DCMAKE_INSTALL_PREFIX=' + str(wabt))
+        run('cmake', '--build', str(build), '--parallel', '4')
+        run('cmake', '--install', str(build))
 
 simde = root / 'Tools/simde'
 if not simde.exists():
@@ -149,13 +158,19 @@ if not bcdec.exists():
         extract(package, root / 'Tools')
     (root / 'Tools' / f'bcdec-{commit}').rename(bcdec)
 # The game's shaders, precompiled into the app's Metal library.
-run('python3', 'Scripts/fetch_shader_tool.py')
-shaders = root / 'Build/Inputs/shaders'
-run('python3', 'Scripts/unpack_shaders.py', '--shaders', str((options.mirror / 'b/8b0b5899ed/shaders').resolve()), '--out', str(shaders))
 sdk_args = []
 for sdk in options.sdk or ['iphoneos']:
     sdk_args += ['--sdk', sdk]
-run('python3', 'Scripts/build_metal_shaders.py', str(shaders), *sdk_args)
+if os.environ.get('PG_PREBUILT_SHADER_DIR'):
+    if options.sdk != ['maccatalyst']:
+        raise SystemExit('Prebuilt Mac shaders require --sdk maccatalyst.')
+    run('python3', 'Scripts/import_mac_shaders.py', '--source', os.environ['PG_PREBUILT_SHADER_DIR'],
+        '--index', str((options.mirror / 'b/8b0b5899ed/shaders/index.json').resolve()))
+else:
+    run('python3', 'Scripts/fetch_shader_tool.py')
+    shaders = root / 'Build/Inputs/shaders'
+    run('python3', 'Scripts/unpack_shaders.py', '--shaders', str((options.mirror / 'b/8b0b5899ed/shaders').resolve()), '--out', str(shaders))
+    run('python3', 'Scripts/build_metal_shaders.py', str(shaders), *sdk_args)
 run('python3', 'Scripts/build_opus.py', *sdk_args)
 run('python3', 'Scripts/build_blink.py', *sdk_args)
 run('xcodegen', 'generate', '--spec', 'project.yml')
